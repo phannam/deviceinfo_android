@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@android:color/background_dark"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/img_tabicon"
+        android:layout_width="26dp"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/tv_tabtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_tabicon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:gravity="center_horizontal"
+        android:text="Certifications"
+        android:textSize="15sp"
+        android:lines="1" />
+</RelativeLayout>

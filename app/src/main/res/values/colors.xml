@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="tab_selected_color">#ffffff</color>
+    <color name="tab_normal_color">#58595B</color>
+    <color name="tab_device_color">#58595B</color>
+    <color name="black">#000000</color>
+    <color name="actionbar_bg_color">#58595B</color>
+</resources>
