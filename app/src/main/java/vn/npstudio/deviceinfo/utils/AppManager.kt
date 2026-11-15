@@ -1,115 +1,74 @@
-package vn.npstudio.deviceinfo.utils;
+package vn.npstudio.deviceinfo.utils
 
-import android.content.Context;
-import android.os.Build;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
+import android.content.Context
+import android.os.Build
+import android.util.DisplayMetrics
+import android.view.WindowManager
 
-import java.util.ArrayList;
-import java.util.List;
+class AppManager private constructor(private val context: Context) {
 
-/**
- * Created by namphan on 11/16/15.
- */
-public class AppManager {
-    private static AppManager mInstance;
-    private Context mContext;
+    var deviceInfoList: List<Item> = emptyList()
+        private set
 
-    private ArrayList<Item> deviceInfoList;
-    private ArrayList<Item> displayInfoList;
+    var displayInfoList: List<Item> = emptyList()
+        private set
 
-    public List<Item> getDeviceInfoList() {
-        return deviceInfoList;
+    fun getAllInfos(): String = buildString {
+        append("Device\n")
+        deviceInfoList.forEach { append("\t${it.name}: ${it.value}\n") }
+        append("\n")
+        append("Display\n")
+        displayInfoList.forEach { append("\t${it.name}: ${it.value}\n") }
+        append("\n")
     }
 
-    public List<Item> getDisplayInfoList() {
-        return displayInfoList;
+    private fun initializeInstance() {
+        initializeGeneralDeviceInfo()
+        initializeDisplayInfo()
     }
 
-    public String getAllInfos() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Device\n");
-        for (Item item : deviceInfoList) {
-            builder.append("\t" + item.getName() + ": " + item.getValue() + "\n");
+    private fun initializeGeneralDeviceInfo() {
+        deviceInfoList = listOf(
+            Item("Product", Build.PRODUCT),
+            Item("Device", Build.DEVICE),
+            Item("Board", Build.BOARD),
+            Item("Manufacturer", Build.MANUFACTURER),
+            Item("Brand", Build.BRAND),
+            Item("Model", Build.MODEL),
+        )
+    }
+
+    @Suppress("DEPRECATION")
+    private fun initializeDisplayInfo() {
+        val metrics = DisplayMetrics()
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(metrics)
+        displayInfoList = listOf(
+            Item("Display", Build.DISPLAY),
+            Item("Width Pixels", metrics.widthPixels.toString()),
+            Item("Height Pixels", metrics.heightPixels.toString()),
+            Item("Density", metrics.density.toString()),
+            Item("DensityDpi", metrics.densityDpi.toString()),
+            Item("Scaled Density", metrics.scaledDensity.toString()),
+            Item("x dpi", metrics.xdpi.toString()),
+            Item("y dpi", metrics.ydpi.toString()),
+            Item("Default Density", DisplayMetrics.DENSITY_DEFAULT.toString()),
+            Item("Low Density", DisplayMetrics.DENSITY_LOW.toString()),
+            Item("Medium Density", DisplayMetrics.DENSITY_MEDIUM.toString()),
+            Item("High Density", DisplayMetrics.DENSITY_HIGH.toString()),
+        )
+    }
+
+    companion object {
+        private var instance: AppManager? = null
+
+        @Synchronized
+        fun create(context: Context) {
+            val manager = instance ?: AppManager(context).also { instance = it }
+            manager.initializeInstance()
         }
-        builder.append("\n");
-        builder.append("Display\n");
-        for (Item item : displayInfoList) {
-            builder.append("\t" + item.getName() + ": " + item.getValue() + "\n");
-        }
-        builder.append("\n");
-        return builder.toString();
-    }
 
-    private AppManager() {
-    }
-
-    private AppManager(Context context) {
-        mContext = context;
-    }
-
-    public static synchronized void create(Context context) {
-        if (mInstance == null) {
-            mInstance = new AppManager(context);
-        }
-        mInstance.initializeInstance(context);
-    }
-
-    public static AppManager getInstance() {
-        return mInstance;
-    }
-
-    private void initializeInstance(Context context) {
-        initializeGeneralDeviceInfo();
-        initializeDisplayInfo();
-    }
-
-    private void initializeGeneralDeviceInfo() {
-        Item item;
-        deviceInfoList = new ArrayList<>();
-        item = new Item("Product", Build.PRODUCT);
-        deviceInfoList.add(item);
-        item = new Item("Device", Build.DEVICE);
-        deviceInfoList.add(item);
-        item = new Item("Board", Build.BOARD);
-        deviceInfoList.add(item);
-        item = new Item("Manufacturer", Build.MANUFACTURER);
-        deviceInfoList.add(item);
-        item = new Item("Brand", Build.BRAND);
-        deviceInfoList.add(item);
-        item = new Item("Model", Build.MODEL);
-        deviceInfoList.add(item);
-    }
-
-    private void initializeDisplayInfo() {
-        Item item;
-        DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        displayInfoList = new ArrayList<>();
-        item = new Item("Display", Build.DISPLAY);
-        displayInfoList.add(item);
-        item = new Item("Width Pixels", "" + metrics.widthPixels);
-        displayInfoList.add(item);
-        item = new Item("Height Pixels", "" + metrics.heightPixels);
-        displayInfoList.add(item);
-        item = new Item("Density", "" + metrics.density);
-        displayInfoList.add(item);
-        item = new Item("DensityDpi", "" + metrics.densityDpi);
-        displayInfoList.add(item);
-        item = new Item("Scaled Density", "" + metrics.scaledDensity);
-        displayInfoList.add(item);
-        item = new Item("x dpi", "" + metrics.xdpi);
-        displayInfoList.add(item);
-        item = new Item("y dpi", "" + metrics.ydpi);
-        displayInfoList.add(item);
-        item = new Item("Default Density", "" + DisplayMetrics.DENSITY_DEFAULT);
-        displayInfoList.add(item);
-        item = new Item("Low Density", "" + DisplayMetrics.DENSITY_LOW);
-        displayInfoList.add(item);
-        item = new Item("Medium Density", "" + DisplayMetrics.DENSITY_MEDIUM);
-        displayInfoList.add(item);
-        item = new Item("High Density", "" + DisplayMetrics.DENSITY_HIGH);
-        displayInfoList.add(item);
+        fun getInstance(): AppManager =
+            checkNotNull(instance) { "AppManager.create() must be called first" }
     }
 }

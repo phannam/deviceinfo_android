@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <ListView
-        android:id="@+id/lst_items"
+        android:id="@+id/info_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@drawable/bg_shadow_horizontal"

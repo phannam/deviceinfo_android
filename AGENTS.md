@@ -22,20 +22,21 @@ data.
 
 Current state:
 
-- Single `:app` module, 100% Java, about 20 source files, last functionally
+- Single `:app` module, 100% Kotlin, about 20 source files, last functionally
   changed in 2015. The build was modernized in 2026 (AGP 9.4.1, Gradle 9.9.1,
-  Kotlin DSL, version catalog, AndroidX, namespace `vn.npstudio.deviceinfo`).
+  Kotlin DSL, version catalog, AndroidX, namespace `vn.npstudio.deviceinfo`)
+  and the source was converted 1:1 from Java to Kotlin with ViewBinding.
 - One `MainActivity` hosts two tabs (Device, Display) through a custom tab
   strip and manual `FragmentTransaction`s.
 - Data comes from a static `AppManager` singleton created in
   `DeviceApplication.onCreate()`. It reads every value once at startup.
-- UI uses XML layouts with `findViewById`, a `ListView`, and an `ArrayAdapter`.
-- No ViewModel, no DI, no coroutines, no ViewBinding.
+- UI uses XML layouts with ViewBinding, a `ListView`, and an `ArrayAdapter`.
+- No ViewModel, no DI, no coroutines.
 
 Modernization goal:
 
 - Keep XML layouts. Do not move to Compose.
-- Migrate to Kotlin gradually. New and refactored code is Kotlin.
+- All code is Kotlin. Do not add Java.
 - Move to strict MVVM with Hilt, `StateFlow`, coroutines, and ViewBinding.
 - Read device and display values through platform data sources behind a
   repository instead of the static `AppManager`.
@@ -45,8 +46,8 @@ Modernization goal:
 
 | Area | Current | Target |
 | --- | --- | --- |
-| Language | Java 17 only | Kotlin for new and refactored code (AGP built-in Kotlin) |
-| UI | XML layouts with `findViewById`, `ListView` + `ArrayAdapter`, vendored tab views | XML + ViewBinding only; `RecyclerView` for lists; no Compose |
+| Language | Kotlin (AGP built-in), JVM target 17 | Kotlin for new and refactored code (AGP built-in Kotlin) |
+| UI | XML layouts with ViewBinding, `ListView` + `ArrayAdapter`, vendored tab views | XML + ViewBinding only; `RecyclerView` for lists; no Compose |
 | Architecture | Activity/Fragment + static `AppManager` singleton (no ViewModel) | Strict MVVM: UI -> ViewModel -> Repository -> DataSource |
 | State | Mutable fields in Activity, fragments, and `AppManager` | Read-only `StateFlow` UI state; `SharedFlow`/`Channel` for one-time effects |
 | Storage | None | None. Add SharedPreferences only for lightweight settings if a feature needs it |
@@ -100,8 +101,7 @@ State the conflict in the final summary.
 - Keep changes scoped to the current task.
 - Do not rewrite files outside the current task scope.
 - New code must follow target conventions even if surrounding code does not.
-- New and refactored files are Kotlin. Convert a Java file to Kotlin when the
-  task meaningfully refactors it; do not convert unrelated files.
+- All app and test code is Kotlin. Do not add Java files.
 - Never mix old pattern and new pattern in the same file. If the file cannot be
   made internally consistent within the task scope, stop and ask for direction.
 - Never introduce Compose under any circumstance.
@@ -155,7 +155,7 @@ and thread working in this repository:
 
 - No Compose anywhere.
 - No `findViewById` in new app-owned layout code.
-- No new Java files in app code.
+- No Java files.
 - No RxJava, AsyncTask, or Volley.
 - No hardcoded strings.
 - No hardcoded colors.

@@ -1,45 +1,30 @@
-package vn.npstudio.deviceinfo.utils;
+package vn.npstudio.deviceinfo.utils
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import vn.npstudio.deviceinfo.databinding.ItemInfoBinding
 
-import java.util.List;
+class ItemListAdapter(
+    context: Context,
+    resource: Int,
+    objects: List<Item>,
+) : ArrayAdapter<Item>(context, resource, objects) {
 
-import vn.npstudio.deviceinfo.R;
-
-/**
- * Created by namphan on 11/16/15.
- */
-public class ItemListAdapter extends ArrayAdapter<Item> {
-    public ItemListAdapter(Context context, int resource, List<Item> objects) {
-        super(context, resource, objects);
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        AlertViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_simpleitem, parent, false);
-            viewHolder = new AlertViewHolder();
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
-            viewHolder.tvValue = (TextView) convertView.findViewById(R.id.tv_value);
-            convertView.setTag(viewHolder);
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val binding = if (convertView == null) {
+            ItemInfoBinding.inflate(LayoutInflater.from(context), parent, false).also {
+                it.root.tag = it
+            }
         } else {
-            viewHolder = (AlertViewHolder) convertView.getTag();
+            convertView.tag as ItemInfoBinding
         }
 
-        Item item = getItem(position);
-        viewHolder.tvName.setText(item.getName());
-        viewHolder.tvValue.setText(item.getValue());
-        return convertView;
-    }
-
-    static class AlertViewHolder {
-        TextView tvName;
-        TextView tvValue;
+        val item = getItem(position)
+        binding.nameText.text = item?.name
+        binding.valueText.text = item?.value
+        return binding.root
     }
 }

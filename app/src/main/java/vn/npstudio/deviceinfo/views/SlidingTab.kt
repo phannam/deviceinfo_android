@@ -1,39 +1,30 @@
-package vn.npstudio.deviceinfo.views;
+package vn.npstudio.deviceinfo.views
 
-/**
- * Created by namphan on 5/12/15.
- */
-public class SlidingTab {
-    private int tab = 0;
-    private int ic_drawable;
-    private int ic_drawable_selected;
-    private int ic_text_color;
-    private int ic_text_color_selected;
-    private String name = "";
-    private boolean selected = false;
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 
-    public SlidingTab(int tab, int ic_drawable, String name, int ic_text_color) {
-        this.tab = tab;
-        this.ic_drawable = ic_drawable;
-        this.name = name;
-        this.ic_text_color = ic_text_color;
-    }
+class SlidingTab(
+    val type: Int,
+    @param:DrawableRes private val iconDrawableNormal: Int,
+    val name: String,
+    @param:ColorInt private val textColorNormal: Int,
+) {
+    @DrawableRes
+    private var iconDrawableSelected = 0
 
-    public void setSelectedResource(int ic_drawable_selected, int ic_text_color_selected) {
-        this.ic_drawable_selected = ic_drawable_selected;
-        this.ic_text_color_selected = ic_text_color_selected;
-    }
+    @ColorInt
+    private var textColorSelected = 0
 
-    public int getType() {return tab;}
-    public int getIconDrawable() {
-        return (selected ? ic_drawable_selected : ic_drawable);
-    }
-    public String getName() {return name;}
-    public int getTextColor() {
-        return (selected ? ic_text_color_selected : ic_text_color);
-    }
+    var isSelected = false
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    val iconDrawable: Int
+        get() = if (isSelected) iconDrawableSelected else iconDrawableNormal
+
+    val textColor: Int
+        get() = if (isSelected) textColorSelected else textColorNormal
+
+    fun setSelectedResource(@DrawableRes iconDrawableSelected: Int, @ColorInt textColorSelected: Int) {
+        this.iconDrawableSelected = iconDrawableSelected
+        this.textColorSelected = textColorSelected
     }
 }

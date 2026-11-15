@@ -6,9 +6,9 @@ The app has one model and no persistence or network models.
 
 | Model | Location | Fields | Used by |
 |---|---|---|---|
-| `Item` | `utils/Item.java` | `name: String`, `value: String` (getters only; has an unused no-arg constructor) | `AppManager`, `ListFragment`, `ItemListAdapter` |
-| `SlidingTab` | `views/SlidingTab.java` | `tab` (type id), normal/selected icon res, normal/selected text color, `name`, mutable `selected` | `MainActivity`, `TabActivity`, `SlidingTabRenderer` |
-| `Constant.Tab` | `utils/Constant.java` | `TAB_DEVICEINFO = 0`, `TAB_DISPLAY = 1` | `MainActivity` |
+| `Item` | `utils/Item.kt` | `data class Item(val name: String, val value: String)` | `AppManager`, `ListFragment`, `ItemListAdapter` |
+| `SlidingTab` | `views/SlidingTab.kt` | `type`, normal/selected icon res, normal/selected text color, `name`, mutable `isSelected` | `MainActivity`, `TabActivity`, `SlidingTabRenderer` |
+| `Constant.Tab` | `utils/Constant.kt` | `TAB_DEVICEINFO = 0`, `TAB_DISPLAY = 1` | `MainActivity` |
 
 Values produced by `AppManager`:
 
@@ -26,7 +26,7 @@ Values produced by `AppManager`:
 Issues:
 
 - Labels are hardcoded English strings inside the data holder.
-- Numbers are converted with `"" + value` without formatting or units.
+- Numbers are converted with `toString()` without formatting or units.
 - Raw platform values, display labels, and share formatting live in one class.
 - `Build.DISPLAY` appears under Display although it is build metadata.
 

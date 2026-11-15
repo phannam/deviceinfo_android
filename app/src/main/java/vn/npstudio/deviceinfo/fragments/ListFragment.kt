@@ -1,53 +1,39 @@
-package vn.npstudio.deviceinfo.fragments;
+package vn.npstudio.deviceinfo.fragments
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import vn.npstudio.deviceinfo.databinding.FragmentListitemsBinding
+import vn.npstudio.deviceinfo.utils.Item
+import vn.npstudio.deviceinfo.utils.ItemListAdapter
 
-import java.util.LinkedList;
-import java.util.List;
+abstract class ListFragment : BaseFragment() {
+    private var _binding: FragmentListitemsBinding? = null
+    private val binding get() = _binding!!
 
-import vn.npstudio.deviceinfo.R;
-import vn.npstudio.deviceinfo.utils.Item;
-import vn.npstudio.deviceinfo.utils.ItemListAdapter;
-
-/**
- * Created by namphan on 11/16/15.
- */
-public abstract class ListFragment extends BaseFragment {
-    private ListView lvItems;
-    private ItemListAdapter listAdapter;
-    private LinkedList<Item> lstItems;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_listitems, container, false);
-        lvItems = (ListView) rootView.findViewById(R.id.lst_items);
-
-        return rootView;
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentListitemsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setupItemList();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupItemList()
     }
 
-    protected abstract List<Item> getList();
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-    private void setupItemList() {
-        lstItems = new LinkedList<>();
-        lstItems.addAll(getList());
-        listAdapter = new ItemListAdapter(getActivity(), 0, lstItems);
-        lvItems.setAdapter(listAdapter);
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    protected abstract fun getList(): List<Item>
 
-            }
-        });
+    private fun setupItemList() {
+        binding.infoList.adapter = ItemListAdapter(requireContext(), 0, getList().toMutableList())
     }
 }

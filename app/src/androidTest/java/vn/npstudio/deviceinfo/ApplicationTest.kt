@@ -1,20 +1,16 @@
-package vn.npstudio.deviceinfo;
+package vn.npstudio.deviceinfo
 
-import static org.junit.Assert.assertEquals;
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.junit.runner.RunWith
 
-import android.content.Context;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-@RunWith(AndroidJUnit4.class)
-public class ApplicationTest {
+@RunWith(AndroidJUnit4::class)
+class ApplicationTest {
     @Test
-    public void useAppContext() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("vn.npstudio.deviceinfo", appContext.getPackageName());
+    fun useAppContext() {
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("vn.npstudio.deviceinfo", appContext.packageName)
     }
 }

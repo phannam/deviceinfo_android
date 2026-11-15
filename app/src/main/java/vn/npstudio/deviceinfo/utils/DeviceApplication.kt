@@ -1,14 +1,10 @@
-package vn.npstudio.deviceinfo.utils;
+package vn.npstudio.deviceinfo.utils
 
-import android.app.Application;
+import android.app.Application
 
-/**
- * Created by namphan on 11/16/15.
- */
-public class DeviceApplication extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        AppManager.create(this);
+class DeviceApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        AppManager.create(this)
     }
 }

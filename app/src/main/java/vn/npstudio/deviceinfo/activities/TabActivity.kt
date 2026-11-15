@@ -1,69 +1,53 @@
-package vn.npstudio.deviceinfo.activities;
+package vn.npstudio.deviceinfo.activities
 
-import androidx.annotation.IdRes;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.annotation.IdRes
+import androidx.fragment.app.FragmentTransaction
+import vn.npstudio.deviceinfo.fragments.BaseFragment
+import vn.npstudio.deviceinfo.views.SlidingFragmentTab
+import vn.npstudio.deviceinfo.views.SlidingTab
+import vn.npstudio.deviceinfo.views.SlidingTabRenderer
 
-import java.util.List;
+abstract class TabActivity : BaseActivity(), SlidingTabRenderer.SlidingTabListener {
+    protected lateinit var slidingTabs: List<SlidingTab>
+    protected lateinit var selectedTab: SlidingTab
+    protected lateinit var slidingTabRenderer: SlidingTabRenderer
+    protected lateinit var slidingFragmentTab: SlidingFragmentTab
+    protected var currentView: BaseFragment? = null
 
-import vn.npstudio.deviceinfo.fragments.BaseFragment;
-import vn.npstudio.deviceinfo.views.SlidingFragmentTab;
-import vn.npstudio.deviceinfo.views.SlidingTab;
-import vn.npstudio.deviceinfo.views.SlidingTabRenderer;
+    protected abstract fun initTabs()
 
-/**
- * Created by namphan on 9/7/15.
- */
+    protected abstract fun getFragment(slidingTab: SlidingTab): BaseFragment
 
-public abstract class TabActivity extends BaseActivity implements SlidingTabRenderer.SlidingTabListener {
-    protected List<SlidingTab> slidingTabs;
-    protected SlidingTab currentTab;
-    protected SlidingTabRenderer slidingTabRenderer;
-    protected SlidingFragmentTab mSlidingFragmentTab;
-    protected BaseFragment currentView;
-
-    protected abstract void initTabs();
-
-    protected abstract BaseFragment getFragment(SlidingTab slidingTab);
-
-    protected abstract
     @IdRes
-    int getFragmentContainer();
+    protected abstract fun getFragmentContainer(): Int
 
-    @Override
-    public void setCurrentTab(SlidingTab slidingTab) {
-        selectTab(currentTab, slidingTab);
+    override fun setCurrentTab(slidingTab: SlidingTab) {
+        selectTab(selectedTab, slidingTab)
     }
 
-    protected void selectTab(SlidingTab fromTab, SlidingTab toTab) {
-        mSlidingFragmentTab.selectTab(slidingTabs.indexOf(fromTab), slidingTabs.indexOf(toTab));
-        if (currentView != null) {
-            currentView.onPause();
-            currentView.onStop();
+    protected fun selectTab(fromTab: SlidingTab, toTab: SlidingTab) {
+        slidingFragmentTab.selectTab(slidingTabs.indexOf(fromTab), slidingTabs.indexOf(toTab))
+        currentView?.let {
+            it.onPause()
+            it.onStop()
         }
-        currentView = getFragment(toTab);
-        fromTab.setSelected(false);
-        toTab.setSelected(true);
-        currentTab = toTab;
-        showView(currentView);
+        val view = getFragment(toTab)
+        currentView = view
+        fromTab.isSelected = false
+        toTab.isSelected = true
+        selectedTab = toTab
+        showView(view)
     }
 
-    protected void showView(BaseFragment view) {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();
-        transaction.replace(getFragmentContainer(), view);
-        transaction.addToBackStack(view.getClass().getSimpleName());
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.commit();
-        mSlidingFragmentTab.redrawTabs();
+    protected fun showView(view: BaseFragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(getFragmentContainer(), view)
+            .addToBackStack(view.javaClass.simpleName)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+        slidingFragmentTab.redrawTabs()
     }
 
-
-    protected SlidingTab getTabWithTypeOrFirstTab(int type) {
-        for (SlidingTab tab : slidingTabs) {
-            if (tab.getType() == type) return tab;
-        }
-        return slidingTabs.get(0);
-    }
-
-
+    protected fun getTabWithTypeOrFirstTab(type: Int): SlidingTab =
+        slidingTabs.firstOrNull { it.type == type } ?: slidingTabs[0]
 }

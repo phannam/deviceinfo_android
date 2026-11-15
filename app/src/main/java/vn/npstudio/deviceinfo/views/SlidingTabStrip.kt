@@ -14,201 +14,185 @@
  * limitations under the License.
  */
 
-package vn.npstudio.deviceinfo.views;
+package vn.npstudio.deviceinfo.views
 
-import android.R;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.widget.LinearLayout
 
-class SlidingTabStrip extends LinearLayout {
+internal class SlidingTabStrip @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+) : LinearLayout(context, attrs) {
 
-    private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2;
-    private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;
-    private static final int SELECTED_INDICATOR_THICKNESS_DIPS = 5;
-    private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
+    private val bottomBorderThickness: Int
+    private val bottomBorderPaint = Paint()
 
-    private static final int DEFAULT_DIVIDER_THICKNESS_DIPS = 1;
-    private static final byte DEFAULT_DIVIDER_COLOR_ALPHA = 0x20;
-    private static final float DEFAULT_DIVIDER_HEIGHT = 0.5f;
+    private val selectedIndicatorThickness: Int
+    private val selectedIndicatorPaint = Paint()
 
-    private final int mBottomBorderThickness;
-    private final Paint mBottomBorderPaint;
+    private val defaultBottomBorderColor: Int
 
-    private final int mSelectedIndicatorThickness;
-    private final Paint mSelectedIndicatorPaint;
+    private val dividerPaint = Paint()
+    private val dividerHeight = DEFAULT_DIVIDER_HEIGHT
 
-    private final int mDefaultBottomBorderColor;
+    private var selectedPosition = 0
+    private var selectionOffset = 0f
 
-    private final Paint mDividerPaint;
-    private final float mDividerHeight;
+    private var customTabColorizer: SlidingTabLayout.TabColorizer? = null
+    private val defaultTabColorizer = SimpleTabColorizer()
 
-    private int mSelectedPosition;
-    private float mSelectionOffset;
+    init {
+        setWillNotDraw(false)
 
-    private SlidingTabLayout.TabColorizer mCustomTabColorizer;
-    private final SimpleTabColorizer mDefaultTabColorizer;
+        val density = resources.displayMetrics.density
 
-    SlidingTabStrip(Context context) {
-        this(context, null);
+        val outValue = TypedValue()
+        context.theme.resolveAttribute(android.R.attr.colorForeground, outValue, true)
+        val themeForegroundColor = outValue.data
+
+        defaultBottomBorderColor = setColorAlpha(themeForegroundColor, DEFAULT_BOTTOM_BORDER_COLOR_ALPHA)
+
+        defaultTabColorizer.setIndicatorColors(DEFAULT_SELECTED_INDICATOR_COLOR)
+        defaultTabColorizer.setDividerColors(setColorAlpha(themeForegroundColor, DEFAULT_DIVIDER_COLOR_ALPHA))
+
+        bottomBorderThickness = (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density).toInt()
+        bottomBorderPaint.color = defaultBottomBorderColor
+
+        selectedIndicatorThickness = (SELECTED_INDICATOR_THICKNESS_DIPS * density).toInt()
+
+        dividerPaint.strokeWidth = (DEFAULT_DIVIDER_THICKNESS_DIPS * density).toInt().toFloat()
     }
 
-    SlidingTabStrip(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setWillNotDraw(false);
-
-        final float density = getResources().getDisplayMetrics().density;
-
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorForeground, outValue, true);
-        final int themeForegroundColor =  outValue.data;
-
-        mDefaultBottomBorderColor = setColorAlpha(themeForegroundColor,
-                DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
-
-        mDefaultTabColorizer = new SimpleTabColorizer();
-        mDefaultTabColorizer.setIndicatorColors(DEFAULT_SELECTED_INDICATOR_COLOR);
-        mDefaultTabColorizer.setDividerColors(setColorAlpha(themeForegroundColor,
-                DEFAULT_DIVIDER_COLOR_ALPHA));
-
-        mBottomBorderThickness = (int) (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density);
-        mBottomBorderPaint = new Paint();
-        mBottomBorderPaint.setColor(mDefaultBottomBorderColor);
-
-        mSelectedIndicatorThickness = (int) (SELECTED_INDICATOR_THICKNESS_DIPS * density);
-        mSelectedIndicatorPaint = new Paint();
-
-        mDividerHeight = DEFAULT_DIVIDER_HEIGHT;
-        mDividerPaint = new Paint();
-        mDividerPaint.setStrokeWidth((int) (DEFAULT_DIVIDER_THICKNESS_DIPS * density));
+    fun setCustomTabColorizer(customTabColorizer: SlidingTabLayout.TabColorizer?) {
+        this.customTabColorizer = customTabColorizer
+        invalidate()
     }
 
-    void setCustomTabColorizer(SlidingTabLayout.TabColorizer customTabColorizer) {
-        mCustomTabColorizer = customTabColorizer;
-        invalidate();
-    }
-
-    void setSelectedIndicatorColors(int... colors) {
+    fun setSelectedIndicatorColors(vararg colors: Int) {
         // Make sure that the custom colorizer is removed
-        mCustomTabColorizer = null;
-        mDefaultTabColorizer.setIndicatorColors(colors);
-        invalidate();
+        customTabColorizer = null
+        defaultTabColorizer.setIndicatorColors(*colors)
+        invalidate()
     }
 
-    void setDividerColors(int... colors) {
+    fun setDividerColors(vararg colors: Int) {
         // Make sure that the custom colorizer is removed
-        mCustomTabColorizer = null;
-        mDefaultTabColorizer.setDividerColors(colors);
-        invalidate();
+        customTabColorizer = null
+        defaultTabColorizer.setDividerColors(*colors)
+        invalidate()
     }
 
-    void onViewPagerPageChanged(int position, float positionOffset) {
-        mSelectedPosition = position;
-        mSelectionOffset = positionOffset;
-        invalidate();
+    fun onViewPagerPageChanged(position: Int, positionOffset: Float) {
+        selectedPosition = position
+        selectionOffset = positionOffset
+        invalidate()
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        final int height = getHeight();
-        final int childCount = getChildCount();
-        final int dividerHeightPx = (int) (Math.min(Math.max(0f, mDividerHeight), 1f) * height);
-        final SlidingTabLayout.TabColorizer tabColorizer = mCustomTabColorizer != null
-                ? mCustomTabColorizer
-                : mDefaultTabColorizer;
+    fun setTab(position: Int, positionOffset: Float) {
+        selectedPosition = position
+        selectionOffset = positionOffset
+        invalidate()
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        val height = height
+        val childCount = childCount
+        val dividerHeightPx = (dividerHeight.coerceIn(0f, 1f) * height).toInt()
+        val tabColorizer = customTabColorizer ?: defaultTabColorizer
 
         // Thick colored underline below the current selection
         if (childCount > 0) {
-            View selectedTitle = getChildAt(mSelectedPosition);
-            int left = selectedTitle.getLeft();
-            int right = selectedTitle.getRight();
-            int color = tabColorizer.getIndicatorColor(mSelectedPosition);
+            val selectedTitle = getChildAt(selectedPosition)
+            var left = selectedTitle.left
+            var right = selectedTitle.right
+            var color = tabColorizer.getIndicatorColor(selectedPosition)
 
-            if (mSelectionOffset > 0f && mSelectedPosition < (getChildCount() - 1)) {
-                int nextColor = tabColorizer.getIndicatorColor(mSelectedPosition + 1);
+            if (selectionOffset > 0f && selectedPosition < childCount - 1) {
+                val nextColor = tabColorizer.getIndicatorColor(selectedPosition + 1)
                 if (color != nextColor) {
-                    color = blendColors(nextColor, color, mSelectionOffset);
+                    color = blendColors(nextColor, color, selectionOffset)
                 }
 
                 // Draw the selection partway between the tabs
-                View nextTitle = getChildAt(mSelectedPosition + 1);
-                left = (int) (mSelectionOffset * nextTitle.getLeft() +
-                        (1.0f - mSelectionOffset) * left);
-                right = (int) (mSelectionOffset * nextTitle.getRight() +
-                        (1.0f - mSelectionOffset) * right);
+                val nextTitle = getChildAt(selectedPosition + 1)
+                left = (selectionOffset * nextTitle.left + (1.0f - selectionOffset) * left).toInt()
+                right = (selectionOffset * nextTitle.right + (1.0f - selectionOffset) * right).toInt()
             }
 
-            mSelectedIndicatorPaint.setColor(color);
+            selectedIndicatorPaint.color = color
 
-            canvas.drawRect(left, height - mSelectedIndicatorThickness, right,
-                    height, mSelectedIndicatorPaint);
+            canvas.drawRect(
+                left.toFloat(), (height - selectedIndicatorThickness).toFloat(),
+                right.toFloat(), height.toFloat(), selectedIndicatorPaint,
+            )
         }
 
         // Thin underline along the entire bottom edge
-        canvas.drawRect(0, height - mBottomBorderThickness, getWidth(), height, mBottomBorderPaint);
+        canvas.drawRect(
+            0f, (height - bottomBorderThickness).toFloat(),
+            width.toFloat(), height.toFloat(), bottomBorderPaint,
+        )
 
         // Vertical separators between the titles
-        int separatorTop = (height - dividerHeightPx) / 2;
-        for (int i = 0; i < childCount - 1; i++) {
-            View child = getChildAt(i);
-            mDividerPaint.setColor(tabColorizer.getDividerColor(i));
-            canvas.drawLine(child.getRight(), separatorTop, child.getRight(),
-                    separatorTop + dividerHeightPx, mDividerPaint);
+        val separatorTop = (height - dividerHeightPx) / 2
+        for (i in 0 until childCount - 1) {
+            val child = getChildAt(i)
+            dividerPaint.color = tabColorizer.getDividerColor(i)
+            canvas.drawLine(
+                child.right.toFloat(), separatorTop.toFloat(),
+                child.right.toFloat(), (separatorTop + dividerHeightPx).toFloat(), dividerPaint,
+            )
         }
     }
 
-    /**
-     * Set the alpha value of the {@code color} to be the given {@code alpha} value.
-     */
-    private static int setColorAlpha(int color, byte alpha) {
-        return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color));
-    }
+    private class SimpleTabColorizer : SlidingTabLayout.TabColorizer {
+        private var indicatorColors = IntArray(0)
+        private var dividerColors = IntArray(0)
 
-    /**
-     * Blend {@code color1} and {@code color2} using the given ratio.
-     *
-     * @param ratio of which to blend. 1.0 will return {@code color1}, 0.5 will give an even blend,
-     *              0.0 will return {@code color2}.
-     */
-    private static int blendColors(int color1, int color2, float ratio) {
-        final float inverseRation = 1f - ratio;
-        float r = (Color.red(color1) * ratio) + (Color.red(color2) * inverseRation);
-        float g = (Color.green(color1) * ratio) + (Color.green(color2) * inverseRation);
-        float b = (Color.blue(color1) * ratio) + (Color.blue(color2) * inverseRation);
-        return Color.rgb((int) r, (int) g, (int) b);
-    }
+        override fun getIndicatorColor(position: Int): Int = indicatorColors[position % indicatorColors.size]
 
-    public void setTab(int position, float positionOffset) {
-        mSelectedPosition = position;
-        mSelectionOffset = positionOffset;
-        invalidate();
-    }
+        override fun getDividerColor(position: Int): Int = dividerColors[position % dividerColors.size]
 
-    private static class SimpleTabColorizer implements SlidingTabLayout.TabColorizer {
-        private int[] mIndicatorColors;
-        private int[] mDividerColors;
-
-        @Override
-        public final int getIndicatorColor(int position) {
-            return mIndicatorColors[position % mIndicatorColors.length];
+        fun setIndicatorColors(vararg colors: Int) {
+            indicatorColors = colors
         }
 
-        @Override
-        public final int getDividerColor(int position) {
-            return mDividerColors[position % mDividerColors.length];
+        fun setDividerColors(vararg colors: Int) {
+            dividerColors = colors
         }
+    }
 
-        void setIndicatorColors(int... colors) {
-            mIndicatorColors = colors;
-        }
+    private companion object {
+        const val DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 2
+        const val DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26
+        const val SELECTED_INDICATOR_THICKNESS_DIPS = 5
+        const val DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5.toInt()
 
-        void setDividerColors(int... colors) {
-            mDividerColors = colors;
+        const val DEFAULT_DIVIDER_THICKNESS_DIPS = 1
+        const val DEFAULT_DIVIDER_COLOR_ALPHA = 0x20
+        const val DEFAULT_DIVIDER_HEIGHT = 0.5f
+
+        /** Set the alpha value of the [color] to be the given [alpha] value. */
+        fun setColorAlpha(color: Int, alpha: Int): Int =
+            Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color))
+
+        /**
+         * Blend [color1] and [color2] using the given ratio.
+         *
+         * @param ratio of which to blend. 1.0 will return [color1], 0.5 will give an even blend,
+         *              0.0 will return [color2].
+         */
+        fun blendColors(color1: Int, color2: Int, ratio: Float): Int {
+            val inverseRatio = 1f - ratio
+            val r = Color.red(color1) * ratio + Color.red(color2) * inverseRatio
+            val g = Color.green(color1) * ratio + Color.green(color2) * inverseRatio
+            val b = Color.blue(color1) * ratio + Color.blue(color2) * inverseRatio
+            return Color.rgb(r.toInt(), g.toInt(), b.toInt())
         }
     }
 }

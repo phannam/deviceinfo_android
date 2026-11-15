@@ -1,61 +1,29 @@
-package vn.npstudio.deviceinfo.views;
+package vn.npstudio.deviceinfo.views
 
-import java.util.List;
+class SlidingTabRenderer(
+    private var tabs: List<SlidingTab>,
+    private val listener: SlidingTabListener?,
+) : SlidingFragmentTab.TabItemRenderer {
 
-/**
- * Created by namphan on 5/12/15.
- */
-public class SlidingTabRenderer implements SlidingFragmentTab.TabItemRenderer {
-    private List<SlidingTab> tabs;
-    private SlidingTabListener listener = null;
-
-    public SlidingTabRenderer(List<SlidingTab> tabs, SlidingTabListener listener) {
-        this.tabs = tabs;
-        this.listener = listener;
+    fun interface SlidingTabListener {
+        fun setCurrentTab(slidingTab: SlidingTab)
     }
 
-    public void setTabList(List<SlidingTab> tabs) {
-        this.tabs = tabs;
+    fun setTabList(tabs: List<SlidingTab>) {
+        this.tabs = tabs
     }
 
-    public int getTabIndexByType(int tabType) {
-        for (int i = 0; i < tabs.size(); i++) {
-            SlidingTab slidingTab = tabs.get(i);
-            if (slidingTab.getType() == tabType) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    fun getTabIndexByType(tabType: Int): Int = tabs.indexOfFirst { it.type == tabType }
 
-    public interface SlidingTabListener {
-        void setCurrentTab(SlidingTab slidingTab);
-    }
+    override fun getPageIcon(position: Int): Int = tabs[position].iconDrawable
 
-    @Override
-    public int getPageIcon(int position) {
-        return this.tabs.get(position).getIconDrawable();
-    }
+    override fun getPageTitleColor(position: Int): Int = tabs[position].textColor
 
-    @Override
-    public int getPageTitleColor(int position) {
-        return this.tabs.get(position).getTextColor();
-    }
+    override fun getPageTitle(position: Int): String = tabs[position].name
 
-    @Override
-    public String getPageTitle(int position) {
-        return this.tabs.get(position).getName();
-    }
+    override fun getCount(): Int = tabs.size
 
-    @Override
-    public int getCount() {
-        return this.tabs.size();
-    }
-
-    @Override
-    public void setCurrentItem(int position) {
-        if (listener != null) {
-            listener.setCurrentTab(tabs.get(position));
-        }
+    override fun setCurrentItem(position: Int) {
+        listener?.setCurrentTab(tabs[position])
     }
 }

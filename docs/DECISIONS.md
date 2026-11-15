@@ -2,14 +2,15 @@
 
 ## Current Decisions (what exists today)
 
-### ADR-CURRENT-001: UI Uses XML Layouts With findViewById
+### ADR-CURRENT-001: UI Uses XML Layouts With ViewBinding
 
 - Status: Current
 - Context: The app has four layouts (`activity_main`, `fragment_listitems`,
-  `layout_simpleitem`, `layout_tabview`) and one menu (`menu_main`).
-- Decision observed: UI is XML-based. Views are looked up with `findViewById`.
-  ViewBinding is not enabled. Lists use `ListView` with an `ArrayAdapter` and a
-  manual view holder.
+  `item_info`, `view_tab`) and one menu (`menu_main`).
+- Decision observed: UI is XML-based and uses ViewBinding (`viewBinding = true`).
+  Lists use `ListView` with an `ArrayAdapter` that caches the row binding in
+  the view tag. Only the unused vendored `SlidingTabLayout` still calls
+  `findViewById` with caller-provided ids.
 - Notes: Jetpack Compose is not part of the app.
 
 ### ADR-CURRENT-002: Architecture Is Activity/Fragment Plus A Static Singleton
@@ -57,14 +58,15 @@
   `R.id.fragment_container` and adds every tab change to the back stack. Tabs
   are rendered by the custom `SlidingFragmentTab` view.
 
-### ADR-CURRENT-008: Build Is Modernized; Source Is Not
+### ADR-CURRENT-008: Build And Language Are Modernized; Architecture Is Not
 
 - Status: Current
 - Decision observed: AGP 9.4.1, Gradle 9.9.1 wrapper, Kotlin DSL build
   scripts, `gradle/libs.versions.toml`, AndroidX (`appcompat`, `fragment`,
   `viewpager`, `annotation`), Java 17, minSdk 26, compileSdk/targetSdk 37
   (`compileSdk` uses the `release(...)` DSL with `minorApiLevel`), namespace
-  and applicationId `vn.npstudio.deviceinfo`. All source is still Java.
+  and applicationId `vn.npstudio.deviceinfo`. All source is Kotlin, converted 1:1 from
+  Java with behavior preserved; the architecture is unchanged.
 - Notes: Android Studio supports AGP up to 9.4.1 at the time of writing; do
   not raise AGP beyond what the owner's Android Studio supports.
 
@@ -80,19 +82,19 @@
   without user value.
 - Rejected alternatives: Jetpack Compose, mixed Compose/XML screens, Kotlin
   synthetics, and new `findViewById` usage for app-owned layouts.
-- Migration path: Enable `viewBinding` in `app/build.gradle.kts` in the first
-  task that converts a screen. Convert screens one at a time.
+- Migration path: ViewBinding is enabled and used by every screen, adapter, and
+  app-owned custom view. Remaining work is `ListView` to `RecyclerView`.
 
-### ADR-TARGET-002: Migrate To Kotlin Gradually
+### ADR-TARGET-002: Kotlin Only
 
 - Status: Accepted
-- Decision: New and refactored app code is Kotlin, using the Kotlin support
+- Decision: All app and test code is Kotlin, using the Kotlin support
   built into AGP 9.
 - Why: Kotlin is required for the target stack (coroutines, `StateFlow`, Hilt
   idioms) and is the Android default.
-- Rejected alternatives: Staying on Java; converting every file in one change.
-- Migration path: Convert a Java file when its task meaningfully refactors it.
-  The vendored AOSP tab views may stay Java until they are replaced.
+- Rejected alternatives: Staying on Java; mixed Java/Kotlin source.
+- Migration path: Done. All Java files, including the vendored AOSP tab views,
+  were converted to Kotlin.
 
 ### ADR-TARGET-003: Move To Strict MVVM
 
@@ -179,7 +181,7 @@
 - No RxJava
 - No AsyncTask
 - No Volley
-- No new Java app code
+- No Java code
 
 ## Gaps & Recommendations
 

@@ -1,151 +1,112 @@
-package vn.npstudio.deviceinfo.activities;
+package vn.npstudio.deviceinfo.activities
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toUri
+import vn.npstudio.deviceinfo.R
+import vn.npstudio.deviceinfo.databinding.ActivityMainBinding
+import vn.npstudio.deviceinfo.fragments.BaseFragment
+import vn.npstudio.deviceinfo.fragments.DeviceFragment
+import vn.npstudio.deviceinfo.fragments.DisplayFragment
+import vn.npstudio.deviceinfo.utils.AppManager
+import vn.npstudio.deviceinfo.utils.Constant
+import vn.npstudio.deviceinfo.views.SlidingTab
+import vn.npstudio.deviceinfo.views.SlidingTabRenderer
 
-import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
+class MainActivity : TabActivity() {
+    private lateinit var binding: ActivityMainBinding
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import vn.npstudio.deviceinfo.R;
-import vn.npstudio.deviceinfo.fragments.BaseFragment;
-import vn.npstudio.deviceinfo.fragments.DeviceFragment;
-import vn.npstudio.deviceinfo.fragments.DisplayFragment;
-import vn.npstudio.deviceinfo.utils.AppManager;
-import vn.npstudio.deviceinfo.utils.Constant;
-import vn.npstudio.deviceinfo.views.SlidingFragmentTab;
-import vn.npstudio.deviceinfo.views.SlidingTab;
-import vn.npstudio.deviceinfo.views.SlidingTabRenderer;
-
-/**
- * Created by namphan on 11/16/15.
- */
-public class MainActivity extends TabActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("Info");
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_bg_color)));
-
-        // Give the SlidingTabLayout the ViewPager, this must be done AFTER the ViewPager has had
-        // it's PagerAdapter set.
-        // Fetch Alerts to notify
-        initTabs();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_share) {
-            checkExistingEmailAccountAndSendEmail();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        supportActionBar?.apply {
+            title = "Info"
+            setBackgroundDrawable(
+                ContextCompat.getColor(this@MainActivity, R.color.actionbar_bg_color).toDrawable()
+            )
         }
-
-        return true;
+        initTabs()
     }
 
-    private void checkExistingEmailAccountAndSendEmail() {
-        Intent filterEmailIntent = new Intent(Intent.ACTION_SENDTO);
-        String emailData = "mailto:" + "namphanbk@gmail.com" +
-                "?subject=" + Uri.encode(Build.DISPLAY + "information") +
-                "&body=" + Uri.encode("");
-        filterEmailIntent.setData(Uri.parse(emailData));
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
-        PackageManager pm = getPackageManager();
-        List<ResolveInfo> infoList = pm.queryIntentActivities(filterEmailIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (infoList.size() > 0) {
-            if (infoList.size() == 1) {
-                ActivityInfo targetActivityInfo = infoList.get(0).activityInfo;
-                sendEmail(targetActivityInfo);
-            } else {
-                sendEmail(null);
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_share) {
+            checkExistingEmailAccountAndSendEmail()
+        }
+        return true
+    }
+
+    private fun checkExistingEmailAccountAndSendEmail() {
+        val emailData = "mailto:namphanbk@gmail.com" +
+            "?subject=" + Uri.encode(Build.DISPLAY + "information") +
+            "&body=" + Uri.encode("")
+        val filterEmailIntent = Intent(Intent.ACTION_SENDTO).setData(emailData.toUri())
+
+        val infoList = packageManager.queryIntentActivities(filterEmailIntent, Intent.FLAG_ACTIVITY_NEW_TASK)
+        when {
+            infoList.isEmpty() -> Toast.makeText(this, "No email client!", Toast.LENGTH_LONG).show()
+            infoList.size == 1 -> sendEmail(infoList[0].activityInfo)
+            else -> sendEmail(null)
+        }
+    }
+
+    private fun sendEmail(targetActivityInfo: ActivityInfo?) {
+        val emailIntent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_EMAIL, "")
+            putExtra(Intent.EXTRA_SUBJECT, Build.MODEL + " information")
+            putExtra(Intent.EXTRA_TEXT, AppManager.getInstance().getAllInfos())
+            targetActivityInfo?.let {
+                component = ComponentName(it.packageName, it.name)
             }
-        } else {
-            Toast.makeText(this, "No email client!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void sendEmail(ActivityInfo targetActivityInfo) {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, Build.MODEL + " information");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, AppManager.getInstance().getAllInfos());
-        if (targetActivityInfo != null) {
-            emailIntent.setComponent(new ComponentName(targetActivityInfo.packageName, targetActivityInfo.name));
         }
         try {
-            startActivity(emailIntent);
-        } catch (Exception ex) {
-            Toast.makeText(this, "Application not found!", Toast.LENGTH_SHORT).show();
+            startActivity(emailIntent)
+        } catch (ex: Exception) {
+            Toast.makeText(this, "Application not found!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    @Override
-    protected void initTabs() {
-        SlidingTab slidingTab;
-        slidingTabs = new LinkedList<>();
-        slidingTab = new SlidingTab(Constant.Tab.TAB_DEVICEINFO, R.mipmap.ic_info_normal, "Device",
-                getResources().getColor(R.color.tab_normal_color));
-        slidingTab.setSelectedResource(R.mipmap.ic_info_selected,
-                getResources().getColor(R.color.tab_selected_color));
-        slidingTabs.add(slidingTab);
+    override fun initTabs() {
+        val normalColor = ContextCompat.getColor(this, R.color.tab_normal_color)
+        val selectedColor = ContextCompat.getColor(this, R.color.tab_selected_color)
+        slidingTabs = listOf(
+            SlidingTab(Constant.Tab.TAB_DEVICEINFO, R.mipmap.ic_info_normal, "Device", normalColor).apply {
+                setSelectedResource(R.mipmap.ic_info_selected, selectedColor)
+            },
+            SlidingTab(Constant.Tab.TAB_DISPLAY, R.mipmap.ic_display_normal, "Display", normalColor).apply {
+                setSelectedResource(R.mipmap.ic_display_selected, selectedColor)
+            },
+        )
 
-        slidingTab = new SlidingTab(Constant.Tab.TAB_DISPLAY, R.mipmap.ic_display_normal, "Display",
-                getResources().getColor(R.color.tab_normal_color));
-        slidingTab.setSelectedResource(R.mipmap.ic_display_selected,
-                getResources().getColor(R.color.tab_selected_color));
-        slidingTabs.add(slidingTab);
+        slidingTabRenderer = SlidingTabRenderer(slidingTabs, this)
 
-        slidingTabRenderer = new SlidingTabRenderer(slidingTabs, this);
-
-        int tabType = Constant.Tab.TAB_DEVICEINFO;
-        currentTab = getTabWithTypeOrFirstTab(tabType);
-        mSlidingFragmentTab = (SlidingFragmentTab) findViewById(R.id.sliding_tabs);
-        mSlidingFragmentTab.setCustomTabView(R.layout.layout_tabview, R.id.tv_tabtitle, R.id.img_tabicon);
-        mSlidingFragmentTab.setDividerColors(R.color.tab_device_color);
-        mSlidingFragmentTab.selectTab(slidingTabs.indexOf(currentTab), slidingTabs.indexOf(currentTab));
-        mSlidingFragmentTab.setTabItemRenderer(slidingTabRenderer);
-        selectTab(currentTab, currentTab);
+        selectedTab = getTabWithTypeOrFirstTab(Constant.Tab.TAB_DEVICEINFO)
+        slidingFragmentTab = binding.slidingTabs
+        slidingFragmentTab.setDividerColors(R.color.tab_device_color)
+        slidingFragmentTab.selectTab(slidingTabs.indexOf(selectedTab), slidingTabs.indexOf(selectedTab))
+        slidingFragmentTab.tabItemRenderer = slidingTabRenderer
+        selectTab(selectedTab, selectedTab)
     }
 
-    @Override
-    protected BaseFragment getFragment(SlidingTab slidingTab) {
-        BaseFragment fragment;
-        switch (slidingTab.getType()) {
-            case Constant.Tab.TAB_DEVICEINFO:
-                fragment = new DeviceFragment();
-                break;
-            default:
-                fragment = new DisplayFragment();
-                break;
-        }
-        return fragment;
+    override fun getFragment(slidingTab: SlidingTab): BaseFragment = when (slidingTab.type) {
+        Constant.Tab.TAB_DEVICEINFO -> DeviceFragment()
+        else -> DisplayFragment()
     }
 
-    @Override
-    protected int getFragmentContainer() {
-        return R.id.fragment_container;
-    }
+    override fun getFragmentContainer(): Int = R.id.fragment_container
 }

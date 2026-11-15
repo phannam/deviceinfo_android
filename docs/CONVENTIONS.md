@@ -3,7 +3,7 @@
 ## Current Conventions (inferred from codebase)
 
 - Language and packages
-  - All app code is Java under `app/src/main/java/vn/npstudio/deviceinfo/`.
+  - All app code is Kotlin under `app/src/main/java/vn/npstudio/deviceinfo/`.
   - Packages are split by type, not feature: `activities`, `fragments`,
     `utils`, and `views`.
   - Most classes keep the original `Created by namphan on ...` header comment.
@@ -15,31 +15,30 @@
   - `ListFragment` shadows the name of the framework/AndroidX `ListFragment`
     class.
   - `AppManager` is a singleton named as a manager but acts as the data source.
-  - The view holder in `ItemListAdapter` is named `AlertViewHolder`, which does
-    not match its purpose.
-  - Field naming is mixed: `mInstance`/`mContext`/`mSlidingFragmentTab` use the
-    `m` prefix; `slidingTabs`, `currentTab`, `lvItems` do not. `SlidingTab` uses
-    snake_case fields such as `ic_drawable`.
-  - Constants are grouped as interface fields (`Constant.Tab.TAB_DEVICEINFO`).
+  - Field naming is camelCase without `m` prefixes.
+  - Constants are grouped in nested objects (`Constant.Tab.TAB_DEVICEINFO`).
 
 - XML layout file naming
-  - `activity_main.xml`, `fragment_listitems.xml`, `layout_simpleitem.xml`,
-    `layout_tabview.xml`.
+  - `activity_main.xml`, `fragment_listitems.xml`, `item_info.xml`,
+    `view_tab.xml`.
 
 - Resource ID naming
-  - IDs are snake_case with short type prefixes: `lst_items`, `tv_name`,
-    `tv_value`, `tv_tabtitle`, `img_tabicon`, `sliding_tabs`,
-    `fragment_container`, and menu `action_share`.
+  - IDs are semantic snake_case: `info_list`, `name_text`, `value_text`,
+    `tab_title_text`, `tab_icon_image`, `sliding_tabs`, `fragment_container`,
+    and menu `action_share`.
 
 - View access
-  - `findViewById` with explicit casts everywhere. ViewBinding is not enabled.
+  - ViewBinding everywhere (`ActivityMainBinding`, `FragmentListitemsBinding`
+    with `_binding` cleared in `onDestroyView`, `ItemInfoBinding`,
+    `ViewTabBinding`). Only the unused vendored `SlidingTabLayout` calls
+    `findViewById`.
 
 - Strings, colors, and dimens
-  - Hardcoded user-visible strings exist in Java (`"Info"`, `"Device"`,
+  - Hardcoded user-visible strings exist in Kotlin (`"Info"`, `"Device"`,
     `"Display"`, `"No email client!"`, `"Application not found!"`, every
     device/display row label in `AppManager`, the share text headings) and XML
-    (`menu_main` title `"Share"`, sample `android:text` values in row and tab
-    layouts).
+    (`menu_main` title `"Share"`, `tools:text` samples in row and tab layouts are
+    design-time only).
   - `strings.xml` contains unused template strings (`large_text`,
     `action_settings`).
   - Colors mix `colors.xml` entries, framework colors
@@ -51,14 +50,13 @@
     `AppTheme.AppBarOverlay`, `AppTheme.PopupOverlay`).
 
 - Deprecated APIs in use
-  - `Fragment.onActivityCreated`, `Resources.getColor(int)`,
-    `Display.getMetrics`, `DisplayMetrics.scaledDensity`,
-    `ViewPager.setOnPageChangeListener`, and `singleLine` in XML.
+  - `Display.getMetrics` and `DisplayMetrics.scaledDensity` (suppressed with
+    `@Suppress("DEPRECATION")` in `AppManager`), and `singleLine` in XML.
 
 ## Target Conventions (all new and refactored code must follow)
 
 - Language
-  - New and refactored app code is Kotlin. Do not add Java files.
+  - All app and test code is Kotlin. Do not add Java files.
   - Use idiomatic Kotlin: `val` by default, data classes for models, no
     `m`-prefixed fields, no `!!` unless the invariant is documented.
 
@@ -81,8 +79,7 @@
 - XML layout naming: `activity_*`, `fragment_*`, `item_*`, `view_*`
   - Use `item_*` for RecyclerView rows and `view_*` for reusable includes,
     custom view content, and dialog content.
-  - Do not add new `layout_*` names. Rename `layout_simpleitem` to
-    `item_info.xml` and `layout_tabview` to `view_tab.xml` when touched.
+  - Do not add new `layout_*` names.
 
 - Resource ID naming: semantic snake_case
   - Examples: `info_list`, `name_text`, `value_text`, `tab_title_text`,
@@ -179,22 +176,10 @@
 
 ## Gaps & Recommendations
 
-❌ Current: All app code is Java.
-✅ Target: Kotlin for new and refactored code.
-📋 How to fix: Convert files as their features are refactored, starting with
-`Item`, `AppManager`, and the fragments in the MVVM migration.
-⚠️ Priority: High
-
-❌ Current: `findViewById` everywhere; ViewBinding is not enabled.
-✅ Target: ViewBinding only.
-📋 How to fix: Enable `viewBinding` in `app/build.gradle.kts` in the first
-screen refactor, then convert each screen and adapter.
-⚠️ Priority: High
-
-❌ Current: Hardcoded user-visible strings in Java and XML.
+❌ Current: Hardcoded user-visible strings in Kotlin and XML.
 ✅ Target: All user-visible text in `strings.xml`.
 📋 How to fix: Move row labels, tab titles, toolbar title, toasts, menu title,
-and share headings to string resources. Use `tools:text` for samples.
+and share headings to string resources.
 ⚠️ Priority: Medium
 
 ❌ Current: Framework and inline hex colors in layouts and code.
@@ -203,16 +188,9 @@ and share headings to string resources. Use `tools:text` for samples.
 divider) and reference them in layouts and the tab strip.
 ⚠️ Priority: Medium
 
-❌ Current: `layout_*` file names and Hungarian-prefixed IDs.
-✅ Target: `item_*`/`view_*` names and semantic snake_case IDs.
-📋 How to fix: Rename when the layout is converted to ViewBinding.
-⚠️ Priority: Low
-
-❌ Current: Deprecated APIs (`onActivityCreated`, `getColor(int)`,
-`getMetrics`, `scaledDensity`).
+❌ Current: Deprecated APIs (`getMetrics`, `scaledDensity`).
 ✅ Target: Current AndroidX/platform APIs.
-📋 How to fix: Use `onViewCreated`, `ContextCompat.getColor`,
-`WindowMetricsCalculator`/`WindowManager.currentWindowMetrics`, and
+📋 How to fix: Use `WindowMetricsCalculator`/`WindowManager.currentWindowMetrics`, and
 `TypedValue.applyDimension` or font scale for scaled density when the related
 code is refactored.
 ⚠️ Priority: Medium

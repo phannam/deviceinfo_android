@@ -1,11 +1,8 @@
-package vn.npstudio.deviceinfo.utils;
+package vn.npstudio.deviceinfo.utils
 
-/**
- * Created by namphan on 11/16/15.
- */
-public class Constant {
-    public interface Tab {
-        int TAB_DEVICEINFO = 0;
-        int TAB_DISPLAY = 1;
+object Constant {
+    object Tab {
+        const val TAB_DEVICEINFO = 0
+        const val TAB_DISPLAY = 1
     }
 }

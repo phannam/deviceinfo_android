@@ -3,9 +3,9 @@
 ## Current Test Coverage
 
 - What is tested today
-  - `app/src/test/java/vn/npstudio/deviceinfo/ExampleUnitTest.java` asserts
+  - `app/src/test/java/vn/npstudio/deviceinfo/ExampleUnitTest.kt` asserts
     `2 + 2 == 4`.
-  - `app/src/androidTest/java/vn/npstudio/deviceinfo/ApplicationTest.java`
+  - `app/src/androidTest/java/vn/npstudio/deviceinfo/ApplicationTest.kt`
     asserts that the target context package name is `vn.npstudio.deviceinfo`.
   - No app behavior is covered.
 
@@ -37,8 +37,8 @@
   - Instrumented tests: `app/src/androidTest/java/vn/npstudio/deviceinfo/...`
     only for platform behavior (display metrics fallback, tab restoration
     across recreation).
-  - New tests are Kotlin. Replace the Java placeholders when the first real
-    tests are added.
+  - Tests are Kotlin. Replace the placeholders when the first real tests are
+    added.
 
 - Naming
   - Unit tests: `ClassNameTest`. Instrumented tests: `ClassNameAndroidTest`.

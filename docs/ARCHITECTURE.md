@@ -35,10 +35,10 @@ Plain Activity/Fragment code backed by a static singleton:
 DeviceApplication.onCreate()
   -> AppManager.create(context)
      -> reads Build.* and WindowManager.getDefaultDisplay().getMetrics(...)
-     -> stores ArrayList<Item> deviceInfoList / displayInfoList
+     -> stores List<Item> deviceInfoList / displayInfoList
 
 DeviceFragment / DisplayFragment (ListFragment)
-  -> AppManager.getInstance().getXxxInfoList()
+  -> AppManager.getInstance().xxxInfoList
   -> ItemListAdapter (ArrayAdapter<Item>) -> ListView
 
 MainActivity share menu
@@ -55,7 +55,7 @@ MainActivity share menu
 - Data: `AppManager` reads platform values, formats them as strings, builds
   labels, and formats the share text. It holds the application `Context` in a
   static field.
-- Model: `Item` (mutable-style Java POJO with `name` and `value`).
+- Model: `Item` (Kotlin data class with `name` and `value`).
 - There is no ViewModel, repository, data source, domain, or DI layer.
 
 **How data currently flows**
@@ -68,9 +68,10 @@ MainActivity share menu
 
 **How state is currently managed**
 
-- Selected tab: `TabActivity.currentTab` and `SlidingTab.selected` fields.
+- Selected tab: `TabActivity.selectedTab` and `SlidingTab.isSelected`.
   It is not saved; recreation resets to the Device tab.
-- List data: copied from `AppManager` into a `LinkedList` in each fragment.
+- List data: read from `AppManager` in `ListFragment.onViewCreated` and passed
+  to a new `ItemListAdapter`.
 - No `ViewModel`, `StateFlow`, `LiveData`, or saved state is used.
 
 **How navigation currently works**
