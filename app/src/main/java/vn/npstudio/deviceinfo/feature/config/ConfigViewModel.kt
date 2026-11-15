@@ -7,9 +7,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import vn.npstudio.deviceinfo.domain.model.AppColor
 import vn.npstudio.deviceinfo.domain.model.DarkMode
 import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 import vn.npstudio.deviceinfo.domain.repository.AppConfigRepository
+import vn.npstudio.deviceinfo.ui.theme.ColorRole
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,4 +31,10 @@ class ConfigViewModel @Inject constructor(
     fun onDarkModeSelected(mode: DarkMode) = repository.setDarkMode(mode)
 
     fun onTemperatureUnitSelected(unit: TemperatureUnit) = repository.setTemperatureUnit(unit)
+
+    /** ThemeApplier recreates open activities when the colors change. */
+    fun onColorSelected(role: ColorRole, color: AppColor) = when (role) {
+        ColorRole.PRIMARY -> repository.setPrimaryColor(color)
+        ColorRole.ACCENT -> repository.setAccentColor(color)
+    }
 }

@@ -94,7 +94,9 @@ MainActivity share menu
   interfaces with `Impl` classes bound in `di/`.
 - Theme: `ThemeApplier` (installed in `DeviceInfoApplication`) sets the
   AppCompat night mode from `AppConfigRepository` and applies the primary
-  and accent theme overlays to each Activity before it inflates views.
+  and accent theme overlays to each Activity before it inflates views. It
+  tracks the `ThemeColors` applied per Activity and recreates stale ones
+  (immediately if started, otherwise on their next start).
   Colors and tabs are stored in SharedPreferences (`app_config`).
 - List UI: `InfoRowAdapter` draws rows as one rounded card group; the row
   background and divider come from `RowPosition.of(index, count)`. Lists and

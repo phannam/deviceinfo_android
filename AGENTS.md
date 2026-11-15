@@ -46,7 +46,8 @@ Current state (spec 001 `docs/requirements/001-device-diagnostics.md` done):
   neutral gray surfaces, toolbar with app icon, rows drawn as rounded card
   groups (`RowPosition`). Phase 3 done: `ConfigActivity` (Settings page:
   dark mode, temperature unit, About, policy links); Battery and the report
-  follow the temperature unit.
+  follow the temperature unit. Phase 4 done: `ColorPickerDialog` for
+  primary/accent colors; `ThemeApplier` recreates open activities.
 
 Modernization goal:
 
@@ -240,9 +241,12 @@ Be extra careful around these areas:
 - Hilt + KSP with AGP built-in Kotlin: do not apply
   `org.jetbrains.kotlin.android`, `kotlin-kapt`, or an explicit stdlib.
 - Theme: `ThemeApplier` applies `ThemeOverlay.DeviceInfo.Primary.*` /
-  `Accent.*` before views inflate and sets the night mode at startup.
+  `Accent.*` before views inflate, sets the night mode at startup, and
+  recreates activities whose applied colors are stale. Do not add recreate
+  code to activities.
   `AppConfigRepository` reads SharedPreferences synchronously for this. Keep
-  every `AppColor` mapped in `ThemeOverlays`, `values/palette.xml`, and
+  every `AppColor` mapped in `ThemeOverlays` (overlays, swatches, `color_*`
+  names), `values/palette.xml`, and
   `values-night/palette.xml`. Stored config values are enum names; renaming
   an enum entry resets users to the default.
 - `applicationId` is `vn.npstudio.deviceinfo`. Do not change it; it is the

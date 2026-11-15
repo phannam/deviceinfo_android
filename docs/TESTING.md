@@ -21,8 +21,11 @@
   - `feature/battery/BatteryViewModelTest`: live updates, re-mapping when
     the temperature unit changes, and upstream stop 5 s after the last
     subscriber.
-  - `feature/config/ConfigViewModelTest`: state from stored config; dark mode
-    and temperature unit selections update state and persist.
+  - `feature/config/ConfigViewModelTest`: state from stored config; dark mode,
+    temperature unit, and primary/accent color selections update state and
+    persist.
+  - `ui/theme/ThemeOverlaysTest`: every `AppColor` has distinct overlays per
+    role, distinct swatches and names; BRAND maps to brand primary/accent.
   - `data/repository/MemoryRepositoryImplTest`: 2 s RAM polling (virtual
     time), unchanged values are not re-emitted, storage read.
   - `data/source/AppConfigParserTest`: enum fallback, tab list parsing
@@ -119,6 +122,10 @@
 
 Run these on a device after UI, tab, or share changes:
 
+- Color dialog: picking a swatch updates the header; Recommend selects
+  cyan without closing; OK recolors the Settings page at once and the main
+  screen on return (selected tab kept); Back or tapping outside discards;
+  rotation or dark mode change keeps the pick; swatches use light/dark tones.
 - Settings page: each dark mode option (Off/On/System) applies at once to
   the Settings page and the main screen and survives an app restart; °F
   shows on the Battery tab and in the share report; policy links open a

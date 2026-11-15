@@ -10,4 +10,7 @@
     <dimen name="swatchSize">40dp</dimen>
     <dimen name="configIconSize">24dp</dimen>
     <dimen name="aboutIconSize">64dp</dimen>
+    <dimen name="swatchItemSize">56dp</dimen>
+    <dimen name="dialogCornerRadius">28dp</dimen>
+    <dimen name="dialogHeaderPadding">24dp</dimen>
 </resources>

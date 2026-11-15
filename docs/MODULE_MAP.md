@@ -31,11 +31,11 @@ Packages under `vn.npstudio.deviceinfo`:
 | `data.repository` | `AppConfigRepositoryImpl` (`@Singleton`, synchronous first read), `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl`, `ScreenTestResultRepositoryImpl` (`@Singleton`, in-memory) |
 | `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel`, `RowPosition` |
 | `ui.format` | `ValueFormatter` |
-| `ui.theme` | `ThemeApplier` (night mode + theme overlays per Activity), `ThemeOverlays` (`AppColor` -> style), `NightModeMapper` |
+| `ui.theme` | `ThemeApplier` (night mode + theme overlays per Activity), `ThemeOverlays` (`AppColor` -> overlay, swatch color, name), `ThemeColors`, `ColorRole`, `NightModeMapper` |
 | `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |
 | `feature.main` | `MainActivity`, `MainViewModel`, `MainTab`, `MainTabAdapter`, `MainUiEffect`, `ReportSection`, `ShareReportRenderer` |
 | `feature.device` | `DeviceFragment`, `DeviceViewModel`, `DeviceRowMapper` |
-| `feature.config` | `ConfigActivity` (Settings page), `ConfigViewModel`, `ConfigUiState` (+ `DarkMode`/`TemperatureUnit` label resources) |
+| `feature.config` | `ConfigActivity` (Settings page), `ConfigViewModel`, `ConfigUiState`, `ColorPickerDialog`, `SwatchAdapter` (+ `DarkMode`/`TemperatureUnit` label resources) |
 | `feature.battery` | `BatteryFragment`, `BatteryViewModel`, `BatteryRowMapper` |
 | `feature.cpu` | `CpuFragment`, `CpuViewModel`, `CpuRowMapper` |
 | `feature.display` | `DisplayFragment`, `DisplayViewModel`, `DisplayRowMapper` |

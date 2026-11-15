@@ -181,7 +181,7 @@
   `AppColor` palette. Each entry has a `ThemeOverlay.DeviceInfo.Primary.*`
   and `Accent.*` style with light/night colors; `ThemeApplier` applies them
   per Activity before `setContentView`. Open activities recreate after a
-  change.
+  change; `ThemeApplier` drives this centrally.
 - Why: XML views read colors from the theme; overlays keep every widget
   consistent without tinting views in code and work on API 26.
 - Rejected alternatives: Material dynamic color (API 31+, tonal only),

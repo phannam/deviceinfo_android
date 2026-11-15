@@ -9,10 +9,12 @@ import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.text.UiText
 import vn.npstudio.deviceinfo.data.repository.AppConfigRepositoryImpl
 import vn.npstudio.deviceinfo.data.source.AppConfigKeys
+import vn.npstudio.deviceinfo.domain.model.AppColor
 import vn.npstudio.deviceinfo.domain.model.DarkMode
 import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 import vn.npstudio.deviceinfo.testing.FakeAppConfigLocalDataSource
 import vn.npstudio.deviceinfo.testing.MainDispatcherRule
+import vn.npstudio.deviceinfo.ui.theme.ColorRole
 
 class ConfigViewModelTest {
 
@@ -37,15 +39,40 @@ class ConfigViewModelTest {
         val viewModel = ConfigViewModel(AppConfigRepositoryImpl(source))
 
         viewModel.uiState.test {
-            assertEquals(ConfigUiState(DarkMode.SYSTEM, TemperatureUnit.CELSIUS), awaitItem())
+            val initial = awaitItem()
+            assertEquals(
+                ConfigUiState(DarkMode.SYSTEM, TemperatureUnit.CELSIUS, AppColor.BRAND, AppColor.BRAND),
+                initial,
+            )
 
             viewModel.onDarkModeSelected(DarkMode.OFF)
-            assertEquals(ConfigUiState(DarkMode.OFF, TemperatureUnit.CELSIUS), awaitItem())
+            assertEquals(initial.copy(darkMode = DarkMode.OFF), awaitItem())
 
             viewModel.onTemperatureUnitSelected(TemperatureUnit.FAHRENHEIT)
-            assertEquals(ConfigUiState(DarkMode.OFF, TemperatureUnit.FAHRENHEIT), awaitItem())
+            assertEquals(
+                initial.copy(darkMode = DarkMode.OFF, temperatureUnit = TemperatureUnit.FAHRENHEIT),
+                awaitItem(),
+            )
         }
         assertEquals("OFF", source.values[AppConfigKeys.DARK_MODE])
         assertEquals("FAHRENHEIT", source.values[AppConfigKeys.TEMPERATURE_UNIT])
+    }
+
+    @Test
+    fun onColorSelected_setsTheMatchingRole() = runTest(mainDispatcherRule.dispatcher) {
+        val source = FakeAppConfigLocalDataSource()
+        val viewModel = ConfigViewModel(AppConfigRepositoryImpl(source))
+
+        viewModel.uiState.test {
+            skipItems(1)
+
+            viewModel.onColorSelected(ColorRole.PRIMARY, AppColor.RED)
+            assertEquals(AppColor.RED to AppColor.BRAND, awaitItem().let { it.primaryColor to it.accentColor })
+
+            viewModel.onColorSelected(ColorRole.ACCENT, AppColor.TEAL)
+            assertEquals(AppColor.RED to AppColor.TEAL, awaitItem().let { it.primaryColor to it.accentColor })
+        }
+        assertEquals("RED", source.values[AppConfigKeys.PRIMARY_COLOR])
+        assertEquals("TEAL", source.values[AppConfigKeys.ACCENT_COLOR])
     }
 }

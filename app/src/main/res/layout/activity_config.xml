@@ -81,7 +81,6 @@
                                 tools:text="System" />
                         </LinearLayout>
 
-                        <!-- Color tiles open the color dialog in spec 002 Phase 4. -->
                         <LinearLayout
                             android:id="@+id/primary_color_tile"
                             style="@style/Widget.DeviceInfo.ConfigTile">

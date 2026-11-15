@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_header"
+        android:padding="@dimen/dialogHeaderPadding"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        tools:backgroundTint="@color/brand_primary"
+        tools:text="@string/config_primary_color" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/swatch_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/mediumGap"
+        android:paddingVertical="@dimen/mediumGap"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_swatch" />
+</LinearLayout>

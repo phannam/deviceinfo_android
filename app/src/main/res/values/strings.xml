@@ -182,4 +182,20 @@
     <string name="config_navigate_up">Navigate up</string>
     <string name="url_privacy_policy" translatable="false">https://example.com/privacy</string>
     <string name="url_terms_of_service" translatable="false">https://example.com/terms</string>
+    <!-- Color dialog (spec 002 section 4.4) -->
+    <string name="config_recommend">Recommend</string>
+    <string name="color_brand">Cyan (default)</string>
+    <string name="color_red">Red</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_deep_purple">Deep purple</string>
+    <string name="color_indigo">Indigo</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_green">Green</string>
+    <string name="color_light_green">Light green</string>
+    <string name="color_amber">Amber</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_deep_orange">Deep orange</string>
+    <string name="color_blue_grey">Blue grey</string>
 </resources>

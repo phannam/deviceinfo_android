@@ -1,7 +1,7 @@
 # 002 - Settings, Theme, and Tab Manager
 
-- Status: In progress. Phases 1-3 implemented (pending owner build);
-  Phases 4-5 open.
+- Status: In progress. Phases 1-4 implemented (pending owner build);
+  Phase 5 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Builds on: `docs/requirements/001-device-diagnostics.md` (done)
@@ -101,10 +101,11 @@ The app works but looks plain. This spec:
     `ActivityLifecycleCallbacks.onActivityCreated` and calls
     `activity.theme.applyStyle(overlay, true)` for primary, then accent.
     This runs inside `super.onCreate()`, before `setContentView()`.
-  - When the colors change, open activities must recreate:
-    `ConfigActivity` calls `recreate()`. `MainActivity` remembers the
-    colors it was created with; in `onStart` it calls `recreate()` if they
-    differ.
+  - When the colors change, open activities must recreate. `ThemeApplier`
+    remembers the `ThemeColors` applied to each Activity: started
+    activities (the config page) recreate at once, and stopped ones
+    (`MainActivity` behind it) recreate in `onActivityStarted`. Activities
+    need no recreate code of their own.
 
 ### 4.2 Main screen (UI refresh)
 
@@ -141,8 +142,7 @@ The app works but looks plain. This spec:
 `ConfigActivity` (not exported, portrait), opened from the toolbar gear.
 Layout: `NestedScrollView` on `?android:attr/colorBackground` (same as the
 main screen, see 4.1), cards as in the screenshots. Up arrow returns to
-`MainActivity`. Before Phase 4 the color tiles show the current colors but
-are not clickable; the Tab Manager row is added in Phase 5.
+`MainActivity`. The Tab Manager row is added in Phase 5.
 
 Card 1 - Appearance and preferences:
 
@@ -191,6 +191,10 @@ Temperature unit effect:
   `palette_*` resources).
 - Each swatch has a content description with the color name
   (`color_<name>` strings).
+- `ColorPickerDialog` is a `DialogFragment` (the pick survives
+  recreation) sharing `ConfigViewModel` with `ConfigActivity`. OK removes
+  the dialog with `dismissNow()` before saving, so the Activity recreation
+  that follows does not restore it.
 
 ### 4.5 Tab Manager
 
@@ -342,10 +346,10 @@ the agent lists the Gradle command for the owner:
 - Tests: `ConfigViewModelTest`, `BatteryRowMapperTest` (°F), updated
   `BatteryViewModelTest`, `MainViewModelTest` (report uses unit).
 
-### Phase 4 - Color picker
+### Phase 4 - Color picker (implemented)
 
-- `ColorPickerDialog` (4.4), swatches, Recommend/OK, recreate logic in
-  `ConfigActivity` and `MainActivity`.
+- `ColorPickerDialog` (4.4), `SwatchAdapter`, Recommend/OK, recreate logic
+  in `ThemeApplier` (see 4.1).
 - Tests: `ConfigViewModelTest` color cases; `ThemeOverlays` covers every
   `AppColor` for both roles (test iterates all entries).
 

@@ -21,6 +21,7 @@ import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
 import vn.npstudio.deviceinfo.databinding.ActivityConfigBinding
 import vn.npstudio.deviceinfo.domain.model.DarkMode
 import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
+import vn.npstudio.deviceinfo.ui.theme.ColorRole
 
 /** The user-facing "Settings" page (spec 002 section 4.3). */
 @AndroidEntryPoint
@@ -48,6 +49,8 @@ class ConfigActivity : AppCompatActivity() {
         binding.aboutVersion.text =
             getString(R.string.config_about_version, getString(R.string.app_name), BuildConfig.VERSION_NAME)
         binding.darkModeTile.setOnClickListener { showDarkModeDialog() }
+        binding.primaryColorTile.setOnClickListener { showColorDialog(ColorRole.PRIMARY) }
+        binding.accentColorTile.setOnClickListener { showColorDialog(ColorRole.ACCENT) }
         binding.temperatureUnitRow.setOnClickListener { showTemperatureUnitDialog() }
         binding.privacyPolicyLink.setOnClickListener { openUrl(R.string.url_privacy_policy) }
         binding.termsOfServiceLink.setOnClickListener { openUrl(R.string.url_terms_of_service) }
@@ -65,6 +68,13 @@ class ConfigActivity : AppCompatActivity() {
             modes.map { it.labelRes },
             modes.indexOf(viewModel.uiState.value.darkMode),
         ) { viewModel.onDarkModeSelected(modes[it]) }
+    }
+
+    private fun showColorDialog(role: ColorRole) {
+        if (supportFragmentManager.findFragmentByTag(ColorPickerDialog.TAG) != null) return
+        val state = viewModel.uiState.value
+        val current = if (role == ColorRole.PRIMARY) state.primaryColor else state.accentColor
+        ColorPickerDialog.newInstance(role, current).show(supportFragmentManager, ColorPickerDialog.TAG)
     }
 
     private fun showTemperatureUnitDialog() {

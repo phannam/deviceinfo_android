@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Top corners match the Material 3 dialog shape; tinted with the picked color. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@android:color/white" />
+    <corners
+        android:topLeftRadius="@dimen/dialogCornerRadius"
+        android:topRightRadius="@dimen/dialogCornerRadius" />
+</shape>

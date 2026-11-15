@@ -3,6 +3,7 @@ package vn.npstudio.deviceinfo.feature.config
 import androidx.annotation.StringRes
 import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.text.UiText
+import vn.npstudio.deviceinfo.domain.model.AppColor
 import vn.npstudio.deviceinfo.domain.model.AppConfig
 import vn.npstudio.deviceinfo.domain.model.DarkMode
 import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
@@ -10,12 +11,15 @@ import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 data class ConfigUiState(
     val darkMode: DarkMode,
     val temperatureUnit: TemperatureUnit,
+    val primaryColor: AppColor,
+    val accentColor: AppColor,
 ) {
     val darkModeLabel: UiText get() = UiText.res(darkMode.labelRes)
     val temperatureUnitLabel: UiText get() = UiText.res(temperatureUnit.labelRes)
 
     companion object {
-        fun from(config: AppConfig) = ConfigUiState(config.darkMode, config.temperatureUnit)
+        fun from(config: AppConfig) =
+            ConfigUiState(config.darkMode, config.temperatureUnit, config.primaryColor, config.accentColor)
     }
 }
 

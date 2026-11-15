@@ -177,4 +177,20 @@
     <string name="config_terms_of_service">Điều khoản dịch vụ</string>
     <string name="config_no_browser">Không tìm thấy trình duyệt</string>
     <string name="config_navigate_up">Quay lại</string>
+    <!-- Color dialog (spec 002 section 4.4) -->
+    <string name="config_recommend">Đề xuất</string>
+    <string name="color_brand">Xanh ngọc (mặc định)</string>
+    <string name="color_red">Đỏ</string>
+    <string name="color_pink">Hồng</string>
+    <string name="color_purple">Tím</string>
+    <string name="color_deep_purple">Tím đậm</string>
+    <string name="color_indigo">Chàm</string>
+    <string name="color_blue">Xanh dương</string>
+    <string name="color_teal">Xanh mòng két</string>
+    <string name="color_green">Xanh lá</string>
+    <string name="color_light_green">Xanh lá nhạt</string>
+    <string name="color_amber">Hổ phách</string>
+    <string name="color_orange">Cam</string>
+    <string name="color_deep_orange">Cam đậm</string>
+    <string name="color_blue_grey">Xám xanh</string>
 </resources>
