@@ -7,6 +7,7 @@
     <string name="tab_cpu">CPU</string>
     <string name="tab_battery">Battery</string>
     <string name="tab_display">Display</string>
+    <string name="tab_memory">Memory</string>
 
     <!-- Actions and share report -->
     <string name="action_share">Share</string>
@@ -132,4 +133,17 @@
     <string name="value_hz_int">%1$d Hz</string>
     <string name="value_hz_decimal">%1$.2f Hz</string>
     <string name="value_hdr_none">Not supported</string>
+
+    <!-- Memory & Storage -->
+    <string name="label_memory_ram_total">Total RAM</string>
+    <string name="label_memory_ram_available">Available RAM</string>
+    <string name="label_memory_low_threshold">Low memory threshold</string>
+    <string name="label_memory_low_now">Low memory now</string>
+    <string name="label_memory_storage_total">Internal storage total</string>
+    <string name="label_memory_storage_free">Internal storage free</string>
+    <string name="value_bytes">%1$d B</string>
+    <string name="value_kilobytes">%1$.2f KB</string>
+    <string name="value_megabytes">%1$.2f MB</string>
+    <string name="value_gigabytes">%1$.2f GB</string>
+    <string name="value_terabytes">%1$.2f TB</string>
 </resources>

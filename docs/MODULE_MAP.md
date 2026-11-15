@@ -24,11 +24,11 @@ Packages under `vn.npstudio.deviceinfo`:
 | `common.stateflow` | `LoadingMode` |
 | `common.text` | `UiText` |
 | `di` | `DispatcherModule`, `DataSourceModule`, `RepositoryModule` |
-| `domain.model` | `DeviceInfo`, `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus` |
-| `domain.repository` | `DeviceInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository` |
+| `domain.model` | `DeviceInfo`, `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus`, `MemoryInfo`, `StorageInfo` |
+| `domain.repository` | `DeviceInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository`, `MemoryRepository` |
 | `data` | `PollingIntervals` (live ticker intervals, provided in `DispatcherModule`) |
-| `data.source` | `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
-| `data.repository` | `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl` |
+| `data.source` | `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `MemoryDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
+| `data.repository` | `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl` |
 | `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel` |
 | `ui.format` | `ValueFormatter` |
 | `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |
@@ -37,6 +37,7 @@ Packages under `vn.npstudio.deviceinfo`:
 | `feature.battery` | `BatteryFragment`, `BatteryViewModel`, `BatteryRowMapper` |
 | `feature.cpu` | `CpuFragment`, `CpuViewModel`, `CpuRowMapper` |
 | `feature.display` | `DisplayFragment`, `DisplayViewModel`, `DisplayRowMapper` |
+| `feature.memory` | `MemoryFragment`, `MemoryViewModel`, `MemoryRowMapper` |
 
 ## Target Module Structure
 

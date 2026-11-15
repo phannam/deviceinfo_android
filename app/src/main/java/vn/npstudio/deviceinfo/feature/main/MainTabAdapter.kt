@@ -7,6 +7,7 @@ import vn.npstudio.deviceinfo.feature.battery.BatteryFragment
 import vn.npstudio.deviceinfo.feature.cpu.CpuFragment
 import vn.npstudio.deviceinfo.feature.device.DeviceFragment
 import vn.npstudio.deviceinfo.feature.display.DisplayFragment
+import vn.npstudio.deviceinfo.feature.memory.MemoryFragment
 
 class MainTabAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
@@ -17,5 +18,6 @@ class MainTabAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity
         MainTab.CPU -> CpuFragment()
         MainTab.BATTERY -> BatteryFragment()
         MainTab.DISPLAY -> DisplayFragment()
+        MainTab.MEMORY -> MemoryFragment()
     }
 }

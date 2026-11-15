@@ -7,6 +7,7 @@ import vn.npstudio.deviceinfo.data.source.BatteryBroadcast
 import vn.npstudio.deviceinfo.data.source.BatteryDataSource
 import vn.npstudio.deviceinfo.data.source.BatteryProperties
 import vn.npstudio.deviceinfo.data.source.CpuInfoDataSource
+import vn.npstudio.deviceinfo.data.source.MemoryDataSource
 import vn.npstudio.deviceinfo.data.source.SysFsReader
 import vn.npstudio.deviceinfo.domain.model.BatteryHealth
 import vn.npstudio.deviceinfo.domain.model.BatteryInfo
@@ -18,13 +19,16 @@ import vn.npstudio.deviceinfo.domain.model.CpuInfo
 import vn.npstudio.deviceinfo.domain.model.DeviceInfo
 import vn.npstudio.deviceinfo.domain.model.DisplayInfo
 import vn.npstudio.deviceinfo.domain.model.HdrType
+import vn.npstudio.deviceinfo.domain.model.MemoryInfo
 import vn.npstudio.deviceinfo.domain.model.PowerSource
+import vn.npstudio.deviceinfo.domain.model.StorageInfo
 import vn.npstudio.deviceinfo.domain.model.ThermalStatus
 import vn.npstudio.deviceinfo.domain.model.WindowSnapshot
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
+import vn.npstudio.deviceinfo.domain.repository.MemoryRepository
 
 val sampleDeviceInfo = DeviceInfo(
     manufacturer = "samsung",
@@ -175,4 +179,43 @@ class FakeBatteryDataSource(
         propertyReads++
         return properties
     }
+}
+
+val sampleMemoryInfo = MemoryInfo(
+    totalBytes = 6_000_000_000L,
+    availableBytes = 1_500_000_000L,
+    lowMemoryThresholdBytes = 226_000_000L,
+    lowMemory = false,
+)
+
+val sampleStorageInfo = StorageInfo(totalBytes = 64_000_000_000L, freeBytes = 16_000_000_000L)
+
+class FakeMemoryRepository(
+    val ram: Flow<MemoryInfo> = flowOf(sampleMemoryInfo),
+    var storage: StorageInfo = sampleStorageInfo,
+) : MemoryRepository {
+    var storageLoads = 0
+        private set
+
+    override fun observeRam(): Flow<MemoryInfo> = ram
+
+    override suspend fun getStorageInfo(): StorageInfo {
+        storageLoads++
+        return storage
+    }
+}
+
+class FakeMemoryDataSource(
+    var ram: MemoryInfo = sampleMemoryInfo,
+    var storage: StorageInfo = sampleStorageInfo,
+) : MemoryDataSource {
+    var ramReads = 0
+        private set
+
+    override fun readRam(): MemoryInfo {
+        ramReads++
+        return ram
+    }
+
+    override fun readStorage(): StorageInfo = storage
 }

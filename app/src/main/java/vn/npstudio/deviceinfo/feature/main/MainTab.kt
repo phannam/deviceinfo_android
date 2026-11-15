@@ -8,4 +8,5 @@ enum class MainTab(@param:StringRes val titleRes: Int) {
     CPU(R.string.tab_cpu),
     BATTERY(R.string.tab_battery),
     DISPLAY(R.string.tab_display),
+    MEMORY(R.string.tab_memory),
 }

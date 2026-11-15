@@ -15,10 +15,12 @@ import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
+import vn.npstudio.deviceinfo.domain.repository.MemoryRepository
 import vn.npstudio.deviceinfo.feature.battery.BatteryRowMapper
 import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
+import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +30,7 @@ class MainViewModel @Inject constructor(
     private val cpuRepository: CpuRepository,
     private val batteryRepository: BatteryRepository,
     private val displayRepository: DisplayRepository,
+    private val memoryRepository: MemoryRepository,
 ) : ViewModel() {
 
     val selectedTab: StateFlow<MainTab> = savedStateHandle.getStateFlow(KEY_SELECTED_TAB, MainTab.DEVICE)
@@ -50,6 +53,10 @@ class MainViewModel @Inject constructor(
                 ),
                 ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(batteryRepository.observe().first())),
                 ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(displayRepository.getDisplayInfo(), window)),
+                ReportSection(
+                    MainTab.MEMORY.titleRes,
+                    MemoryRowMapper.map(memoryRepository.observeRam().first(), memoryRepository.getStorageInfo()),
+                ),
             )
             _effects.send(MainUiEffect.Share(sections))
         }

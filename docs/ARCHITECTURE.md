@@ -1,6 +1,6 @@
 # Architecture
 
-Based on the source in `app/` after Phase 4 of
+Based on the source in `app/` after Phase 5 of
 `docs/requirements/001-device-diagnostics.md`. The app uses XML layouts;
 Compose is not part of the target architecture.
 
@@ -21,7 +21,10 @@ Compose is not part of the target architecture.
   types, wide color gamut (display mode / `Display`), density bucket, dpi,
   estimated size, font scale, plus app window size and cutout from a
   `WindowSnapshot` measured by the UI.
-- Shares a plain-text report (Device + CPU + Battery + Display sections) through the system
+- Memory tab: `ActivityManager.MemoryInfo` polled every 2 s while visible;
+  internal storage from `StorageStatsManager` (default volume) on each
+  resume.
+- Shares a plain-text report (Device + CPU + Battery + Display + Memory sections) through the system
   share sheet.
 
 **Pattern: strict MVVM with Hilt**
@@ -42,6 +45,13 @@ BatteryFragment
   -> BatteryDataSource  (ContextCompat.registerReceiver NOT_EXPORTED,
                         BatteryManager, PowerManager)
   -> BatteryRowMapper (pure)
+
+MemoryFragment  onResume -> MemoryViewModel.onResumed()
+  -> MemoryViewModel   combine(observeRam(), resumes.map { getStorageInfo() })
+  -> MemoryRepository  observeRam() (2 s ticker, distinctUntilChanged, flowOn IO)
+                       + getStorageInfo() (suspend, IO)
+  -> MemoryDataSource  (ActivityManager, StorageStatsManager)
+  -> MemoryRowMapper (pure)
 
 DisplayFragment  doOnLayout -> WindowSnapshotReader (androidx.window, root insets)
   -> DisplayViewModel.onWindowMeasured(snapshot)
@@ -104,7 +114,7 @@ MainActivity share menu
   functions (static data) or `Flow` (live data).
 - Data sources: platform-only, no product rules, never throw for missing
   values (return null instead).
-- Live tabs (CPU, Battery) collect at `Lifecycle.State.RESUMED` and use
+- Live tabs (CPU, Battery, Memory) collect at `Lifecycle.State.RESUMED` and use
   `stateIn(WhileSubscribed(5000))` so polling and receivers stop when the tab
   is not visible.
 - Async: `viewModelScope` plus an injected dispatcher; no work in
@@ -115,8 +125,8 @@ MainActivity share menu
 
 ### 1. Remaining diagnostics tabs
 
-- Current: Device, CPU, Battery, and Display exist.
-- Target: Memory & Storage and Screen Test per
-  `docs/requirements/001-device-diagnostics.md` Phases 5-7.
+- Current: Device, CPU, Battery, Display, and Memory exist.
+- Target: Screen Test and report completion per
+  `docs/requirements/001-device-diagnostics.md` Phases 6-7.
 - Priority: High
 

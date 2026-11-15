@@ -55,4 +55,19 @@ class ValueFormatterTest {
         assertEquals(UiText.res(R.string.value_hz_decimal, 59.94f), ValueFormatter.refreshRate(59.94f))
         assertEquals(ValueFormatter.unavailable, ValueFormatter.refreshRate(null))
     }
+
+    @Test
+    fun bytes_usesDecimalUnits() {
+        assertEquals(UiText.res(R.string.value_bytes, 999L), ValueFormatter.bytes(999L))
+        assertEquals(UiText.res(R.string.value_kilobytes, 1.5), ValueFormatter.bytes(1_500L))
+        assertEquals(UiText.res(R.string.value_megabytes, 226.0), ValueFormatter.bytes(226_000_000L))
+        assertEquals(UiText.res(R.string.value_gigabytes, 64.0), ValueFormatter.bytes(64_000_000_000L))
+        assertEquals(UiText.res(R.string.value_terabytes, 2_000.0), ValueFormatter.bytes(2_000_000_000_000_000L))
+        assertEquals(ValueFormatter.unavailable, ValueFormatter.bytes(null))
+    }
+
+    @Test
+    fun bytes_movesToNextUnitWhenRoundingReachesOneThousand() {
+        assertEquals(UiText.res(R.string.value_megabytes, 0.999999), ValueFormatter.bytes(999_999L))
+    }
 }

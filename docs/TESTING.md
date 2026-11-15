@@ -4,7 +4,7 @@
 
 - What is tested today (JVM, `app/src/test/java/vn/npstudio/deviceinfo/`)
   - `ui/format/ValueFormatterTest`: duration split, ISO date localization and
-    fallback, MHz/GHz frequency, hours/minutes, refresh rate Hz, unavailable values.
+    fallback, MHz/GHz frequency, hours/minutes, refresh rate Hz, decimal byte units, unavailable values.
   - `data/source/CpuSysFsParserTest`: CPU lists (`0-7`, `0-3,4-7`, bad
     input), kHz files (text, blank, missing), `/proc/cpuinfo` with and without
     `Hardware`.
@@ -20,6 +20,12 @@
     unavailable values.
   - `feature/battery/BatteryViewModelTest`: live updates and upstream stop
     5 s after the last subscriber.
+  - `data/repository/MemoryRepositoryImplTest`: 2 s RAM polling (virtual
+    time), unchanged values are not re-emitted, storage read.
+  - `feature/memory/MemoryRowMapperTest`: decimal byte units, used-percent
+    bars, unavailable values without bars.
+  - `feature/memory/MemoryViewModelTest`: live RAM combined with storage;
+    `onResumed()` reloads storage.
   - `feature/cpu/CpuRowMapperTest`, `feature/cpu/CpuViewModelTest`: CPU rows,
     per-core progress and Offline, notice row, live updates.
   - `feature/device/DeviceRowMapperTest`: row values and unavailable handling.
@@ -32,7 +38,7 @@
   - `feature/main/ShareReportRendererTest`: header and section layout with a
     fake resolver.
   - `feature/main/MainViewModelTest`: selected tab restored from
-    `SavedStateHandle`; share effect contains Device, CPU, Battery, and Display sections.
+    `SavedStateHandle`; share effect contains Device, CPU, Battery, Display, and Memory sections.
   - Shared helpers in `testing/`: `MainDispatcherRule`
     (`StandardTestDispatcher`), sample models, fake repositories and data sources, and
     `byLabel()` for row lookups (`rows[UiText.res(R.string.label_x)]`).

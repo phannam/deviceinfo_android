@@ -24,6 +24,27 @@ object ValueFormatter {
         else -> UiText.res(R.string.value_frequency_ghz, khz / 1_000_000.0)
     }
 
+    /** Formats bytes with decimal units (1 GB = 1000^3 bytes) to match Android Settings. */
+    fun bytes(bytes: Long?): UiText {
+        if (bytes == null) return unavailable
+        if (bytes < 1_000) return UiText.res(R.string.value_bytes, bytes)
+        var value = bytes / 1_000.0
+        var unit = 0
+        // 999.995 would print as "1000.00" with two decimals, so move to the next unit.
+        while (value >= 999.995 && unit < BYTE_UNITS.lastIndex) {
+            value /= 1_000
+            unit++
+        }
+        return UiText.res(BYTE_UNITS[unit], value)
+    }
+
+    private val BYTE_UNITS = listOf(
+        R.string.value_kilobytes,
+        R.string.value_megabytes,
+        R.string.value_gigabytes,
+        R.string.value_terabytes,
+    )
+
     /** Joins values with `, `, or returns unavailable when empty. */
     fun list(values: List<String>): UiText =
         if (values.isEmpty()) unavailable else UiText.Dynamic(values.joinToString(", "))

@@ -12,6 +12,8 @@ import vn.npstudio.deviceinfo.data.source.CpuInfoDataSource
 import vn.npstudio.deviceinfo.data.source.CpuInfoDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.DisplayDataSource
 import vn.npstudio.deviceinfo.data.source.DisplayDataSourceImpl
+import vn.npstudio.deviceinfo.data.source.MemoryDataSource
+import vn.npstudio.deviceinfo.data.source.MemoryDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.SysFsReader
 import vn.npstudio.deviceinfo.data.source.SysFsReaderImpl
 
@@ -33,4 +35,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindBatteryDataSource(impl: BatteryDataSourceImpl): BatteryDataSource
+
+    @Binds
+    abstract fun bindMemoryDataSource(impl: MemoryDataSourceImpl): MemoryDataSource
 }

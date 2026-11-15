@@ -5,6 +5,7 @@
     <string name="tab_cpu">CPU</string>
     <string name="tab_battery">Pin</string>
     <string name="tab_display">Màn hình</string>
+    <string name="tab_memory">Bộ nhớ</string>
 
     <!-- Actions and share report -->
     <string name="action_share">Chia sẻ</string>
@@ -130,4 +131,17 @@
     <string name="value_hz_int">%1$d Hz</string>
     <string name="value_hz_decimal">%1$.2f Hz</string>
     <string name="value_hdr_none">Không hỗ trợ</string>
+
+    <!-- Memory & Storage -->
+    <string name="label_memory_ram_total">Tổng RAM</string>
+    <string name="label_memory_ram_available">RAM khả dụng</string>
+    <string name="label_memory_low_threshold">Ngưỡng bộ nhớ thấp</string>
+    <string name="label_memory_low_now">Đang thiếu bộ nhớ</string>
+    <string name="label_memory_storage_total">Tổng bộ nhớ trong</string>
+    <string name="label_memory_storage_free">Bộ nhớ trong còn trống</string>
+    <string name="value_bytes">%1$d B</string>
+    <string name="value_kilobytes">%1$.2f KB</string>
+    <string name="value_megabytes">%1$.2f MB</string>
+    <string name="value_gigabytes">%1$.2f GB</string>
+    <string name="value_terabytes">%1$.2f TB</string>
 </resources>

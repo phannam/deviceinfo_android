@@ -16,11 +16,13 @@ No persistence or network models exist.
 | `CpuCoreFrequency` | `domain/model/CpuInfo.kt` | `coreId`, `currentKhz: Long?` (null = offline or unreadable) |
 | `ThermalStatus` | `domain/model/ThermalStatus.kt` | Enum mirroring `PowerManager.THERMAL_STATUS_*` |
 | `BatteryInfo` | `domain/model/BatteryInfo.kt` | `levelPercent`, `status: BatteryStatus`, `powerSource: PowerSource?`, `health: BatteryHealth`, `temperatureTenthsCelsius`, `voltageMillivolts`, `technology`, `present`, `cycleCount` (API 34+), `currentNowMicroamps`/`currentAverageMicroamps` (signed µA), `chargeCounterMicroampHours`, `chargeTimeRemainingMillis`, `powerSaveMode`; all nullable except enums |
+| `MemoryInfo` | `domain/model/MemoryInfo.kt` | `totalBytes`, `availableBytes`, `lowMemoryThresholdBytes: Long?`, `lowMemory: Boolean?` from `ActivityManager.MemoryInfo` |
+| `StorageInfo` | `domain/model/MemoryInfo.kt` | Internal storage `totalBytes`/`freeBytes: Long?` from `StorageStatsManager` (`UUID_DEFAULT`) |
 | `BatteryBroadcast`, `BatteryProperties` | `data/source/BatteryDataSource.kt` | Raw intent extras and `BatteryManager` values (`-1` / `Int.MIN_VALUE` = missing); normalized by `BatteryParser` |
-| `PollingIntervals` | `data/PollingIntervals.kt` | `cpuFrequencyMillis` (1000), `batteryPropertiesMillis` (2000) |
+| `PollingIntervals` | `data/PollingIntervals.kt` | `cpuFrequencyMillis` (1000), `batteryPropertiesMillis` (2000), `memoryMillis` (2000) |
 | `InfoRowUiModel` | `ui/list/InfoRowUiModel.kt` | `label: UiText` (secondary constructor takes `@StringRes Int`), `value: UiText`, `progress: Int?` (0-100) |
 | `InfoListUiState` | `ui/list/InfoListUiState.kt` | `loadingMode: LoadingMode`, `rows: List<InfoRowUiModel>` |
-| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY` with `@StringRes titleRes` |
+| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY`, `MEMORY` with `@StringRes titleRes` |
 | `ReportSection` | `feature/main/ReportSection.kt` | `@StringRes title`, `rows` |
 | `MainUiEffect.Share` | `feature/main/MainUiEffect.kt` | `sections: List<ReportSection>` |
 | `UiText` | `common/text/UiText.kt` | `Dynamic(value)`, `Resource(resId, args)` (args may be nested `UiText`), or `Joined(parts, separator)` |

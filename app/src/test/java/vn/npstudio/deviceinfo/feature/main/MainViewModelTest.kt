@@ -10,16 +10,20 @@ import vn.npstudio.deviceinfo.feature.battery.BatteryRowMapper
 import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
+import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
 import vn.npstudio.deviceinfo.testing.FakeBatteryRepository
 import vn.npstudio.deviceinfo.testing.FakeCpuRepository
 import vn.npstudio.deviceinfo.testing.FakeDeviceInfoRepository
 import vn.npstudio.deviceinfo.testing.FakeDisplayRepository
+import vn.npstudio.deviceinfo.testing.FakeMemoryRepository
 import vn.npstudio.deviceinfo.testing.MainDispatcherRule
 import vn.npstudio.deviceinfo.testing.sampleBatteryInfo
 import vn.npstudio.deviceinfo.testing.sampleCpuInfo
 import vn.npstudio.deviceinfo.testing.sampleDeviceInfo
 import vn.npstudio.deviceinfo.testing.sampleDisplayInfo
 import vn.npstudio.deviceinfo.testing.sampleFrequencies
+import vn.npstudio.deviceinfo.testing.sampleMemoryInfo
+import vn.npstudio.deviceinfo.testing.sampleStorageInfo
 import vn.npstudio.deviceinfo.testing.sampleWindowSnapshot
 
 class MainViewModelTest {
@@ -28,7 +32,14 @@ class MainViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private fun createViewModel(handle: SavedStateHandle = SavedStateHandle()) =
-        MainViewModel(handle, FakeDeviceInfoRepository(), FakeCpuRepository(), FakeBatteryRepository(), FakeDisplayRepository())
+        MainViewModel(
+            handle,
+            FakeDeviceInfoRepository(),
+            FakeCpuRepository(),
+            FakeBatteryRepository(),
+            FakeDisplayRepository(),
+            FakeMemoryRepository(),
+        )
 
     @Test
     fun selectedTab_restoresFromSavedState() {
@@ -51,6 +62,7 @@ class MainViewModelTest {
                     ReportSection(MainTab.CPU.titleRes, CpuRowMapper.map(sampleCpuInfo, sampleFrequencies)),
                     ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(sampleBatteryInfo)),
                     ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo, sampleWindowSnapshot)),
+                    ReportSection(MainTab.MEMORY.titleRes, MemoryRowMapper.map(sampleMemoryInfo, sampleStorageInfo)),
                 ),
             )
             assertEquals(expected, awaitItem())

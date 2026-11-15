@@ -20,20 +20,22 @@ The app lets users:
   live per-core frequencies.
 - View live battery information (level, status, power source, health,
   temperature, voltage, current, charge counter, estimated capacity).
+- View RAM (total, available, low-memory threshold) refreshed every 2 s and
+  internal storage (total, free) refreshed on resume.
 - Share all collected information as plain text through the system share
   sheet.
 - Planned (spec `docs/requirements/001-device-diagnostics.md`):
-  full Display, Memory & Storage, and Screen Test tabs.
+  Screen Test tab (dead pixels, screen lines).
 
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state (after Phase 4 of spec 001):
+Current state (after Phase 5 of spec 001):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
 - Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
-- `MainActivity` hosts Device, CPU, Battery, and Display tabs with Material `TabLayout` +
+- `MainActivity` hosts Device, CPU, Battery, Display, and Memory tabs with Material `TabLayout` +
   `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
 
@@ -207,7 +209,7 @@ Be extra careful around these areas:
 - `SysFsReader` is the only class that reads `/proc` and `/sys`; it never
   throws. Many files are blocked by SELinux on newer devices, so every sysfs
   value must have an unavailable path.
-- CPU frequency polling and the battery receiver/polling run only while
+- CPU frequency polling, the battery receiver/polling, and RAM polling run only while
   their tab is subscribed (`WhileSubscribed(5000)`, collected at `RESUMED`).
   Do not collect them from a long-lived scope.
 - Battery current follows the API contract (signed µA). Some OEMs report mA

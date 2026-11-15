@@ -1,6 +1,6 @@
 # 001 - Device Diagnostics
 
-- Status: In progress. Phases 1-3 implemented; Phase 4 implemented (pending owner build); Phases 5-7 open.
+- Status: In progress. Phases 1-4 implemented; Phase 5 implemented (pending owner build); Phases 6-7 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Implements: `docs/ARCHITECTURE.md` target rules, ADR-TARGET-001..004
@@ -187,6 +187,13 @@ reloads display values. `MainActivity` passes its own snapshot to
 
 RAM refreshes every 2 s while the tab is visible. Storage refreshes when the
 tab resumes. `StorageStatsManager` calls run on the IO dispatcher.
+
+Implementation notes: `MemoryFragment.onResume` calls
+`MemoryViewModel.onResumed()`, which emits into a
+`MutableSharedFlow<Unit>(replay = 1, DROP_OLDEST)`; each emission re-reads
+storage and is combined with the RAM ticker. `totalMem` excludes memory
+reserved by the kernel, so Total RAM is lower than the marketing size shown
+in Settings > About phone (for example 5.6 GB on a 6 GB device).
 
 ### 4.6 Screen Test tab
 
@@ -427,7 +434,7 @@ owner builds, tests on device, and reports errors.
   cutout, window size via `WindowSnapshot`.
 - Acceptance: values match `adb shell dumpsys display` on the test device.
 
-### Phase 5 - Memory & Storage tab
+### Phase 5 - Memory & Storage tab (implemented)
 
 - `MemoryDataSource`, `MemoryRepository`, tab UI with usage bars.
 - Acceptance: totals match Settings > Storage / About phone within rounding.
