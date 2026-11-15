@@ -146,6 +146,8 @@
   stack. Selected tab state lives in the ViewModel. Full-screen flows such as
   the Screen Test may use a dedicated Activity (spec 001). Adopt Jetpack
   Navigation only if the app gains real multi-screen navigation.
+- Amendment (spec 002): the Settings page is a dedicated `ConfigActivity`
+  (no NavGraph); the Tab Manager is a bottom sheet in the calling Activity.
 - Why: Tabs do not justify a NavGraph.
 - Rejected alternatives: Adding a custom router; one Activity per tab.
 

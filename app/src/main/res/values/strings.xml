@@ -100,6 +100,7 @@
 
     <string name="value_percent_int">%1$d%%</string>
     <string name="value_temperature_celsius">%1$.1f °C</string>
+    <string name="value_temperature_fahrenheit">%1$.1f °F</string>
     <string name="value_voltage">%1$.3f V</string>
     <string name="value_milliamps">%1$d mA</string>
     <string name="value_milliamp_hours">%1$d mAh</string>
@@ -162,4 +163,23 @@
     <string name="label_screen_test_dead_pixels">Dead or stuck pixels</string>
     <string name="label_screen_test_lines">Lines or banding</string>
     <string name="label_screen_test_burn_in">Burn-in or discoloration</string>
+    <!-- Config page (spec 002 section 4.3) -->
+    <string name="config_dark_mode">Dark mode</string>
+    <string name="config_dark_mode_off">Off</string>
+    <string name="config_dark_mode_on">On</string>
+    <string name="config_dark_mode_system">System</string>
+    <string name="config_primary_color">Primary color</string>
+    <string name="config_accent_color">Accent color</string>
+    <string name="config_temperature_unit">Temperature unit</string>
+    <string name="config_temperature_celsius">Celsius</string>
+    <string name="config_temperature_fahrenheit">Fahrenheit</string>
+    <string name="config_about_version">%1$s - v%2$s</string>
+    <string name="config_slogan">Know your device, inside and out</string>
+    <string name="config_privacy_policy">Privacy Policy</string>
+    <string name="config_terms_of_service">Terms of Service</string>
+    <string name="config_link_separator" translatable="false">|</string>
+    <string name="config_no_browser">No browser found</string>
+    <string name="config_navigate_up">Navigate up</string>
+    <string name="url_privacy_policy" translatable="false">https://example.com/privacy</string>
+    <string name="url_terms_of_service" translatable="false">https://example.com/terms</string>
 </resources>

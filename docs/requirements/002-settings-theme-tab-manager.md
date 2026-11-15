@@ -1,7 +1,7 @@
 # 002 - Settings, Theme, and Tab Manager
 
-- Status: In progress. Phases 1-2 implemented (pending owner build);
-  Phases 3-5 open.
+- Status: In progress. Phases 1-3 implemented (pending owner build);
+  Phases 4-5 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Builds on: `docs/requirements/001-device-diagnostics.md` (done)
@@ -139,8 +139,10 @@ The app works but looks plain. This spec:
 ### 4.3 Settings page
 
 `ConfigActivity` (not exported, portrait), opened from the toolbar gear.
-Layout: `NestedScrollView` on `?attr/colorSurfaceContainer`, cards as in the
-screenshots. Up arrow returns to `MainActivity`.
+Layout: `NestedScrollView` on `?android:attr/colorBackground` (same as the
+main screen, see 4.1), cards as in the screenshots. Up arrow returns to
+`MainActivity`. Before Phase 4 the color tiles show the current colors but
+are not clickable; the Tab Manager row is added in Phase 5.
 
 Card 1 - Appearance and preferences:
 
@@ -332,11 +334,11 @@ the agent lists the Gradle command for the owner:
 - Check light and dark mode on device for all six tabs.
 - Tests: `RowPositionTest`.
 
-### Phase 3 - Settings page
+### Phase 3 - Settings page (implemented)
 
 - `ConfigActivity`, `ConfigViewModel`, layout (4.3), dark mode dialog,
   temperature unit dialog (with battery and report changes), About card,
-  policy links.
+  policy links. The toolbar gear becomes visible and opens `ConfigActivity`.
 - Tests: `ConfigViewModelTest`, `BatteryRowMapperTest` (°F), updated
   `BatteryViewModelTest`, `MainViewModelTest` (report uses unit).
 

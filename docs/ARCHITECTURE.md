@@ -108,7 +108,10 @@ MainActivity share menu
   Values are re-read when a tab gets a new subscriber after more than 5 s
   without one (for example, returning from background), so uptime refreshes.
 - Single Activity. `FragmentStateAdapter` owns tab fragments; tab switches do
-  not touch the back stack, so Back exits the app. The selected tab is saved
+  not touch the back stack, so Back exits the app. The toolbar gear opens
+  `ConfigActivity` (Settings page); dark mode changes recreate activities
+  through AppCompat, and the temperature unit is read by `BatteryViewModel`
+  (combined flow) and `MainViewModel.onShareClicked`. The selected tab is saved
   in `MainViewModel` (`SavedStateHandle`) and restored on recreation.
 - Edge-to-edge: `enableEdgeToEdge()`; the app bar pads for top/side insets
   and each list pads for bottom/side insets (`clipToPadding=false`).

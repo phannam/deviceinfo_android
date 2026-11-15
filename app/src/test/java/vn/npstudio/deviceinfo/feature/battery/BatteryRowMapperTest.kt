@@ -8,6 +8,7 @@ import vn.npstudio.deviceinfo.common.text.UiText
 import vn.npstudio.deviceinfo.domain.model.BatteryHealth
 import vn.npstudio.deviceinfo.domain.model.BatteryStatus
 import vn.npstudio.deviceinfo.domain.model.PowerSource
+import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 import vn.npstudio.deviceinfo.testing.byLabel
 import vn.npstudio.deviceinfo.testing.sampleBatteryInfo
 import vn.npstudio.deviceinfo.ui.format.ValueFormatter
@@ -16,7 +17,7 @@ class BatteryRowMapperTest {
 
     @Test
     fun map_formatsUnits() {
-        val rows = BatteryRowMapper.map(sampleBatteryInfo).byLabel()
+        val rows = BatteryRowMapper.map(sampleBatteryInfo, TemperatureUnit.CELSIUS).byLabel()
 
         assertEquals(UiText.res(R.string.value_percent_int, 80), rows[UiText.res(R.string.label_battery_level)])
         assertEquals(UiText.res(R.string.value_temperature_celsius, 31.2), rows[UiText.res(R.string.label_battery_temperature)])
@@ -30,8 +31,17 @@ class BatteryRowMapperTest {
     }
 
     @Test
+    fun map_fahrenheitConvertsTemperature() {
+        val value = BatteryRowMapper.map(sampleBatteryInfo, TemperatureUnit.FAHRENHEIT)
+            .byLabel()[UiText.res(R.string.label_battery_temperature)] as UiText.Resource
+
+        assertEquals(R.string.value_temperature_fahrenheit, value.resId)
+        assertEquals(88.16, value.args.single() as Double, 1e-9)
+    }
+
+    @Test
     fun map_levelRowHasProgress() {
-        val level = BatteryRowMapper.map(sampleBatteryInfo).first()
+        val level = BatteryRowMapper.map(sampleBatteryInfo, TemperatureUnit.CELSIUS).first()
 
         assertEquals(UiText.res(R.string.label_battery_level), level.label)
         assertEquals(80, level.progress)
@@ -44,7 +54,7 @@ class BatteryRowMapperTest {
             powerSource = PowerSource.USB,
             health = BatteryHealth.OVER_VOLTAGE,
         )
-        val rows = BatteryRowMapper.map(info).byLabel()
+        val rows = BatteryRowMapper.map(info, TemperatureUnit.CELSIUS).byLabel()
 
         assertEquals(UiText.res(R.string.value_battery_status_not_charging), rows[UiText.res(R.string.label_battery_status)])
         assertEquals(UiText.res(R.string.value_power_source_usb), rows[UiText.res(R.string.label_battery_power_source)])
@@ -60,7 +70,7 @@ class BatteryRowMapperTest {
             cycleCount = null,
             powerSaveMode = null,
         )
-        val rows = BatteryRowMapper.map(info).byLabel()
+        val rows = BatteryRowMapper.map(info, TemperatureUnit.CELSIUS).byLabel()
 
         assertEquals(ValueFormatter.unavailable, rows[UiText.res(R.string.label_battery_level)])
         assertEquals(ValueFormatter.unavailable, rows[UiText.res(R.string.label_battery_power_source)])
@@ -71,7 +81,8 @@ class BatteryRowMapperTest {
 
     @Test
     fun timeToFull_onlyWhileCharging() {
-        val rows = BatteryRowMapper.map(sampleBatteryInfo.copy(status = BatteryStatus.DISCHARGING)).byLabel()
+        val discharging = sampleBatteryInfo.copy(status = BatteryStatus.DISCHARGING)
+        val rows = BatteryRowMapper.map(discharging, TemperatureUnit.CELSIUS).byLabel()
 
         assertEquals(ValueFormatter.unavailable, rows[UiText.res(R.string.label_battery_time_to_full)])
     }

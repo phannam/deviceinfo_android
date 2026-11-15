@@ -23,6 +23,10 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.DeviceInfo.ScreenTest" />
+        <activity
+            android:name=".feature.config.ConfigActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

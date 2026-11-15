@@ -6,6 +6,7 @@ import vn.npstudio.deviceinfo.domain.model.BatteryHealth
 import vn.npstudio.deviceinfo.domain.model.BatteryInfo
 import vn.npstudio.deviceinfo.domain.model.BatteryStatus
 import vn.npstudio.deviceinfo.domain.model.PowerSource
+import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 import vn.npstudio.deviceinfo.ui.format.ValueFormatter
 import vn.npstudio.deviceinfo.ui.list.InfoRowUiModel
 
@@ -14,7 +15,7 @@ object BatteryRowMapper {
     /** Below this level the charge counter is too coarse to estimate full capacity. */
     private const val MIN_LEVEL_FOR_CAPACITY = 10
 
-    fun map(info: BatteryInfo): List<InfoRowUiModel> = listOf(
+    fun map(info: BatteryInfo, unit: TemperatureUnit): List<InfoRowUiModel> = listOf(
         InfoRowUiModel(
             R.string.label_battery_level,
             info.levelPercent?.let { UiText.res(R.string.value_percent_int, it) } ?: ValueFormatter.unavailable,
@@ -25,8 +26,7 @@ object BatteryRowMapper {
         InfoRowUiModel(R.string.label_battery_health, health(info.health)),
         InfoRowUiModel(
             R.string.label_battery_temperature,
-            info.temperatureTenthsCelsius?.let { UiText.res(R.string.value_temperature_celsius, it / 10.0) }
-                ?: ValueFormatter.unavailable,
+            info.temperatureTenthsCelsius?.let { temperature(it, unit) } ?: ValueFormatter.unavailable,
         ),
         InfoRowUiModel(
             R.string.label_battery_voltage,
@@ -68,6 +68,14 @@ object BatteryRowMapper {
         if (counter <= 0 || level < MIN_LEVEL_FOR_CAPACITY) return null
         // µAh / 1000 * 100 / level
         return (counter.toLong() / 10 / level).toInt()
+    }
+
+    private fun temperature(tenthsCelsius: Int, unit: TemperatureUnit): UiText {
+        val celsius = tenthsCelsius / 10.0
+        return when (unit) {
+            TemperatureUnit.CELSIUS -> UiText.res(R.string.value_temperature_celsius, celsius)
+            TemperatureUnit.FAHRENHEIT -> UiText.res(R.string.value_temperature_fahrenheit, celsius * 9 / 5 + 32)
+        }
     }
 
     private fun milliamps(microamps: Int?): UiText =

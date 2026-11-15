@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import vn.npstudio.deviceinfo.domain.model.WindowSnapshot
+import vn.npstudio.deviceinfo.domain.repository.AppConfigRepository
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
@@ -34,6 +35,7 @@ class MainViewModel @Inject constructor(
     private val displayRepository: DisplayRepository,
     private val memoryRepository: MemoryRepository,
     private val screenTestResultRepository: ScreenTestResultRepository,
+    private val appConfigRepository: AppConfigRepository,
 ) : ViewModel() {
 
     val selectedTab: StateFlow<MainTab> = savedStateHandle.getStateFlow(KEY_SELECTED_TAB, MainTab.DEVICE)
@@ -54,7 +56,13 @@ class MainViewModel @Inject constructor(
                     MainTab.CPU.titleRes,
                     CpuRowMapper.map(cpuRepository.getCpuInfo(), cpuRepository.observeFrequencies().first()),
                 ),
-                ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(batteryRepository.observe().first())),
+                ReportSection(
+                    MainTab.BATTERY.titleRes,
+                    BatteryRowMapper.map(
+                        batteryRepository.observe().first(),
+                        appConfigRepository.config.value.temperatureUnit,
+                    ),
+                ),
                 ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(displayRepository.getDisplayInfo(), window)),
                 ReportSection(
                     MainTab.MEMORY.titleRes,

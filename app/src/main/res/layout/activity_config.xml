@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground"
+        app:elevation="0dp"
+        app:liftOnScroll="false">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:navigationContentDescription="@string/config_navigate_up"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/action_settings" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/mediumGap"
+        android:paddingTop="@dimen/smallGap"
+        android:paddingBottom="@dimen/mediumGap">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Card 1: appearance and preferences. -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/dark_mode_tile"
+                            style="@style/Widget.DeviceInfo.ConfigTile">
+
+                            <ImageView
+                                android:layout_width="@dimen/swatchSize"
+                                android:layout_height="@dimen/swatchSize"
+                                android:importantForAccessibility="no"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_dark_mode"
+                                app:tint="?attr/colorPrimary" />
+
+                            <TextView
+                                style="@style/Widget.DeviceInfo.ConfigTileLabel"
+                                android:text="@string/config_dark_mode" />
+
+                            <TextView
+                                android:id="@+id/dark_mode_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="System" />
+                        </LinearLayout>
+
+                        <!-- Color tiles open the color dialog in spec 002 Phase 4. -->
+                        <LinearLayout
+                            android:id="@+id/primary_color_tile"
+                            style="@style/Widget.DeviceInfo.ConfigTile">
+
+                            <View
+                                android:layout_width="@dimen/swatchSize"
+                                android:layout_height="@dimen/swatchSize"
+                                android:background="@drawable/bg_swatch"
+                                android:backgroundTint="?attr/colorPrimary" />
+
+                            <TextView
+                                style="@style/Widget.DeviceInfo.ConfigTileLabel"
+                                android:text="@string/config_primary_color" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/accent_color_tile"
+                            style="@style/Widget.DeviceInfo.ConfigTile">
+
+                            <View
+                                android:layout_width="@dimen/swatchSize"
+                                android:layout_height="@dimen/swatchSize"
+                                android:background="@drawable/bg_swatch"
+                                android:backgroundTint="?attr/colorSecondary" />
+
+                            <TextView
+                                style="@style/Widget.DeviceInfo.ConfigTileLabel"
+                                android:text="@string/config_accent_color" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dividerHeight"
+                        android:layout_marginHorizontal="@dimen/mediumGap"
+                        android:background="?attr/colorOutlineVariant" />
+
+                    <LinearLayout
+                        android:id="@+id/temperature_unit_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/mediumGap">
+
+                        <ImageView
+                            android:layout_width="@dimen/configIconSize"
+                            android:layout_height="@dimen/configIconSize"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_thermometer"
+                            app:tint="?attr/colorPrimary" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/mediumGap"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/config_temperature_unit"
+                                android:textAppearance="?attr/textAppearanceBodyLarge"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/temperature_unit_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant"
+                                tools:text="Celsius" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card 2: about. -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mediumGap">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="@dimen/mediumGap">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="@dimen/aboutIconSize"
+                        android:layout_height="@dimen/aboutIconSize"
+                        android:importantForAccessibility="no"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_launcher"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.DeviceInfo.AppIcon" />
+
+                    <TextView
+                        android:id="@+id/about_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/smallGap"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface"
+                        tools:text="Device Info - v2.0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/tinyGap"
+                        android:gravity="center"
+                        android:text="@string/config_slogan"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Footer links (no card). -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mediumGap"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/privacy_policy_link"
+                    style="@style/Widget.DeviceInfo.FooterLink"
+                    android:text="@string/config_privacy_policy" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/tinyGap"
+                    android:importantForAccessibility="no"
+                    android:text="@string/config_link_separator"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:id="@+id/terms_of_service_link"
+                    style="@style/Widget.DeviceInfo.FooterLink"
+                    android:text="@string/config_terms_of_service" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

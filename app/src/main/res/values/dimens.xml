@@ -7,4 +7,7 @@
     <dimen name="cardCornerRadius">16dp</dimen>
     <dimen name="dividerHeight">1dp</dimen>
     <dimen name="toolbarIconSize">32dp</dimen>
+    <dimen name="swatchSize">40dp</dimen>
+    <dimen name="configIconSize">24dp</dimen>
+    <dimen name="aboutIconSize">64dp</dimen>
 </resources>

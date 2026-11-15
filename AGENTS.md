@@ -44,7 +44,9 @@ Current state (spec 001 `docs/requirements/001-device-diagnostics.md` done):
   `AppConfigRepository` (SharedPreferences), brand colors `#31C7D6` /
   `#2BB0C1`, palette theme overlays applied by `ThemeApplier`. Phase 2 done:
   neutral gray surfaces, toolbar with app icon, rows drawn as rounded card
-  groups (`RowPosition`).
+  groups (`RowPosition`). Phase 3 done: `ConfigActivity` (Settings page:
+  dark mode, temperature unit, About, policy links); Battery and the report
+  follow the temperature unit.
 
 Modernization goal:
 
@@ -69,7 +71,7 @@ Modernization goal:
 | Networking | None | None. If ever added: Retrofit + coroutines (see `docs/DECISIONS.md`) |
 | Async | Coroutines; injected IO dispatcher; `viewModelScope` | Same |
 | DI | Hilt (KSP) | Same |
-| Navigation | Single Activity, `FragmentStateAdapter` tabs | Same; dedicated Activity only for full-screen tests |
+| Navigation | Single Activity, `FragmentStateAdapter` tabs | Same; dedicated Activities only for full-screen tests and the config page |
 | SDK | minSdk 26, compileSdk/targetSdk 37 (`gradle/libs.versions.toml`) | Same |
 | Tests | JVM unit tests for formatter, mappers, renderer, ViewModels | Add tests with every new parser, repository, mapper, and ViewModel |
 

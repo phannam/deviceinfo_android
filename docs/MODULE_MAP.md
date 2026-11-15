@@ -35,6 +35,7 @@ Packages under `vn.npstudio.deviceinfo`:
 | `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |
 | `feature.main` | `MainActivity`, `MainViewModel`, `MainTab`, `MainTabAdapter`, `MainUiEffect`, `ReportSection`, `ShareReportRenderer` |
 | `feature.device` | `DeviceFragment`, `DeviceViewModel`, `DeviceRowMapper` |
+| `feature.config` | `ConfigActivity` (Settings page), `ConfigViewModel`, `ConfigUiState` (+ `DarkMode`/`TemperatureUnit` label resources) |
 | `feature.battery` | `BatteryFragment`, `BatteryViewModel`, `BatteryRowMapper` |
 | `feature.cpu` | `CpuFragment`, `CpuViewModel`, `CpuRowMapper` |
 | `feature.display` | `DisplayFragment`, `DisplayViewModel`, `DisplayRowMapper` |

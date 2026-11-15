@@ -16,6 +16,7 @@ import vn.npstudio.deviceinfo.BuildConfig
 import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
 import vn.npstudio.deviceinfo.databinding.ActivityMainBinding
+import vn.npstudio.deviceinfo.feature.config.ConfigActivity
 import vn.npstudio.deviceinfo.ui.window.WindowSnapshotReader
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -41,11 +42,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         binding.toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.action_share_report) {
-                viewModel.onShareClicked(WindowSnapshotReader.read(this, binding.root))
-                true
-            } else {
-                false
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    startActivity(Intent(this, ConfigActivity::class.java))
+                    true
+                }
+                R.id.action_share_report -> {
+                    viewModel.onShareClicked(WindowSnapshotReader.read(this, binding.root))
+                    true
+                }
+                else -> false
             }
         }
         setUpTabs()

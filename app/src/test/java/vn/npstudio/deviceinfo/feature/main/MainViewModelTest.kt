@@ -6,13 +6,16 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import vn.npstudio.deviceinfo.data.repository.AppConfigRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.ScreenTestResultRepositoryImpl
+import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 import vn.npstudio.deviceinfo.feature.battery.BatteryRowMapper
 import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
 import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
 import vn.npstudio.deviceinfo.feature.screentest.ScreenTestRowMapper
+import vn.npstudio.deviceinfo.testing.FakeAppConfigLocalDataSource
 import vn.npstudio.deviceinfo.testing.FakeBatteryRepository
 import vn.npstudio.deviceinfo.testing.FakeCpuRepository
 import vn.npstudio.deviceinfo.testing.FakeDeviceInfoRepository
@@ -33,7 +36,10 @@ class MainViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private fun createViewModel(handle: SavedStateHandle = SavedStateHandle()) =
+    private fun createViewModel(
+        handle: SavedStateHandle = SavedStateHandle(),
+        config: AppConfigRepositoryImpl = AppConfigRepositoryImpl(FakeAppConfigLocalDataSource()),
+    ) =
         MainViewModel(
             handle,
             FakeDeviceInfoRepository(),
@@ -42,6 +48,7 @@ class MainViewModelTest {
             FakeDisplayRepository(),
             FakeMemoryRepository(),
             ScreenTestResultRepositoryImpl(),
+            config,
         )
 
     @Test
@@ -63,13 +70,28 @@ class MainViewModelTest {
                 listOf(
                     ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(sampleDeviceInfo)),
                     ReportSection(MainTab.CPU.titleRes, CpuRowMapper.map(sampleCpuInfo, sampleFrequencies)),
-                    ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(sampleBatteryInfo)),
+                    ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(sampleBatteryInfo, TemperatureUnit.CELSIUS)),
                     ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo, sampleWindowSnapshot)),
                     ReportSection(MainTab.MEMORY.titleRes, MemoryRowMapper.map(sampleMemoryInfo, sampleStorageInfo)),
                     ReportSection(MainTab.SCREEN_TEST.titleRes, ScreenTestRowMapper.map(null)),
                 ),
             )
             assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun onShareClicked_usesTemperatureUnit() = runTest(mainDispatcherRule.dispatcher) {
+        val config = AppConfigRepositoryImpl(FakeAppConfigLocalDataSource())
+        config.setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+        val viewModel = createViewModel(config = config)
+
+        viewModel.effects.test {
+            viewModel.onShareClicked(sampleWindowSnapshot)
+
+            val sections = (awaitItem() as MainUiEffect.Share).sections
+            val battery = sections.single { it.title == MainTab.BATTERY.titleRes }
+            assertEquals(BatteryRowMapper.map(sampleBatteryInfo, TemperatureUnit.FAHRENHEIT), battery.rows)
         }
     }
 }

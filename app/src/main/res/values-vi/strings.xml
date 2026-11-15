@@ -98,6 +98,7 @@
 
     <string name="value_percent_int">%1$d%%</string>
     <string name="value_temperature_celsius">%1$.1f °C</string>
+    <string name="value_temperature_fahrenheit">%1$.1f °F</string>
     <string name="value_voltage">%1$.3f V</string>
     <string name="value_milliamps">%1$d mA</string>
     <string name="value_milliamp_hours">%1$d mAh</string>
@@ -160,4 +161,20 @@
     <string name="label_screen_test_dead_pixels">Điểm chết hoặc kẹt màu</string>
     <string name="label_screen_test_lines">Sọc hoặc phân dải màu</string>
     <string name="label_screen_test_burn_in">Bóng mờ hoặc ố màu</string>
+    <!-- Config page (spec 002 section 4.3) -->
+    <string name="config_dark_mode">Chế độ tối</string>
+    <string name="config_dark_mode_off">Tắt</string>
+    <string name="config_dark_mode_on">Bật</string>
+    <string name="config_dark_mode_system">Theo hệ thống</string>
+    <string name="config_primary_color">Màu chính</string>
+    <string name="config_accent_color">Màu nhấn</string>
+    <string name="config_temperature_unit">Đơn vị nhiệt độ</string>
+    <string name="config_temperature_celsius">Độ C</string>
+    <string name="config_temperature_fahrenheit">Độ F</string>
+    <string name="config_about_version">%1$s - v%2$s</string>
+    <string name="config_slogan">Hiểu rõ thiết bị của bạn, từ trong ra ngoài</string>
+    <string name="config_privacy_policy">Chính sách bảo mật</string>
+    <string name="config_terms_of_service">Điều khoản dịch vụ</string>
+    <string name="config_no_browser">Không tìm thấy trình duyệt</string>
+    <string name="config_navigate_up">Quay lại</string>
 </resources>

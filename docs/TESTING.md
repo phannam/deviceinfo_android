@@ -15,11 +15,14 @@
     (`Int.MIN_VALUE`, `0`), status/plug/health constants, missing extras.
   - `data/repository/BatteryRepositoryImplTest`: broadcast + 2 s property
     poll combined (virtual time), unchanged polls are not re-emitted.
-  - `feature/battery/BatteryRowMapperTest`: units (°C, V, mA, mAh), enum
+  - `feature/battery/BatteryRowMapperTest`: units (°C, °F, V, mA, mAh), enum
     strings, estimated capacity rules, time to full only while charging,
     unavailable values.
-  - `feature/battery/BatteryViewModelTest`: live updates and upstream stop
-    5 s after the last subscriber.
+  - `feature/battery/BatteryViewModelTest`: live updates, re-mapping when
+    the temperature unit changes, and upstream stop 5 s after the last
+    subscriber.
+  - `feature/config/ConfigViewModelTest`: state from stored config; dark mode
+    and temperature unit selections update state and persist.
   - `data/repository/MemoryRepositoryImplTest`: 2 s RAM polling (virtual
     time), unchanged values are not re-emitted, storage read.
   - `data/source/AppConfigParserTest`: enum fallback, tab list parsing
@@ -48,7 +51,7 @@
   - `feature/main/ShareReportRendererTest`: header and section layout with a
     fake resolver.
   - `feature/main/MainViewModelTest`: selected tab restored from
-    `SavedStateHandle`; share effect contains Device, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections.
+    `SavedStateHandle`; share effect contains Device, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections; the Battery section uses the selected temperature unit.
   - Shared helpers in `testing/`: `MainDispatcherRule`
     (`StandardTestDispatcher`), sample models, fake repositories and data sources, and
     `byLabel()` for row lookups (`rows[UiText.res(R.string.label_x)]`).
@@ -116,6 +119,11 @@
 
 Run these on a device after UI, tab, or share changes:
 
+- Settings page: each dark mode option (Off/On/System) applies at once to
+  the Settings page and the main screen and survives an app restart; °F
+  shows on the Battery tab and in the share report; policy links open a
+  browser (or a Snackbar when none is installed); Back and the up arrow
+  return to the main screen.
 - Light and dark mode (system setting): every tab, the toolbar, and the
   Screen Test card have readable text; the first and last rows of each list
   have rounded corners, including after a list grows or shrinks.
