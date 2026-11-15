@@ -5,69 +5,64 @@
 ### ADR-CURRENT-001: UI Uses XML Layouts With ViewBinding
 
 - Status: Current
-- Context: The app has four layouts (`activity_main`, `fragment_listitems`,
-  `item_info`, `view_tab`) and one menu (`menu_main`).
-- Decision observed: UI is XML-based and uses ViewBinding (`viewBinding = true`).
-  Lists use `ListView` with an `ArrayAdapter` that caches the row binding in
-  the view tag. Only the unused vendored `SlidingTabLayout` still calls
-  `findViewById` with caller-provided ids.
-- Notes: Jetpack Compose is not part of the app.
+- Decision observed: Layouts `activity_main`, `fragment_info_list`,
+  `item_info_row`, and menu `menu_main`. Lists use `RecyclerView` +
+  `ListAdapter` with stable ids. Material 3 theme
+  (`Theme.Material3.DayNight.NoActionBar`), `MaterialToolbar`, `TabLayout` +
+  `ViewPager2`.
 
-### ADR-CURRENT-002: Architecture Is Activity/Fragment Plus A Static Singleton
+### ADR-CURRENT-002: Strict MVVM With Hilt
 
 - Status: Current
-- Context: `MainActivity` (via `TabActivity` and `BaseActivity`) hosts
-  `DeviceFragment` and `DisplayFragment` (via `ListFragment` and
-  `BaseFragment`).
-- Decision observed: There is no ViewModel, repository, or data source.
-  `AppManager` is a static singleton created in `DeviceApplication.onCreate()`.
-  It reads `Build` and `DisplayMetrics` values once and exposes them as
-  `List<Item>`. Fragments and the share action read from it directly.
-- Notes: Best classified as plain Activity/Fragment code with a global
-  service, not MVC, MVP, or MVVM.
+- Decision observed: Fragment -> `@HiltViewModel` -> repository interface ->
+  data source interface. Hilt modules in `di/` bind implementations with
+  `@Binds`; `DispatcherModule` provides one IO `CoroutineDispatcher`.
+  Hilt annotation processing uses KSP (`com.google.devtools.ksp`) with AGP
+  built-in Kotlin.
 
 ### ADR-CURRENT-003: No Storage
 
 - Status: Current
-- Decision observed: The app has no database, SharedPreferences, files, or
-  backup. All values are recomputed from the platform on each process start.
+- Decision observed: No database, SharedPreferences, or files. The selected
+  tab is kept in `SavedStateHandle` only.
 
 ### ADR-CURRENT-004: No Networking
 
 - Status: Current
 - Decision observed: There is no HTTP client and no `INTERNET` permission.
 
-### ADR-CURRENT-005: No Async
+### ADR-CURRENT-005: Coroutines And StateFlow
 
 - Status: Current
-- Decision observed: All data collection runs synchronously on the main thread
-  in `Application.onCreate()`. There are no coroutines, threads, or callbacks
-  for data work.
+- Decision observed: Repositories expose `suspend` functions that switch to
+  the injected IO dispatcher. ViewModels expose
+  `StateFlow<InfoListUiState>` built with `stateIn(WhileSubscribed(5000))`;
+  `MainViewModel` emits one-time effects through a `Channel`.
 
-### ADR-CURRENT-006: No Dependency Injection
-
-- Status: Current
-- Decision observed: Dependencies are reached through
-  `AppManager.getInstance()` and direct construction. No DI framework is
-  present.
-
-### ADR-CURRENT-007: Navigation Is A Single Activity With Manual Tabs
+### ADR-CURRENT-006: Single Activity With ViewPager2 Tabs
 
 - Status: Current
-- Decision observed: `TabActivity.selectTab(...)` replaces the fragment in
-  `R.id.fragment_container` and adds every tab change to the back stack. Tabs
-  are rendered by the custom `SlidingFragmentTab` view.
+- Decision observed: `MainActivity` hosts `ViewPager2` with a
+  `FragmentStateAdapter`; tab switches never touch the back stack. The
+  selected tab is restored from `MainViewModel`.
 
-### ADR-CURRENT-008: Build And Language Are Modernized; Architecture Is Not
+### ADR-CURRENT-007: Share Through The System Share Sheet
+
+- Status: Current
+- Decision observed: `Intent.createChooser` with `ACTION_SEND` `text/plain`,
+  subject and text only; no recipient, no package query, no `<queries>`.
+  The report is built from `ReportSection`s and rendered by
+  `ShareReportRenderer`.
+
+### ADR-CURRENT-008: Build Toolchain
 
 - Status: Current
 - Decision observed: AGP 9.4.1, Gradle 9.9.1 wrapper, Kotlin DSL build
-  scripts, `gradle/libs.versions.toml`, AndroidX (`appcompat`, `fragment`,
-  `viewpager`, `annotation`), Java 17, minSdk 26, compileSdk/targetSdk 37
-  (`compileSdk` uses the `release(...)` DSL with `minorApiLevel`), namespace
-  and applicationId `vn.npstudio.deviceinfo`. Release builds enable R8 through
-  `optimization { enable = true }`. All source is Kotlin, converted 1:1 from
-  Java with behavior preserved; the architecture is unchanged.
+  scripts, `gradle/libs.versions.toml`, Java 17, minSdk 26,
+  compileSdk/targetSdk 37 (`release(...)` DSL with `minorApiLevel`),
+  namespace and applicationId `vn.npstudio.deviceinfo`, `buildConfig` enabled
+  for `VERSION_NAME` in the share report. Release builds enable R8 through
+  `optimization { enable = true }`.
 - Notes: Android Studio supports AGP up to 9.4.1 at the time of writing; do
   not raise AGP beyond what the owner's Android Studio supports.
 
@@ -83,8 +78,7 @@
   without user value.
 - Rejected alternatives: Jetpack Compose, mixed Compose/XML screens, Kotlin
   synthetics, and new `findViewById` usage for app-owned layouts.
-- Migration path: ViewBinding is enabled and used by every screen, adapter, and
-  app-owned custom view. Remaining work is `ListView` to `RecyclerView`.
+- Migration path: Done in Phase 1.
 
 ### ADR-TARGET-002: Kotlin Only
 
@@ -108,8 +102,7 @@
   and lets display values refresh on configuration change.
 - Rejected alternatives: MVC, MVP, keeping `AppManager` as a global service,
   and ViewModels calling platform APIs directly.
-- Migration path: Add data sources and a repository first, then a ViewModel per
-  screen, then switch the fragments, then delete `AppManager`.
+- Migration path: Done in Phase 1; `AppManager` was deleted.
 
 ### ADR-TARGET-004: Use Hilt For Dependency Injection
 
@@ -119,10 +112,9 @@
   boundaries without manual factories.
 - Rejected alternatives: Manual singletons/service locators, Dagger without
   Hilt, and Koin.
-- Migration path: Add the Hilt plugin and `@HiltAndroidApp` on the Application
-  in the first MVVM task. Use KSP for Hilt's annotation processing if supported
-  by the AGP/Kotlin toolchain at that time; otherwise use
-  `com.android.legacy-kapt` as described in `docs/CONVENTIONS.md`.
+- Migration path: Done in Phase 1 with KSP. If KSP ever stops working with
+  AGP built-in Kotlin, fall back to `com.android.legacy-kapt` as described in
+  `docs/CONVENTIONS.md`.
 
 ### ADR-TARGET-005: Use Coroutines For Async Work
 
@@ -149,12 +141,12 @@
 ### ADR-TARGET-007: Single Activity, FragmentManager-Owned Tabs
 
 - Status: Accepted
-- Decision: Keep `MainActivity` as the only Activity. Tab destinations are
-  owned by `FragmentManager` with stable tags; tab switches must not grow the
-  back stack. Selected tab state lives in the ViewModel. Adopt Jetpack
-  Navigation only if the app gains more than the two tab destinations.
-- Why: Two tabs do not justify a NavGraph, but the current back-stack and
-  recreation behavior is incorrect.
+- Decision: Keep `MainActivity` as the only Activity for the tabs, hosted by
+  `ViewPager2` + `FragmentStateAdapter`; tab switches must not grow the back
+  stack. Selected tab state lives in the ViewModel. Full-screen flows such as
+  the Screen Test may use a dedicated Activity (spec 001). Adopt Jetpack
+  Navigation only if the app gains real multi-screen navigation.
+- Why: Tabs do not justify a NavGraph.
 - Rejected alternatives: Adding a custom router; one Activity per tab.
 
 ### ADR-TARGET-008: Keep Minimum SDK 26
@@ -162,8 +154,7 @@
 - Status: Accepted
 - Decision: Keep minSdk 26 from `gradle/libs.versions.toml`.
 - Why: It matches the owner's other apps and removes pre-Oreo branches.
-- Migration path: Remove pre-26 `Build.VERSION.SDK_INT` checks (for example
-  in `SlidingFragmentTab.createDefaultTabView`) when those files are touched.
+- Migration path: Done; no pre-26 branches remain.
 
 ### ADR-TARGET-009: No Storage Or Networking Unless A Feature Needs It
 
@@ -186,16 +177,5 @@
 
 ## Gaps & Recommendations
 
-- Decide whether to keep the vendored `SlidingFragmentTab` tab strip or replace
-  it with Material `TabLayout` (adds the Material Components dependency) or a
-  `BottomNavigationView`. Recommended: Material `TabLayout` when the tab host is
-  refactored; it removes five vendored files.
-- Decide whether display values should reflect the current window (Window
-  Metrics, changes with rotation/multi-window) or the physical display. Today
-  the app reports `getDefaultDisplay().getMetrics(...)` once at startup, and
-  the activity is locked to portrait.
-- Decide the share target: keep email-only (with the owner's address
-  prefilled) or use a generic `ACTION_SEND` share sheet. Recommended: generic
-  share sheet without a hardcoded recipient.
 - Release signing, versioning policy, and Play publishing are not set up in
   this repository.

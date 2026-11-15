@@ -11,52 +11,48 @@ about the device it runs on.
 
 The app lets users:
 
-- View general device information from `android.os.Build` (product, device,
-  board, manufacturer, brand, model).
-- View display information from `DisplayMetrics` (resolution, density, dpi,
-  scaled density, and the Android density constants).
-- Share all collected information as plain text through an email client.
+- View device and OS information (`android.os.Build`, kernel, Java VM,
+  uptime).
+- View display information (resolution, density, dpi, font scale).
+- Share all collected information as plain text through the system share
+  sheet.
+- Planned (spec `docs/requirements/001-device-diagnostics.md`): CPU, Battery,
+  full Display, Memory & Storage, and Screen Test tabs.
 
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state:
+Current state (after Phase 1 of spec 001):
 
-- Single `:app` module, 100% Kotlin, about 20 source files, last functionally
-  changed in 2015. The build was modernized in 2026 (AGP 9.4.1, Gradle 9.9.1,
-  Kotlin DSL, version catalog, AndroidX, namespace `vn.npstudio.deviceinfo`)
-  and the source was converted 1:1 from Java to Kotlin with ViewBinding.
-- One `MainActivity` hosts two tabs (Device, Display) through a custom tab
-  strip and manual `FragmentTransaction`s.
-- Data comes from a static `AppManager` singleton created in
-  `DeviceApplication.onCreate()`. It reads every value once at startup.
-- UI uses XML layouts with ViewBinding, a `ListView`, and an `ArrayAdapter`.
-- No ViewModel, no DI, no coroutines.
+- Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
+  version catalog, namespace `vn.npstudio.deviceinfo`.
+- Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
+- `MainActivity` hosts Device and Display tabs with Material `TabLayout` +
+  `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
+- Strings in English (`values/`) and Vietnamese (`values-vi/`).
 
 Modernization goal:
 
 - Keep XML layouts. Do not move to Compose.
 - All code is Kotlin. Do not add Java.
 - Move to strict MVVM with Hilt, `StateFlow`, coroutines, and ViewBinding.
-- Read device and display values through platform data sources behind a
-  repository instead of the static `AppManager`.
-- Refactor gradually. Do not migrate the entire app at once.
+- Add diagnostics features phase by phase per spec 001.
 
 ## Tech Stack
 
 | Area | Current | Target |
 | --- | --- | --- |
-| Language | Kotlin (AGP built-in), JVM target 17 | Kotlin for new and refactored code (AGP built-in Kotlin) |
-| UI | XML layouts with ViewBinding, `ListView` + `ArrayAdapter`, vendored tab views | XML + ViewBinding only; `RecyclerView` for lists; no Compose |
-| Architecture | Activity/Fragment + static `AppManager` singleton (no ViewModel) | Strict MVVM: UI -> ViewModel -> Repository -> DataSource |
-| State | Mutable fields in Activity, fragments, and `AppManager` | Read-only `StateFlow` UI state; `SharedFlow`/`Channel` for one-time effects |
+| Language | Kotlin (AGP built-in), JVM target 17 | Same |
+| UI | XML + ViewBinding, Material 3, `TabLayout` + `ViewPager2`, `RecyclerView` | Same; no Compose |
+| Architecture | Strict MVVM: UI -> ViewModel -> Repository -> DataSource | Same |
+| State | Read-only `StateFlow` UI state; `Channel` for one-time effects | Same |
 | Storage | None | None. Add SharedPreferences only for lightweight settings if a feature needs it |
 | Networking | None | None. If ever added: Retrofit + coroutines (see `docs/DECISIONS.md`) |
-| Async | None; all work runs synchronously on the main thread at startup | Coroutines; UI-triggered work starts in `viewModelScope` |
-| DI | Static singleton (`AppManager.getInstance()`) | Hilt only |
-| Navigation | Single Activity, manual `FragmentTransaction.replace` per tab | Single Activity; FragmentManager-owned tab destinations; Jetpack Navigation only if more screens are added |
+| Async | Coroutines; injected IO dispatcher; `viewModelScope` | Same |
+| DI | Hilt (KSP) | Same |
+| Navigation | Single Activity, `FragmentStateAdapter` tabs | Same; dedicated Activity only for full-screen tests |
 | SDK | minSdk 26, compileSdk/targetSdk 37 (`gradle/libs.versions.toml`) | Same |
-| Tests | Placeholder JUnit and AndroidX instrumented tests only | Unit tests for data sources, repository, formatter, and ViewModels |
+| Tests | JVM unit tests for formatter, mappers, renderer, ViewModels | Add tests with every new parser, repository, mapper, and ViewModel |
 
 ## Doc Index
 
@@ -72,6 +68,9 @@ Read the docs in this order for modernization work:
 5. `docs/DATA_MODELS.md`: current and target models and mapping.
 6. `docs/TESTING.md`: current test coverage, target testing strategy, commands,
    and manual checks.
+7. `docs/requirements/NNN-*.md`: feature specs. When a task implements a
+   spec, the spec is the source of truth for scope, data sources, phases, and
+   acceptance criteria. Work one phase at a time and update the spec status.
 
 The app has no network layer, so there is no `docs/API_CONTRACTS.md`. Create it
 in the same task that introduces any HTTP API.
@@ -105,7 +104,6 @@ State the conflict in the final summary.
 - Never mix old pattern and new pattern in the same file. If the file cannot be
   made internally consistent within the task scope, stop and ask for direction.
 - Never introduce Compose under any circumstance.
-- Do not migrate the entire app at once.
 - Add abstractions only when they clarify a real boundary or remove repeated
   behavior. This app is small; avoid layers that only forward calls.
 - Keep Activities and Fragments UI-only.
@@ -163,12 +161,10 @@ and thread working in this repository:
 - No direct `Build`, `DisplayMetrics`, `WindowManager`, or `PackageManager`
   access from Activity, Fragment, adapter, custom view, or ViewModel in new or
   refactored code.
-- No new static singletons or service locators. Do not add new callers of
-  `AppManager.getInstance()`.
+- No static singletons or service locators.
 - No new `GlobalScope`, ad-hoc `MainScope`, or runtime `runBlocking`.
 - No new manual ViewModel factories when Hilt can provide the ViewModel.
 - No `LiveData`, `MutableLiveData`, or `SingleLiveEvent` for ViewModel state.
-- Do not migrate the entire app at once.
 
 ## XML Layout And Dimen Rules
 
@@ -181,10 +177,9 @@ implement responsive Android layout behavior.
 - Use fixed heights only when the element is truly fixed-size.
 - Prefer `minHeight` and `minWidth` for row/control touch targets so content can
   grow with localization, font scale, or dynamic values.
-- `res/values/dimens.xml` currently holds only unused template dimens
-  (`app_bar_height`, `fab_margin`, `text_margin`), and layouts use inline `dp`
-  values. When a task touches layout spacing, add semantic spacing dimens with
-  these names and reuse them: `xTinyGap`, `tinyGap`, `xSmallGap`, `smallGap`,
+- `res/values/dimens.xml` holds `tinyGap` (4dp), `smallGap` (12dp), and
+  `mediumGap` (16dp). Reuse them; when new spacing is needed, add it with
+  one of these names: `xTinyGap`, `tinyGap`, `xSmallGap`, `smallGap`,
   `mediumGap`, `xMediumGap`, `largeGap`, `xLargeGap`, and `icon_height`.
 - Add other dimens only when they are semantic, reused, or needed for distinct
   component behavior.
@@ -200,22 +195,14 @@ implement responsive Android layout behavior.
 
 Be extra careful around these areas:
 
-- `AppManager`: static singleton created in `DeviceApplication.onCreate()`. It
-  holds the application `Context` and computes all values once. Every screen and
-  the share action read from it.
-- `TabActivity` / `MainActivity` tab switching: every tab change calls
-  `FragmentTransaction.replace(...)` plus `addToBackStack(...)`, and manually
-  calls `onPause()`/`onStop()` on the previous fragment. `initTabs()` runs again
-  on recreation and pushes another transaction.
-- Vendored tab views in `views/` (`SlidingTabLayout` and `SlidingTabStrip` are
-  adapted AOSP Apache-2.0 samples; `SlidingFragmentTab`, `SlidingTab`, and
-  `SlidingTabRenderer` are app-owned). `SlidingTabLayout` is not inflated
-  anywhere, but `SlidingTabStrip` and `SlidingFragmentTab` use its
-  `TabColorizer`.
-- Share action in `MainActivity`: queries email apps with a `mailto:` intent
-  that contains the owner's email address, then sends `ACTION_SEND_MULTIPLE`.
-  Package visibility on API 30+ affects this query (see
-  `docs/ARCHITECTURE.md`).
+- `InfoRowAdapter` stable ids come from the row label resource id. Every row
+  in one list must have a unique label, or RecyclerView will misbehave.
+- Tab restoration: `MainActivity` restores the selected tab from
+  `MainViewModel` before registering the page callback. Keep that order.
+- `UiText.Resource` args are formatted with the string resource format; keep
+  `values/` and `values-vi/` format specifiers identical.
+- Hilt + KSP with AGP built-in Kotlin: do not apply
+  `org.jetbrains.kotlin.android`, `kotlin-kapt`, or an explicit stdlib.
 - `applicationId` is `vn.npstudio.deviceinfo`. Do not change it; it is the
   installed app identity.
 

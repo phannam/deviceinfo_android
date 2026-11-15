@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tabs -->
+    <string name="tab_device">Thiết bị</string>
+    <string name="tab_display">Màn hình</string>
+
+    <!-- Actions and share report -->
+    <string name="action_share">Chia sẻ</string>
+    <string name="share_chooser_title">Chia sẻ báo cáo thiết bị</string>
+    <string name="report_subject">Thông tin %1$s</string>
+    <string name="report_header">%1$s %2$s\nThời gian: %3$s\nThiết bị: %4$s</string>
+
+    <!-- Common -->
+    <string name="common_unavailable">Không khả dụng</string>
+
+    <!-- Device tab -->
+    <string name="label_device_manufacturer">Nhà sản xuất</string>
+    <string name="label_device_brand">Thương hiệu</string>
+    <string name="label_device_model">Mẫu máy</string>
+    <string name="label_device_codename">Thiết bị (tên mã)</string>
+    <string name="label_device_product">Sản phẩm</string>
+    <string name="label_device_board">Bo mạch</string>
+    <string name="label_device_hardware">Phần cứng</string>
+    <string name="label_device_android_version">Phiên bản Android</string>
+    <string name="label_device_api_level">Mức API</string>
+    <string name="label_device_security_patch">Bản vá bảo mật</string>
+    <string name="label_device_build_number">Số bản dựng</string>
+    <string name="label_device_fingerprint">Dấu vân tay bản dựng</string>
+    <string name="label_device_bootloader">Bootloader</string>
+    <string name="label_device_kernel">Phiên bản kernel</string>
+    <string name="label_device_java_vm">Java VM</string>
+    <string name="label_device_uptime">Thời gian hoạt động</string>
+
+    <!-- Display tab -->
+    <string name="label_display_resolution">Độ phân giải</string>
+    <string name="label_display_density_dpi">Mật độ điểm ảnh</string>
+    <string name="label_display_density">Hệ số mật độ</string>
+    <string name="label_display_xdpi">DPI ngang (xdpi)</string>
+    <string name="label_display_ydpi">DPI dọc (ydpi)</string>
+    <string name="label_display_font_scale">Tỉ lệ phông chữ</string>
+
+    <!-- Value formats -->
+    <string name="value_duration_dhm">%1$d ngày %2$d giờ %3$d phút</string>
+    <string name="value_resolution">%1$d × %2$d px</string>
+    <string name="value_dpi_int">%1$d dpi</string>
+    <string name="value_dpi_decimal">%1$.1f dpi</string>
+    <string name="value_scale">%1$.2f×</string>
+</resources>

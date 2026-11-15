@@ -2,19 +2,24 @@
 
 ## Current Test Coverage
 
-- What is tested today
-  - `app/src/test/java/vn/npstudio/deviceinfo/ExampleUnitTest.kt` asserts
-    `2 + 2 == 4`.
-  - `app/src/androidTest/java/vn/npstudio/deviceinfo/ApplicationTest.kt`
-    asserts that the target context package name is `vn.npstudio.deviceinfo`.
-  - No app behavior is covered.
+- What is tested today (JVM, `app/src/test/java/vn/npstudio/deviceinfo/`)
+  - `ui/format/ValueFormatterTest`: duration split, ISO date localization and
+    fallback, unavailable values.
+  - `feature/device/DeviceRowMapperTest`, `feature/display/DisplayRowMapperTest`:
+    row values and unavailable handling.
+  - `feature/device/DeviceViewModelTest`: `INITIAL` then loaded rows (Turbine).
+  - `feature/main/ShareReportRendererTest`: header and section layout with a
+    fake resolver.
+  - `feature/main/MainViewModelTest`: selected tab restored from
+    `SavedStateHandle`; share effect contains Device and Display sections.
+  - Shared helpers in `testing/`: `MainDispatcherRule`
+    (`StandardTestDispatcher`), sample models, and fake repositories.
+  - `app/src/androidTest/.../ApplicationTest.kt` asserts the package name.
 
 - Tools currently set up
-  - JUnit 4.13.2 (`testImplementation(libs.junit)`).
+  - JUnit 4.13.2, `kotlinx-coroutines-test`, Turbine.
   - AndroidX Test ext JUnit and runner (`androidTestImplementation`).
-  - `testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"`.
-  - Not configured: coroutines-test, MockK, Turbine, Espresso, Robolectric,
-    coverage tooling, CI.
+  - Not configured: MockK, Espresso, Robolectric, coverage tooling, CI.
 
 ## Target Testing Strategy
 
@@ -37,16 +42,16 @@
   - Instrumented tests: `app/src/androidTest/java/vn/npstudio/deviceinfo/...`
     only for platform behavior (display metrics fallback, tab restoration
     across recreation).
-  - Tests are Kotlin. Replace the placeholders when the first real tests are
-    added.
+  - Tests are Kotlin. Put shared fakes and rules in `testing/`.
 
 - Naming
   - Unit tests: `ClassNameTest`. Instrumented tests: `ClassNameAndroidTest`.
   - Method names describe behavior, for example
     `load_whenDataSourceReturnsMetrics_emitsRowsInOrder`.
 
-- Libraries (add to the version catalog with the first real tests)
-  - `kotlinx-coroutines-test` with a test dispatcher injected into ViewModels.
+- Libraries
+  - `kotlinx-coroutines-test` with `MainDispatcherRule`; pass its dispatcher
+    to `runTest`.
   - Turbine for `StateFlow`/`SharedFlow` assertions.
   - MockK only if a fake is impractical; prefer fakes. Do not add Mockito.
   - For `UiText`, assert the type and resource id or dynamic value; do not
@@ -75,8 +80,7 @@ Run these on a device after UI, tab, or share changes:
 
 - Both tabs show all rows; long values (for example `Build.DISPLAY` or long
   model names) are not clipped at large font scale.
-- Switch tabs several times, then press Back once: the app exits (target
-  behavior; today Back walks through tab history).
+- Switch tabs several times, then press Back once: the app exits.
 - Rotate or enable **Don't keep activities**, leave and return: the selected
   tab and its content are restored without duplicates.
 - Share on Android 11+ and on an older device: the chooser opens and the
@@ -87,18 +91,11 @@ Run these on a device after UI, tab, or share changes:
 
 ## Gaps & Recommendations
 
-❌ Current: Only placeholder tests exist.
-✅ Target: Unit tests for mapper, formatter, repository, and ViewModels.
-📋 How to fix: Add tests in the same task that introduces each MVVM piece.
-⚠️ Priority: High
-
-❌ Current: No coroutine/Flow test tooling.
-✅ Target: `kotlinx-coroutines-test` and Turbine in the version catalog.
-📋 How to fix: Add them with the first ViewModel.
-⚠️ Priority: Medium
-
 ❌ Current: No CI.
 ✅ Target: A pull-request workflow running `:app:testDebugUnitTest` and
 `:app:lintDebug`.
-📋 How to fix: Add after the first real tests exist.
+⚠️ Priority: Low
+
+❌ Current: No coverage tooling.
+✅ Target: Kover or JaCoCo before enforcing the 80% target.
 ⚠️ Priority: Low
