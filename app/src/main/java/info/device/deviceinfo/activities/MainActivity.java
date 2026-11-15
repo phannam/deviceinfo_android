@@ -58,13 +58,8 @@ public class MainActivity extends TabActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // action with ID action_refresh was selected
-            case R.id.action_share:
-                checkExistingEmailAccountAndSendEmail();
-                break;
-            default:
-                break;
+        if (item.getItemId() == R.id.action_share) {
+            checkExistingEmailAccountAndSendEmail();
         }
 
         return true;

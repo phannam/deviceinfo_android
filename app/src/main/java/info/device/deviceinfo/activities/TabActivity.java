@@ -1,7 +1,7 @@
 package info.device.deviceinfo.activities;
 
-import android.support.annotation.IdRes;
-import android.support.v4.app.FragmentTransaction;
+import androidx.annotation.IdRes;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 

@@ -1,0 +1,21 @@
+[versions]
+agp = "9.4.1"
+appcompat = "1.8.0"
+fragment = "1.9.1"
+viewpager = "1.1.0"
+annotation = "1.11.0"
+junit = "4.13.2"
+androidxJunit = "1.3.0"
+androidxTestRunner = "1.7.0"
+
+[libraries]
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+androidx-viewpager = { group = "androidx.viewpager", name = "viewpager", version.ref = "viewpager" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }

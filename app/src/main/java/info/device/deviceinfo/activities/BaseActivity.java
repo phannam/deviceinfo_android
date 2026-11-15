@@ -1,9 +1,9 @@
 package info.device.deviceinfo.activities;
 
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by namphan on 11/16/15.
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
 }
