@@ -6,6 +6,7 @@
     <string name="tab_battery">Pin</string>
     <string name="tab_display">Màn hình</string>
     <string name="tab_memory">Bộ nhớ</string>
+    <string name="tab_screen_test">Kiểm tra màn hình</string>
 
     <!-- Actions and share report -->
     <string name="action_share">Chia sẻ</string>
@@ -144,4 +145,18 @@
     <string name="value_megabytes">%1$.2f MB</string>
     <string name="value_gigabytes">%1$.2f GB</string>
     <string name="value_terabytes">%1$.2f TB</string>
+
+    <!-- Screen Test -->
+    <string name="screen_test_description">Hiển thị các màu và mẫu toàn màn hình để phát hiện điểm chết, điểm kẹt màu, sọc màn hình và bóng mờ (burn-in). Độ sáng được đặt tối đa trong lúc kiểm tra. Chạm màn hình để chuyển mẫu tiếp theo; nhấn Quay lại để dừng bất cứ lúc nào.</string>
+    <string name="screen_test_start">Bắt đầu kiểm tra</string>
+    <string name="screen_test_last_result">Kết quả gần nhất</string>
+    <string name="screen_test_hint">Chạm để tiếp tục · %1$d/%2$d</string>
+    <string name="screen_test_pattern_description">Mẫu kiểm tra màn hình. Chạm để tiếp tục.</string>
+    <string name="screen_test_result_title">Đánh dấu các lỗi bạn thấy</string>
+    <string name="screen_test_save">Lưu</string>
+    <string name="screen_test_discard">Bỏ qua</string>
+    <string name="screen_test_not_tested">Chưa kiểm tra</string>
+    <string name="label_screen_test_dead_pixels">Điểm chết hoặc kẹt màu</string>
+    <string name="label_screen_test_lines">Sọc hoặc phân dải màu</string>
+    <string name="label_screen_test_burn_in">Bóng mờ hoặc ố màu</string>
 </resources>

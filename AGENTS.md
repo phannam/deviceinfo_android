@@ -24,18 +24,20 @@ The app lets users:
   internal storage (total, free) refreshed on resume.
 - Share all collected information as plain text through the system share
   sheet.
-- Planned (spec `docs/requirements/001-device-diagnostics.md`):
-  Screen Test tab (dead pixels, screen lines).
+- Run a full-screen Screen Test (solid colors, gray, gradients, 1 px
+  checkerboard) and record dead pixels, lines, or burn-in for the session.
+- Planned (spec `docs/requirements/001-device-diagnostics.md`): Phase 7
+  report completion and docs.
 
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state (after Phase 5 of spec 001):
+Current state (after Phase 6 of spec 001):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
 - Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
-- `MainActivity` hosts Device, CPU, Battery, Display, and Memory tabs with Material `TabLayout` +
+- `MainActivity` hosts Device, CPU, Battery, Display, Memory, and Screen Test tabs with Material `TabLayout` +
   `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
 

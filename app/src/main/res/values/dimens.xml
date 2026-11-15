@@ -3,4 +3,5 @@
     <dimen name="tinyGap">4dp</dimen>
     <dimen name="smallGap">12dp</dimen>
     <dimen name="mediumGap">16dp</dimen>
+    <dimen name="hintBottomMargin">48dp</dimen>
 </resources>

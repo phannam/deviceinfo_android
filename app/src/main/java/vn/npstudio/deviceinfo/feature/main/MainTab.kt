@@ -9,4 +9,5 @@ enum class MainTab(@param:StringRes val titleRes: Int) {
     BATTERY(R.string.tab_battery),
     DISPLAY(R.string.tab_display),
     MEMORY(R.string.tab_memory),
+    SCREEN_TEST(R.string.tab_screen_test),
 }

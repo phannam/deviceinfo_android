@@ -1,6 +1,6 @@
 # Architecture
 
-Based on the source in `app/` after Phase 5 of
+Based on the source in `app/` after Phase 6 of
 `docs/requirements/001-device-diagnostics.md`. The app uses XML layouts;
 Compose is not part of the target architecture.
 
@@ -24,7 +24,10 @@ Compose is not part of the target architecture.
 - Memory tab: `ActivityManager.MemoryInfo` polled every 2 s while visible;
   internal storage from `StorageStatsManager` (default volume) on each
   resume.
-- Shares a plain-text report (Device + CPU + Battery + Display + Memory sections) through the system
+- Screen Test tab: starts `ScreenTestActivity` (immersive, full brightness,
+  cutout area covered) that draws 9 patterns with `ScreenTestPatternView`;
+  the answers are kept in memory by `ScreenTestResultRepository`.
+- Shares a plain-text report (Device + CPU + Battery + Display + Memory + Screen Test sections) through the system
   share sheet.
 
 **Pattern: strict MVVM with Hilt**
@@ -45,6 +48,11 @@ BatteryFragment
   -> BatteryDataSource  (ContextCompat.registerReceiver NOT_EXPORTED,
                         BatteryManager, PowerManager)
   -> BatteryRowMapper (pure)
+
+ScreenTestFragment -> ScreenTestResultViewModel  result.map(rows)
+ScreenTestActivity -> ScreenTestViewModel  pattern index, 2 s hint timer,
+                      dialog answers; Save -> ScreenTestResultRepository.save()
+ScreenTestResultRepository  @Singleton in-memory StateFlow<ScreenTestResult?>
 
 MemoryFragment  onResume -> MemoryViewModel.onResumed()
   -> MemoryViewModel   combine(observeRam(), resumes.map { getStorageInfo() })
@@ -125,8 +133,8 @@ MainActivity share menu
 
 ### 1. Remaining diagnostics tabs
 
-- Current: Device, CPU, Battery, Display, and Memory exist.
-- Target: Screen Test and report completion per
-  `docs/requirements/001-device-diagnostics.md` Phases 6-7.
+- Current: Device, CPU, Battery, Display, Memory, and Screen Test exist.
+- Target: Report completion and docs per
+  `docs/requirements/001-device-diagnostics.md` Phase 7.
 - Priority: High
 

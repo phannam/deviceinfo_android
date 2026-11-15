@@ -6,11 +6,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import vn.npstudio.deviceinfo.data.repository.ScreenTestResultRepositoryImpl
 import vn.npstudio.deviceinfo.feature.battery.BatteryRowMapper
 import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
 import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
+import vn.npstudio.deviceinfo.feature.screentest.ScreenTestRowMapper
 import vn.npstudio.deviceinfo.testing.FakeBatteryRepository
 import vn.npstudio.deviceinfo.testing.FakeCpuRepository
 import vn.npstudio.deviceinfo.testing.FakeDeviceInfoRepository
@@ -39,6 +41,7 @@ class MainViewModelTest {
             FakeBatteryRepository(),
             FakeDisplayRepository(),
             FakeMemoryRepository(),
+            ScreenTestResultRepositoryImpl(),
         )
 
     @Test
@@ -63,6 +66,7 @@ class MainViewModelTest {
                     ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(sampleBatteryInfo)),
                     ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo, sampleWindowSnapshot)),
                     ReportSection(MainTab.MEMORY.titleRes, MemoryRowMapper.map(sampleMemoryInfo, sampleStorageInfo)),
+                    ReportSection(MainTab.SCREEN_TEST.titleRes, ScreenTestRowMapper.map(null)),
                 ),
             )
             assertEquals(expected, awaitItem())

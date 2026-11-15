@@ -16,11 +16,13 @@ import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
 import vn.npstudio.deviceinfo.domain.repository.MemoryRepository
+import vn.npstudio.deviceinfo.domain.repository.ScreenTestResultRepository
 import vn.npstudio.deviceinfo.feature.battery.BatteryRowMapper
 import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
 import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
+import vn.npstudio.deviceinfo.feature.screentest.ScreenTestRowMapper
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +33,7 @@ class MainViewModel @Inject constructor(
     private val batteryRepository: BatteryRepository,
     private val displayRepository: DisplayRepository,
     private val memoryRepository: MemoryRepository,
+    private val screenTestResultRepository: ScreenTestResultRepository,
 ) : ViewModel() {
 
     val selectedTab: StateFlow<MainTab> = savedStateHandle.getStateFlow(KEY_SELECTED_TAB, MainTab.DEVICE)
@@ -57,6 +60,7 @@ class MainViewModel @Inject constructor(
                     MainTab.MEMORY.titleRes,
                     MemoryRowMapper.map(memoryRepository.observeRam().first(), memoryRepository.getStorageInfo()),
                 ),
+                ReportSection(MainTab.SCREEN_TEST.titleRes, ScreenTestRowMapper.map(screenTestResultRepository.result.value)),
             )
             _effects.send(MainUiEffect.Share(sections))
         }

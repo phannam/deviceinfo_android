@@ -1,6 +1,6 @@
 # 001 - Device Diagnostics
 
-- Status: In progress. Phases 1-4 implemented; Phase 5 implemented (pending owner build); Phases 6-7 open.
+- Status: In progress. Phases 1-5 implemented; Phase 6 implemented (pending owner build); Phase 7 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Implements: `docs/ARCHITECTURE.md` target rules, ADR-TARGET-001..004
@@ -227,6 +227,19 @@ of the last run in this session.
 Results are stored in `ScreenTestResultRepository` (Hilt `@Singleton`,
 in-memory `StateFlow<ScreenTestResult?>`).
 
+Implementation notes:
+
+- `ScreenTestResult(defects: Set<ScreenDefect>)`; the dialog is a
+  multi-choice list where a checked item means Yes. Save stores the result;
+  Discard, Back, or cancelling the dialog finish without a result.
+- `ScreenTestViewModel` (Activity) owns the pattern index, the 2 s hint
+  timer, and dialog answers, so recreation keeps the current pattern.
+  `ScreenTestResultViewModel` (tab) maps the stored result.
+- The checkerboard uses a 2x2 `BitmapShader` tile with `REPEAT` and no
+  filtering; it is drawn on Canvas, not as a full-screen image.
+- The share report already includes the Screen Test section (`Not tested`
+  when there is no result).
+
 ## 5. Architecture
 
 Follows `docs/ARCHITECTURE.md` and `docs/MODULE_MAP.md`. Additions and
@@ -439,7 +452,7 @@ owner builds, tests on device, and reports errors.
 - `MemoryDataSource`, `MemoryRepository`, tab UI with usage bars.
 - Acceptance: totals match Settings > Storage / About phone within rounding.
 
-### Phase 6 - Screen Test
+### Phase 6 - Screen Test (implemented)
 
 - Screen Test tab, `ScreenTestActivity`, `ScreenTestPatternView`, result
   dialog, `ScreenTestResultRepository`.

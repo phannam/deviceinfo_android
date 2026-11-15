@@ -8,6 +8,7 @@
     <string name="tab_battery">Battery</string>
     <string name="tab_display">Display</string>
     <string name="tab_memory">Memory</string>
+    <string name="tab_screen_test">Screen Test</string>
 
     <!-- Actions and share report -->
     <string name="action_share">Share</string>
@@ -146,4 +147,18 @@
     <string name="value_megabytes">%1$.2f MB</string>
     <string name="value_gigabytes">%1$.2f GB</string>
     <string name="value_terabytes">%1$.2f TB</string>
+
+    <!-- Screen Test -->
+    <string name="screen_test_description">Shows full-screen colors and patterns so you can spot dead or stuck pixels, lines, and burn-in. Brightness is set to maximum during the test. Tap the screen to go to the next pattern; press Back to stop at any time.</string>
+    <string name="screen_test_start">Start test</string>
+    <string name="screen_test_last_result">Last result</string>
+    <string name="screen_test_hint">Tap to continue · %1$d/%2$d</string>
+    <string name="screen_test_pattern_description">Screen test pattern. Tap to continue.</string>
+    <string name="screen_test_result_title">Check every problem you saw</string>
+    <string name="screen_test_save">Save</string>
+    <string name="screen_test_discard">Discard</string>
+    <string name="screen_test_not_tested">Not tested</string>
+    <string name="label_screen_test_dead_pixels">Dead or stuck pixels</string>
+    <string name="label_screen_test_lines">Lines or banding</string>
+    <string name="label_screen_test_burn_in">Burn-in or discoloration</string>
 </resources>

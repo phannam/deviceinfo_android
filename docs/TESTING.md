@@ -26,6 +26,11 @@
     bars, unavailable values without bars.
   - `feature/memory/MemoryViewModelTest`: live RAM combined with storage;
     `onResumed()` reloads storage.
+  - `feature/screentest/ScreenTestViewModelTest`: pattern order, result
+    prompt after the last pattern, 2 s hint timer restarted per pattern,
+    Save stores checked defects, Discard stores nothing.
+  - `feature/screentest/ScreenTestRowMapperTest`, `ScreenTestResultViewModelTest`:
+    Not tested vs Yes/No rows; tab follows the saved result.
   - `feature/cpu/CpuRowMapperTest`, `feature/cpu/CpuViewModelTest`: CPU rows,
     per-core progress and Offline, notice row, live updates.
   - `feature/device/DeviceRowMapperTest`: row values and unavailable handling.
@@ -38,7 +43,7 @@
   - `feature/main/ShareReportRendererTest`: header and section layout with a
     fake resolver.
   - `feature/main/MainViewModelTest`: selected tab restored from
-    `SavedStateHandle`; share effect contains Device, CPU, Battery, Display, and Memory sections.
+    `SavedStateHandle`; share effect contains Device, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections.
   - Shared helpers in `testing/`: `MainDispatcherRule`
     (`StandardTestDispatcher`), sample models, fake repositories and data sources, and
     `byLabel()` for row lookups (`rows[UiText.res(R.string.label_x)]`).
@@ -113,6 +118,10 @@ Run these on a device after UI, tab, or share changes:
   tab and its content are restored without duplicates.
 - Share on Android 11+ and on an older device: the chooser opens and the
   shared text contains both sections.
+- Screen Test: every pattern covers the whole panel including the status
+  bar, navigation bar, and cutout areas; the hint hides after 2 s; Back exits
+  at any pattern without a result; after Save the tab and the share report
+  show the answers; brightness returns to normal after the test.
 - If installs from Android Studio fail with a generic "Error" and no logs,
   check `adb shell echo ok`. If it hangs, the device's `adbd` is stuck:
   run `adb kill-server && adb start-server` or reconnect the device.

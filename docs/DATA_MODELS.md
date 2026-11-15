@@ -22,7 +22,9 @@ No persistence or network models exist.
 | `PollingIntervals` | `data/PollingIntervals.kt` | `cpuFrequencyMillis` (1000), `batteryPropertiesMillis` (2000), `memoryMillis` (2000) |
 | `InfoRowUiModel` | `ui/list/InfoRowUiModel.kt` | `label: UiText` (secondary constructor takes `@StringRes Int`), `value: UiText`, `progress: Int?` (0-100) |
 | `InfoListUiState` | `ui/list/InfoListUiState.kt` | `loadingMode: LoadingMode`, `rows: List<InfoRowUiModel>` |
-| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY`, `MEMORY` with `@StringRes titleRes` |
+| `ScreenTestResult` | `domain/model/ScreenTestResult.kt` | `defects: Set<ScreenDefect>` (`DEAD_OR_STUCK_PIXELS`, `LINES_OR_BANDING`, `BURN_IN_OR_DISCOLORATION`); null in the repository means not tested |
+| `ScreenTestUiState` | `feature/screentest/ScreenTestUiState.kt` | `pattern`, `hintVisible`, `askingResult`, `defects`; `position`/`total` for the hint |
+| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY`, `MEMORY`, `SCREEN_TEST` with `@StringRes titleRes` |
 | `ReportSection` | `feature/main/ReportSection.kt` | `@StringRes title`, `rows` |
 | `MainUiEffect.Share` | `feature/main/MainUiEffect.kt` | `sections: List<ReportSection>` |
 | `UiText` | `common/text/UiText.kt` | `Dynamic(value)`, `Resource(resId, args)` (args may be nested `UiText`), or `Joined(parts, separator)` |
@@ -42,9 +44,8 @@ Mapping:
 | Domain | Typed raw values; nullable means unavailable | Android types, resource ids, formatted strings |
 | UI | Label resource ids and `UiText` values | Platform calls |
 
-Planned models are listed in `docs/requirements/001-device-diagnostics.md`
-section 5.1 (`CpuInfo`, `BatteryInfo`, `MemoryInfo`, `StorageInfo`,
-`WindowSnapshot`, `ScreenTestResult`, and enums).
+All models planned in `docs/requirements/001-device-diagnostics.md`
+section 5.1 now exist.
 
 ## Gaps & Recommendations
 

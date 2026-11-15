@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <vn.npstudio.deviceinfo.feature.screentest.ScreenTestPatternView
+        android:id="@+id/pattern_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/screen_test_pattern_description" />
+
+    <TextView
+        android:id="@+id/hint_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/hintBottomMargin"
+        android:background="@drawable/bg_screen_test_hint"
+        android:paddingHorizontal="@dimen/mediumGap"
+        android:paddingVertical="@dimen/smallGap"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@android:color/white" />
+</FrameLayout>
