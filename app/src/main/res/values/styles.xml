@@ -13,13 +13,31 @@
         <item name="tabIndicatorColor">?attr/colorSecondary</item>
         <item name="tabIndicatorFullWidth">false</item>
         <item name="tabIndicatorHeight">3dp</item>
-        <item name="tabSelectedTextColor">?attr/colorPrimary</item>
+        <item name="tabSelectedTextColor">?attr/colorPrimaryOnBackground</item>
         <item name="tabTextColor">?attr/colorOnSurfaceVariant</item>
         <item name="tabRippleColor">?attr/colorSecondaryContainer</item>
     </style>
 
     <style name="Widget.DeviceInfo.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
         <item name="backgroundTint">?android:attr/colorBackground</item>
+    </style>
+
+    <!-- Text and outlined buttons use the readable primary tone instead of colorPrimary. -->
+    <style name="Widget.DeviceInfo.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/button_text_readable</item>
+        <item name="iconTint">@color/button_text_readable</item>
+    </style>
+
+    <style name="Widget.DeviceInfo.Button.TextButton.Dialog" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/button_text_readable</item>
+        <item name="iconTint">@color/button_text_readable</item>
+    </style>
+
+    <style
+        name="Widget.DeviceInfo.Button.TextButton.Dialog.Flush"
+        parent="Widget.Material3.Button.TextButton.Dialog.Flush">
+        <item name="android:textColor">@color/button_text_readable</item>
+        <item name="iconTint">@color/button_text_readable</item>
     </style>
 
     <style name="ShapeAppearance.DeviceInfo.AppIcon" parent="">
@@ -53,6 +71,6 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:padding">@dimen/tinyGap</item>
         <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
-        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textColor">?attr/colorSecondaryOnBackground</item>
     </style>
 </resources>

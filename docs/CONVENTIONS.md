@@ -66,8 +66,11 @@
     package names (`AppConfig`, `AppConfigRepository`, `feature/config/`).
     User-visible strings still say "Settings".
   - Theme overlays: `ThemeOverlay.DeviceInfo.<Role>.<Color>`; palette colors
-    `palette_<color>`, `_on`, `_container`, `_on_container` in `values/` and
-    `values-night/palette.xml`.
+    `palette_<color>`, `_on`, `_container`, `_on_container`, `_text` in
+    `values/` and `values-night/palette.xml`.
+  - Text in the primary/accent color uses `?attr/colorPrimaryOnBackground` /
+    `?attr/colorSecondaryOnBackground` (at least 4.5:1), never
+    `?attr/colorPrimary` / `?attr/colorSecondary`.
 
 - XML layout naming: `activity_*`, `fragment_*`, `item_*`, `view_*`
   - Use `item_*` for RecyclerView rows and `view_*` for reusable includes,

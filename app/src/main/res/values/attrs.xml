@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary/accent tones readable as text (at least 4.5:1, spec 002 section 4.1). -->
+    <attr name="colorPrimaryOnBackground" format="color" />
+    <attr name="colorSecondaryOnBackground" format="color" />
+</resources>

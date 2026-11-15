@@ -251,7 +251,8 @@ Be extra careful around these areas:
   `AppConfigRepository` reads SharedPreferences synchronously for this. Keep
   every `AppColor` mapped in `ThemeOverlays` (overlays, swatches, `color_*`
   names), `values/palette.xml`, and
-  `values-night/palette.xml`. Stored config values are enum names; renaming
+  `values-night/palette.xml`, including a readable `_text` tone set as
+  `colorPrimaryOnBackground` / `colorSecondaryOnBackground` in its overlays. Stored config values are enum names; renaming
   an enum entry resets users to the default.
 - `applicationId` is `vn.npstudio.deviceinfo`. Do not change it; it is the
   installed app identity.

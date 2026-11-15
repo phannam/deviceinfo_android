@@ -138,6 +138,9 @@ Run these on a device after UI, tab, or share changes:
   cyan without closing; OK recolors the Settings page at once and the main
   screen on return (selected tab kept); Back or tapping outside discards;
   rotation or dark mode change keeps the pick; swatches use light/dark tones.
+- Text contrast: in light and dark mode with brand, amber, and purple
+  colors, the selected tab label, footer links, Tab Manager Reset, and
+  dialog buttons (OK/Cancel/Recommend) are easy to read.
 - Settings page: each dark mode option (Off/On/System) applies at once to
   the Settings page and the main screen and survives an app restart; °F
   shows on the Battery tab and in the share report; policy links open a

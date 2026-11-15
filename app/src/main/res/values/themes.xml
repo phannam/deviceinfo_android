@@ -11,6 +11,8 @@
         <item name="colorOnSecondary">@color/brand_on_accent</item>
         <item name="colorSecondaryContainer">@color/brand_accent_container</item>
         <item name="colorOnSecondaryContainer">@color/brand_on_accent_container</item>
+        <item name="colorPrimaryOnBackground">@color/brand_primary_text</item>
+        <item name="colorSecondaryOnBackground">@color/brand_accent_text</item>
 
         <!-- Neutral surfaces instead of the tinted M3 baseline. -->
         <item name="android:colorBackground">@color/neutral_background</item>
@@ -33,6 +35,15 @@
 
         <item name="materialCardViewStyle">@style/Widget.DeviceInfo.Card</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.DeviceInfo.BottomSheetDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.DeviceInfo.MaterialAlertDialog</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.DeviceInfo.Button.Outlined</item>
+    </style>
+
+    <style name="ThemeOverlay.DeviceInfo.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="buttonBarButtonStyle">@style/Widget.DeviceInfo.Button.TextButton.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.DeviceInfo.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.DeviceInfo.Button.TextButton.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.DeviceInfo.Button.TextButton.Dialog.Flush</item>
     </style>
 
     <!-- Sheets use the screen background so white cards stand out, as on the main screen. -->

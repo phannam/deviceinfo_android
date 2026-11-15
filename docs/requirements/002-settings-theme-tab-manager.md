@@ -69,9 +69,25 @@ The app works but looks plain. This spec:
 
   | Owner color | M3 attribute | Used by |
   |---|---|---|
-  | Primary | `colorPrimary`, `colorOnPrimary`, `colorPrimaryContainer`, `colorOnPrimaryContainer` | switches, buttons, radio/checkbox, toolbar icons, selected tab text |
+  | Primary | `colorPrimary`, `colorOnPrimary`, `colorPrimaryContainer`, `colorOnPrimaryContainer` | switches, filled buttons, radio/checkbox, toolbar icons |
   | Primary dark | `colorPrimaryDark` (legacy attr) | kept for AppCompat widgets; no visible effect with edge-to-edge |
-  | Accent | `colorSecondary`, `colorOnSecondary`, `colorSecondaryContainer`, `colorOnSecondaryContainer` | tab indicator, row progress bars, footer links |
+  | Accent | `colorSecondary`, `colorOnSecondary`, `colorSecondaryContainer`, `colorOnSecondaryContainer` | tab indicator, row progress bars |
+  | Primary text | `colorPrimaryOnBackground` (app attr, `values/attrs.xml`) | selected tab text, text/outlined button and dialog button text |
+  | Accent text | `colorSecondaryOnBackground` (app attr) | footer links |
+
+- Text contrast: every palette color (and the brand colors) has a
+  `<name>_text` tone that reaches at least 4.5:1 on the dialog surface
+  (`#EBEDEF` light, `#262A2D` dark), so it also passes on the background and
+  cards. Light tones are the base hue darkened (brand `#31C7D6` 1.8:1 ->
+  `#1D757E` 4.8:1 on `#F1F3F4`); dark tones equal the base color except
+  purple, deep purple, and indigo, which are lightened. Text in the primary
+  or accent color uses these attrs, never `colorPrimary`/`colorSecondary`.
+  `Widget.DeviceInfo.Button.Outlined` (`materialButtonOutlinedStyle`) and
+  `ThemeOverlay.DeviceInfo.MaterialAlertDialog` (`materialAlertDialogTheme`)
+  apply the tone through `@color/button_text_readable`.
+- Non-text elements (icons, switches, progress bars) keep the raw color as
+  brand identity; some light-mode colors (brand, amber, orange, light green)
+  are below 3:1 there.
 
 - Surfaces: the M3 baseline neutrals are purple-tinted, so the theme
   overrides every neutral attribute with gray `neutral_*` colors (`values`
@@ -118,7 +134,7 @@ The app works but looks plain. This spec:
     action is removed from the toolbar.
 - `TabLayout` (`Widget.DeviceInfo.TabLayout`): scrollable, transparent
   background, accent indicator, selected
-  text `?attr/colorPrimary`, unselected `?attr/colorOnSurfaceVariant`.
+  text `?attr/colorPrimaryOnBackground`, unselected `?attr/colorOnSurfaceVariant`.
 - Info lists (`fragment_info_list.xml`, `item_info_row.xml`):
   - background `?android:attr/colorBackground`, 16 dp horizontal padding;
   - rows form one rounded card group: the row background depends on its
@@ -398,9 +414,8 @@ the agent lists the Gradle command for the owner:
 
 ## 9. Risks and Open Questions
 
-- Owner primary `#31C7D6` has low contrast as text on white (2.1:1).
-  Primary text on light surfaces (selected tab label) may be hard to read;
-  if the owner agrees, use `#28A6B3` or a darker tone for text only.
+- Resolved: owner primary `#31C7D6` had low contrast as text (1.8:1 on the
+  light background). Text now uses the `_text` tones (section 4.1).
 - `colorPrimaryDark` has no M3 role; it is kept as the legacy attribute.
 - Recreating `MainActivity` after a color change resets scroll positions;
   the selected tab is kept by `SavedStateHandle`.
