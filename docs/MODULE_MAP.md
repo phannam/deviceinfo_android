@@ -20,7 +20,7 @@ Packages under `vn.npstudio.deviceinfo`:
 | Package | Contents |
 |---|---|
 | (root) | `DeviceInfoApplication` (`@HiltAndroidApp`) |
-| `common.extension` | `collectWithLifecycle` |
+| `common.extension` | `collectWithLifecycle`, `applySystemBarPadding` |
 | `common.stateflow` | `LoadingMode` |
 | `common.text` | `UiText` |
 | `di` | `DispatcherModule`, `DataSourceModule`, `RepositoryModule` |
@@ -29,7 +29,7 @@ Packages under `vn.npstudio.deviceinfo`:
 | `data` | `PollingIntervals` (live ticker intervals, provided in `DispatcherModule`) |
 | `data.source` | `AppConfigLocalDataSource(Impl)` (+ `AppConfigKeys`, SharedPreferences), `AppConfigParser`, `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `MemoryDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
 | `data.repository` | `AppConfigRepositoryImpl` (`@Singleton`, synchronous first read), `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl`, `ScreenTestResultRepositoryImpl` (`@Singleton`, in-memory) |
-| `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel` |
+| `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel`, `RowPosition` |
 | `ui.format` | `ValueFormatter` |
 | `ui.theme` | `ThemeApplier` (night mode + theme overlays per Activity), `ThemeOverlays` (`AppColor` -> style), `NightModeMapper` |
 | `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |

@@ -96,6 +96,9 @@ MainActivity share menu
   AppCompat night mode from `AppConfigRepository` and applies the primary
   and accent theme overlays to each Activity before it inflates views.
   Colors and tabs are stored in SharedPreferences (`app_config`).
+- List UI: `InfoRowAdapter` draws rows as one rounded card group; the row
+  background and divider come from `RowPosition.of(index, count)`. Lists and
+  the Screen Test tab use `View.applySystemBarPadding()` for insets.
 - Formatting: `ValueFormatter` and per-tab row mappers are pure Kotlin and
   unit tested. Labels are `UiText` (usually a string resource).
 

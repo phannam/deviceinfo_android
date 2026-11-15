@@ -4,4 +4,7 @@
     <dimen name="smallGap">12dp</dimen>
     <dimen name="mediumGap">16dp</dimen>
     <dimen name="hintBottomMargin">48dp</dimen>
+    <dimen name="cardCornerRadius">16dp</dimen>
+    <dimen name="dividerHeight">1dp</dimen>
+    <dimen name="toolbarIconSize">32dp</dimen>
 </resources>

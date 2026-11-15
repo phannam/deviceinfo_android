@@ -11,6 +11,27 @@
         <item name="colorOnSecondary">@color/brand_on_accent</item>
         <item name="colorSecondaryContainer">@color/brand_accent_container</item>
         <item name="colorOnSecondaryContainer">@color/brand_on_accent_container</item>
+
+        <!-- Neutral surfaces instead of the tinted M3 baseline. -->
+        <item name="android:colorBackground">@color/neutral_background</item>
+        <item name="colorOnBackground">@color/neutral_on_surface</item>
+        <item name="colorSurface">@color/neutral_surface</item>
+        <item name="colorOnSurface">@color/neutral_on_surface</item>
+        <item name="colorSurfaceVariant">@color/neutral_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/neutral_on_surface_variant</item>
+        <item name="colorOutline">@color/neutral_outline</item>
+        <item name="colorOutlineVariant">@color/neutral_outline_variant</item>
+        <item name="colorSurfaceContainerLowest">@color/neutral_surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/neutral_surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/neutral_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/neutral_surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/neutral_surface_container_highest</item>
+        <item name="colorSurfaceDim">@color/neutral_surface_dim</item>
+        <item name="colorSurfaceBright">@color/neutral_surface_bright</item>
+        <item name="colorSurfaceInverse">@color/neutral_inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/neutral_inverse_on_surface</item>
+
+        <item name="materialCardViewStyle">@style/Widget.DeviceInfo.Card</item>
     </style>
 
     <style name="Theme.DeviceInfo.ScreenTest">

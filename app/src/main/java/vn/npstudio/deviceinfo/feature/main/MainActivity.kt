@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         binding.toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.action_share) {
+            if (item.itemId == R.id.action_share_report) {
                 viewModel.onShareClicked(WindowSnapshotReader.read(this, binding.root))
                 true
             } else {

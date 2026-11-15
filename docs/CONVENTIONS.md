@@ -26,8 +26,12 @@
 
 - Resources
   - Theme `Theme.DeviceInfo` (`Theme.Material3.DayNight.NoActionBar`) in
-    `values/themes.xml`; brand colors in `values/colors.xml` and
-    `values-night/colors.xml`.
+    `values/themes.xml`; brand and `neutral_*` surface colors in
+    `values/colors.xml` and `values-night/colors.xml`. Widget styles
+    (`Widget.DeviceInfo.*`) in `values/styles.xml`.
+  - Screens use `?android:attr/colorBackground`; cards and row groups use
+    `?attr/colorSurface` with `@dimen/cardCornerRadius`. Never hardcode
+    colors in layouts.
   - Strings in `values/strings.xml` (English) and `values-vi/strings.xml`
     (Vietnamese) with the same keys; `app_name` is `translatable="false"`.
     Prefixes: `tab_*`, `label_<section>_*`, `value_*`, `report_*`,

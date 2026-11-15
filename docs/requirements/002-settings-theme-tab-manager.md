@@ -1,7 +1,7 @@
 # 002 - Settings, Theme, and Tab Manager
 
-- Status: In progress. Phase 1 implemented (pending owner build); Phases 2-5
-  open.
+- Status: In progress. Phases 1-2 implemented (pending owner build);
+  Phases 3-5 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Builds on: `docs/requirements/001-device-diagnostics.md` (done)
@@ -73,9 +73,13 @@ The app works but looks plain. This spec:
   | Primary dark | `colorPrimaryDark` (legacy attr) | kept for AppCompat widgets; no visible effect with edge-to-edge |
   | Accent | `colorSecondary`, `colorOnSecondary`, `colorSecondaryContainer`, `colorOnSecondaryContainer` | tab indicator, row progress bars, footer links |
 
-- Surfaces: window background `?attr/colorSurfaceContainer` (light gray /
-  near black); cards `?attr/colorSurface` with 16 dp corners, no stroke,
-  0 dp elevation.
+- Surfaces: the M3 baseline neutrals are purple-tinted, so the theme
+  overrides every neutral attribute with gray `neutral_*` colors (`values`
+  and `values-night/colors.xml`). Screen background
+  `?android:attr/colorBackground` (`#F1F3F4` light, `#0F1113` dark, equal to
+  `colorSurfaceContainer` in light mode); cards `?attr/colorSurface`
+  (`#FFFFFF` / `#1C1F22`) with 16 dp corners, no stroke, 0 dp elevation
+  (`Widget.DeviceInfo.Card`, the theme's `materialCardViewStyle`).
 - Palette for the color picker (`AppColor` enum, 14 entries, in order):
   `BRAND, RED, PINK, PURPLE, DEEP_PURPLE, INDIGO, BLUE, TEAL, GREEN,
   LIGHT_GREEN, AMBER, ORANGE, DEEP_ORANGE, BLUE_GREY`.
@@ -104,27 +108,33 @@ The app works but looks plain. This spec:
 
 ### 4.2 Main screen (UI refresh)
 
-- Toolbar (`MaterialToolbar`, surface color, no elevation):
+- Toolbar (`MaterialToolbar` on the screen background, no elevation, no
+  lift on scroll):
   - app icon (32 dp, rounded) and title `Device Info`;
-  - action `Settings` (gear icon, `showAsAction="always"`);
+  - action `Settings` (gear icon, `showAsAction="always"`). It stays
+    `android:visible="false"` until Phase 3 adds the page;
   - overflow menu: `Share device report`, `Tab Manager`. The share icon
     action is removed from the toolbar.
-- `TabLayout`: scrollable, surface background, accent indicator, selected
+- `TabLayout` (`Widget.DeviceInfo.TabLayout`): scrollable, transparent
+  background, accent indicator, selected
   text `?attr/colorPrimary`, unselected `?attr/colorOnSurfaceVariant`.
 - Info lists (`fragment_info_list.xml`, `item_info_row.xml`):
-  - background `?attr/colorSurfaceContainer`, 16 dp horizontal padding;
+  - background `?android:attr/colorBackground`, 16 dp horizontal padding;
   - rows form one rounded card group: the row background depends on its
     position (`single`, `top`, `middle`, `bottom` drawables with 16 dp outer
     corners). Hairline dividers between rows, inset 16 dp;
   - label `textAppearanceBodyMedium` + `colorOnSurfaceVariant`, value
     `textAppearanceBodyLarge` + `colorOnSurface`;
   - progress indicator: rounded track, `indicatorColor ?attr/colorSecondary`.
-  - `InfoRowAdapter` passes the row position to the view holder. A
-    position-only change must rebind the background (use a payload or
-    `notifyItemRangeChanged` on list size changes).
+  - `InfoRowAdapter` maps the position with `RowPosition.of(index, count)`.
+    When the list size or the first/last label changes, it calls
+    `notifyItemRangeChanged` with a position payload that only rebinds the
+    background and divider.
 - Screen Test tab: description in a card; `Start test` is a filled button;
   results use the same card group as other tabs.
 - Edge-to-edge insets behave as today; lists keep bottom inset padding.
+  `View.applySystemBarPadding()` adds the insets to the layout padding
+  instead of replacing it.
 
 ### 4.3 Settings page
 
@@ -314,14 +324,13 @@ the agent lists the Gradle command for the owner:
 - Tests: `AppConfigParserTest`, `AppConfigRepositoryImplTest` (fake data
   source).
 
-### Phase 2 - Main screen UI refresh
+### Phase 2 - Main screen UI refresh (implemented)
 
-- Toolbar (icon, title, gear placeholder that opens nothing until Phase 3,
-  overflow with Share; Tab Manager item added in Phase 4).
+- Toolbar (icon, title, hidden gear until Phase 3, overflow with
+  `Share device report`; Tab Manager item added in Phase 5).
 - TabLayout colors, card-group rows, Screen Test tab styling.
 - Check light and dark mode on device for all six tabs.
-- Tests: `RowPosition` mapping (`single/top/middle/bottom`) if extracted as
-  a pure function.
+- Tests: `RowPositionTest`.
 
 ### Phase 3 - Settings page
 

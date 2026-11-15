@@ -26,6 +26,7 @@
     (unknown, duplicate, missing tabs), all-hidden reset, round trip.
   - `data/repository/AppConfigRepositoryImplTest`: defaults, loading stored
     values, setters persist, `saveTabs` normalizes (fake data source).
+  - `ui/list/RowPositionTest`: single/top/middle/bottom mapping.
   - `feature/memory/MemoryRowMapperTest`: decimal byte units, used-percent
     bars, unavailable values without bars.
   - `feature/memory/MemoryViewModelTest`: live RAM combined with storage;
@@ -115,6 +116,9 @@
 
 Run these on a device after UI, tab, or share changes:
 
+- Light and dark mode (system setting): every tab, the toolbar, and the
+  Screen Test card have readable text; the first and last rows of each list
+  have rounded corners, including after a list grows or shrinks.
 - Every tab shows all rows; long values (for example `Build.DISPLAY` or long
   model names) are not clipped at large font scale.
 - Switch tabs several times, then press Back once: the app exits.

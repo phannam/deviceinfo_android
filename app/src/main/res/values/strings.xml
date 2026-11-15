@@ -11,7 +11,8 @@
     <string name="tab_screen_test">Screen Test</string>
 
     <!-- Actions and share report -->
-    <string name="action_share">Share</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share_report">Share device report</string>
     <string name="share_chooser_title">Share device report</string>
     <string name="report_subject">%1$s information</string>
     <string name="report_header">%1$s %2$s\nGenerated: %3$s\nDevice: %4$s</string>

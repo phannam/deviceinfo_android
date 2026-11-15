@@ -42,7 +42,9 @@ Current state (spec 001 `docs/requirements/001-device-diagnostics.md` done):
 - In progress: spec 002 `docs/requirements/002-settings-theme-tab-manager.md`
   (Settings page, light/dark mode, color picker, Tab Manager). Phase 1 done:
   `AppConfigRepository` (SharedPreferences), brand colors `#31C7D6` /
-  `#2BB0C1`, palette theme overlays applied by `ThemeApplier`.
+  `#2BB0C1`, palette theme overlays applied by `ThemeApplier`. Phase 2 done:
+  neutral gray surfaces, toolbar with app icon, rows drawn as rounded card
+  groups (`RowPosition`).
 
 Modernization goal:
 

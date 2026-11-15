@@ -9,4 +9,21 @@
     <color name="brand_on_accent">#00363C</color>
     <color name="brand_accent_container">#004A53</color>
     <color name="brand_on_accent_container">#C0EDF3</color>
+    <!-- Neutral surfaces (spec 002 section 4.1): gray screen, white/dark cards. -->
+    <color name="neutral_background">#0F1113</color>
+    <color name="neutral_surface">#1C1F22</color>
+    <color name="neutral_on_surface">#E3E4E6</color>
+    <color name="neutral_surface_variant">#3F4448</color>
+    <color name="neutral_on_surface_variant">#BFC4C8</color>
+    <color name="neutral_outline">#899095</color>
+    <color name="neutral_outline_variant">#3A3F43</color>
+    <color name="neutral_surface_container_lowest">#0B0D0F</color>
+    <color name="neutral_surface_container_low">#16191C</color>
+    <color name="neutral_surface_container">#1C1F22</color>
+    <color name="neutral_surface_container_high">#262A2D</color>
+    <color name="neutral_surface_container_highest">#313538</color>
+    <color name="neutral_surface_dim">#0F1113</color>
+    <color name="neutral_surface_bright">#353A3D</color>
+    <color name="neutral_inverse_surface">#E3E4E6</color>
+    <color name="neutral_inverse_on_surface">#2F3133</color>
 </resources>
