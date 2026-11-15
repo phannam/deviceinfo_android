@@ -160,9 +160,13 @@
     `androidx.viewpager` once the vendored `SlidingTabLayout` is removed).
 
 - Release optimization
-  - R8 is currently disabled for release. When it is enabled, keep debug
-    unoptimized, keep rules narrowly scoped to reflection/serialization paths,
-    and do not disable R8 full mode in `gradle.properties`.
+  - Release uses the AGP 9.3+ DSL `optimization { enable = true }` (R8 code
+    and resource optimization with default Android keep rules). Do not use the
+    legacy `isMinifyEnabled`/`isShrinkResources`/`proguardFiles` DSL.
+  - Keep debug unoptimized. Put keep rules in `app/src/main/keepRules/*.keep`,
+    narrowly scoped to reflection/serialization paths. No custom rules exist
+    today.
+  - Do not disable R8 full mode in `gradle.properties`.
 
 - All strings in `strings.xml`, all colors in `colors.xml`
   - User-visible text, including device/display row labels and share text

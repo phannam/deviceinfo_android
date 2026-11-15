@@ -65,7 +65,8 @@
   scripts, `gradle/libs.versions.toml`, AndroidX (`appcompat`, `fragment`,
   `viewpager`, `annotation`), Java 17, minSdk 26, compileSdk/targetSdk 37
   (`compileSdk` uses the `release(...)` DSL with `minorApiLevel`), namespace
-  and applicationId `vn.npstudio.deviceinfo`. All source is Kotlin, converted 1:1 from
+  and applicationId `vn.npstudio.deviceinfo`. Release builds enable R8 through
+  `optimization { enable = true }`. All source is Kotlin, converted 1:1 from
   Java with behavior preserved; the architecture is unchanged.
 - Notes: Android Studio supports AGP up to 9.4.1 at the time of writing; do
   not raise AGP beyond what the owner's Android Studio supports.
@@ -196,7 +197,5 @@
 - Decide the share target: keep email-only (with the owner's address
   prefilled) or use a generic `ACTION_SEND` share sheet. Recommended: generic
   share sheet without a hardcoded recipient.
-- Decide whether to enable R8 (`isMinifyEnabled = true`) for release; it is
-  currently disabled.
 - Release signing, versioning policy, and Play publishing are not set up in
   this repository.
