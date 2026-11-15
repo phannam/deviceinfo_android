@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.window)
     implementation(libs.material)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)

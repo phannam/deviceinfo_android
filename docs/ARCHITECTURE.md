@@ -1,6 +1,6 @@
 # Architecture
 
-Based on the source in `app/` after Phase 3 of
+Based on the source in `app/` after Phase 4 of
 `docs/requirements/001-device-diagnostics.md`. The app uses XML layouts;
 Compose is not part of the target architecture.
 
@@ -17,7 +17,10 @@ Compose is not part of the target architecture.
 - Battery tab: sticky `ACTION_BATTERY_CHANGED` extras (live receiver),
   `BatteryManager` properties and `PowerManager.isPowerSaveMode` polled every
   2 s while the tab is visible.
-- Display tab: resolution (display mode), density, dpi, and font scale.
+- Display tab: physical resolution, refresh rate and supported rates, HDR
+  types, wide color gamut (display mode / `Display`), density bucket, dpi,
+  estimated size, font scale, plus app window size and cutout from a
+  `WindowSnapshot` measured by the UI.
 - Shares a plain-text report (Device + CPU + Battery + Display sections) through the system
   share sheet.
 
@@ -39,6 +42,11 @@ BatteryFragment
   -> BatteryDataSource  (ContextCompat.registerReceiver NOT_EXPORTED,
                         BatteryManager, PowerManager)
   -> BatteryRowMapper (pure)
+
+DisplayFragment  doOnLayout -> WindowSnapshotReader (androidx.window, root insets)
+  -> DisplayViewModel.onWindowMeasured(snapshot)
+       SharedFlow(replay 1).map { DisplayRowMapper.map(getDisplayInfo(), it) }
+  -> DisplayRepository -> DisplayDataSource (DisplayManager, displayMetrics)
 
 DeviceFragment / DisplayFragment (InfoListFragment, collect at RESUMED)
   -> DeviceViewModel / DisplayViewModel   StateFlow<InfoListUiState>
@@ -107,16 +115,8 @@ MainActivity share menu
 
 ### 1. Remaining diagnostics tabs
 
-- Current: Only Device and Display (parity fields) exist.
-- Target: CPU, Battery, full Display, Memory & Storage, and Screen Test per
-  `docs/requirements/001-device-diagnostics.md` Phases 2-7.
+- Current: Device, CPU, Battery, and Display exist.
+- Target: Memory & Storage and Screen Test per
+  `docs/requirements/001-device-diagnostics.md` Phases 5-7.
 - Priority: High
 
-### 2. Display values do not follow configuration changes immediately
-
-- Current: `DisplayViewModel` reads once per subscription. A font scale
-  change recreates the Activity within the 5 s window, so the old value can
-  remain until the tab is re-subscribed.
-- Target: Phase 4 adds a `WindowSnapshot` from the UI and refreshes on
-  configuration change.
-- Priority: Low

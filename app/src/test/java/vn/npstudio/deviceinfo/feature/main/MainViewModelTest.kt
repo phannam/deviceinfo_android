@@ -20,6 +20,7 @@ import vn.npstudio.deviceinfo.testing.sampleCpuInfo
 import vn.npstudio.deviceinfo.testing.sampleDeviceInfo
 import vn.npstudio.deviceinfo.testing.sampleDisplayInfo
 import vn.npstudio.deviceinfo.testing.sampleFrequencies
+import vn.npstudio.deviceinfo.testing.sampleWindowSnapshot
 
 class MainViewModelTest {
 
@@ -42,14 +43,14 @@ class MainViewModelTest {
         val viewModel = createViewModel()
 
         viewModel.effects.test {
-            viewModel.onShareClicked()
+            viewModel.onShareClicked(sampleWindowSnapshot)
 
             val expected = MainUiEffect.Share(
                 listOf(
                     ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(sampleDeviceInfo)),
                     ReportSection(MainTab.CPU.titleRes, CpuRowMapper.map(sampleCpuInfo, sampleFrequencies)),
                     ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(sampleBatteryInfo)),
-                    ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo)),
+                    ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo, sampleWindowSnapshot)),
                 ),
             )
             assertEquals(expected, awaitItem())

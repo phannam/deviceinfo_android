@@ -1,6 +1,6 @@
 # 001 - Device Diagnostics
 
-- Status: In progress. Phases 1-2 implemented; Phase 3 implemented (pending owner build); Phases 4-7 open.
+- Status: In progress. Phases 1-3 implemented; Phase 4 implemented (pending owner build); Phases 5-7 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Implements: `docs/ARCHITECTURE.md` target rules, ADR-TARGET-001..004
@@ -166,6 +166,13 @@ Display values that depend on the Activity window (app window size, cutout)
 are read by the Fragment and passed to the ViewModel as a
 `WindowSnapshot` value; the data source must not hold an Activity.
 Values reload on configuration change.
+
+Implementation notes: `DisplayFragment` reads the snapshot with
+`WindowSnapshotReader` in `doOnLayout` (insets are dispatched by then) and
+calls `DisplayViewModel.onWindowMeasured`. The ViewModel keeps snapshots in
+a `MutableSharedFlow(replay = 1)` so an equal snapshot after recreation still
+reloads display values. `MainActivity` passes its own snapshot to
+`MainViewModel.onShareClicked(window)` for the report.
 
 ### 4.5 Memory & Storage tab
 
@@ -384,7 +391,7 @@ owner builds, tests on device, and reports errors.
 
 ### Phase 1 - Foundation and migration (implemented)
 
-- Notes: `androidx.window` is deferred to Phase 4 (not needed yet). Display
+- Notes: `androidx.window` was deferred to Phase 4 and added there. Display
   resolution uses `Display.getMode()` physical size.
 
 - Add dependencies, Hilt, KSP; `DeviceInfoApplication`.
@@ -414,7 +421,7 @@ owner builds, tests on device, and reports errors.
   source within 2 s; temperature and voltage match `adb shell dumpsys battery`
   (owner check); API-gated rows show Unavailable on API 28.
 
-### Phase 4 - Display tab (full)
+### Phase 4 - Display tab (full) (implemented)
 
 - Physical resolution, refresh rates, HDR, wide color gamut, estimated size,
   cutout, window size via `WindowSnapshot`.

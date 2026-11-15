@@ -41,7 +41,7 @@
 
     <!-- Display tab -->
     <string name="label_display_resolution">Resolution</string>
-    <string name="label_display_density_dpi">Density bucket</string>
+    <string name="label_display_density_dpi">Density</string>
     <string name="label_display_density">Density scale</string>
     <string name="label_display_xdpi">Horizontal DPI (xdpi)</string>
     <string name="label_display_ydpi">Vertical DPI (ydpi)</string>
@@ -50,7 +50,6 @@
     <!-- Value formats -->
     <string name="value_duration_dhm">%1$dd %2$dh %3$dm</string>
     <string name="value_resolution">%1$d × %2$d px</string>
-    <string name="value_dpi_int">%1$d dpi</string>
     <string name="value_dpi_decimal">%1$.1f dpi</string>
     <string name="value_scale">%1$.2f×</string>
 
@@ -119,4 +118,18 @@
     <string name="value_battery_health_failure">Failure</string>
     <string name="value_battery_health_cold">Cold</string>
     <string name="value_battery_health_unknown">Unknown</string>
+
+    <string name="label_display_window_size">App window size</string>
+    <string name="label_display_estimated_size">Screen size (estimated)</string>
+    <string name="label_display_refresh_rate">Refresh rate</string>
+    <string name="label_display_supported_refresh_rates">Supported refresh rates</string>
+    <string name="label_display_hdr">HDR</string>
+    <string name="label_display_wide_color_gamut">Wide color gamut</string>
+    <string name="label_display_cutout">Display cutout</string>
+
+    <string name="value_dpi_bucket">%1$d dpi (%2$s)</string>
+    <string name="value_inches">%1$.2f in</string>
+    <string name="value_hz_int">%1$d Hz</string>
+    <string name="value_hz_decimal">%1$.2f Hz</string>
+    <string name="value_hdr_none">Not supported</string>
 </resources>

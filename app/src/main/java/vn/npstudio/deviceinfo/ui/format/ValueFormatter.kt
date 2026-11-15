@@ -39,6 +39,17 @@ object ValueFormatter {
         )
     }
 
+    /** Formats Hz without decimals when integral (within 0.01), otherwise with two decimals. */
+    fun refreshRate(hz: Float?): UiText {
+        if (hz == null) return unavailable
+        val rounded = kotlin.math.round(hz)
+        return if (kotlin.math.abs(hz - rounded) < 0.01f) {
+            UiText.res(R.string.value_hz_int, rounded.toInt())
+        } else {
+            UiText.res(R.string.value_hz_decimal, hz)
+        }
+    }
+
     /** Formats a duration as hours and minutes, for example `1h 25m`. */
     fun hoursMinutes(millis: Long): UiText {
         val totalMinutes = millis.coerceAtLeast(0) / 60_000

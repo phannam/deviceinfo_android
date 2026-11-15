@@ -48,4 +48,11 @@ class ValueFormatterTest {
     fun hoursMinutes_splitsHoursAndMinutes() {
         assertEquals(UiText.res(R.string.value_duration_hm, 26L, 5L), ValueFormatter.hoursMinutes((26 * 60 + 5) * 60_000L))
     }
+
+    @Test
+    fun refreshRate_dropsDecimalsWhenIntegral() {
+        assertEquals(UiText.res(R.string.value_hz_int, 60), ValueFormatter.refreshRate(60.000004f))
+        assertEquals(UiText.res(R.string.value_hz_decimal, 59.94f), ValueFormatter.refreshRate(59.94f))
+        assertEquals(ValueFormatter.unavailable, ValueFormatter.refreshRate(null))
+    }
 }

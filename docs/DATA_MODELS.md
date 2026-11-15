@@ -7,7 +7,9 @@ No persistence or network models exist.
 | Model | Location | Notes |
 |---|---|---|
 | `DeviceInfo` | `domain/model/DeviceInfo.kt` | Build/OS strings (nullable when blank or `Build.UNKNOWN`), `apiLevel: Int`, `uptimeMillis: Long` |
-| `DisplayInfo` | `domain/model/DisplayInfo.kt` | `widthPx`/`heightPx: Int?` from the default display mode (physical), `densityDpi: Int`, `density`, `xdpi`, `ydpi`, `fontScale: Float` |
+| `DisplayInfo` | `domain/model/DisplayInfo.kt` | `widthPx`/`heightPx: Int?` from the default display mode (physical), `densityDpi: Int`, `density`, `xdpi`, `ydpi`, `fontScale: Float`, `refreshRateHz: Float?`, `supportedRefreshRatesHz` (native resolution, ascending), `hdrTypes: List<HdrType>?` (empty = none, null = unknown), `wideColorGamut: Boolean?` |
+| `HdrType` | `domain/model/DisplayInfo.kt` | `DOLBY_VISION`, `HDR10`, `HLG`, `HDR10_PLUS` |
+| `WindowSnapshot` | `domain/model/DisplayInfo.kt` | Activity window `widthPx`/`heightPx`, `hasCutout: Boolean?`; measured by the UI, never by data sources |
 | `CpuInfo` | `domain/model/CpuInfo.kt` | `socManufacturer`/`socModel: String?`, `supportedAbis`, `cores: List<CpuCore>`, `clusters: List<CpuCluster>` (by max freq, ascending), `governors`, `thermalStatus: ThermalStatus?`, `thermalHeadroom: Float?` |
 | `CpuCore` | `domain/model/CpuInfo.kt` | `id`, `minFreqKhz`/`maxFreqKhz: Long?` |
 | `CpuCluster` | `domain/model/CpuInfo.kt` | `coreCount`, `maxFreqKhz` |

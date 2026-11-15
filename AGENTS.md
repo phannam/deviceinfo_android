@@ -13,7 +13,9 @@ The app lets users:
 
 - View device and OS information (`android.os.Build`, kernel, Java VM,
   uptime).
-- View display information (resolution, density, dpi, font scale).
+- View display information (physical resolution, app window size, density,
+  dpi, estimated size, refresh rates, HDR, wide color gamut, font scale,
+  cutout).
 - View CPU information (SoC, ABIs, clusters, governor, thermal status) and
   live per-core frequencies.
 - View live battery information (level, status, power source, health,
@@ -26,7 +28,7 @@ The app lets users:
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state (after Phase 3 of spec 001):
+Current state (after Phase 4 of spec 001):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
@@ -47,7 +49,7 @@ Modernization goal:
 | Area | Current | Target |
 | --- | --- | --- |
 | Language | Kotlin (AGP built-in), JVM target 17 | Same |
-| UI | XML + ViewBinding, Material 3, `TabLayout` + `ViewPager2`, `RecyclerView` | Same; no Compose |
+| UI | XML + ViewBinding, Material 3, `TabLayout` + `ViewPager2`, `RecyclerView`, `androidx.window` (window metrics) | Same; no Compose |
 | Architecture | Strict MVVM: UI -> ViewModel -> Repository -> DataSource | Same |
 | State | Read-only `StateFlow` UI state; `Channel` for one-time effects | Same |
 | Storage | None | None. Add SharedPreferences only for lightweight settings if a feature needs it |

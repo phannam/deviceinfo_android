@@ -4,7 +4,7 @@
 
 - What is tested today (JVM, `app/src/test/java/vn/npstudio/deviceinfo/`)
   - `ui/format/ValueFormatterTest`: duration split, ISO date localization and
-    fallback, MHz/GHz frequency, hours/minutes, unavailable values.
+    fallback, MHz/GHz frequency, hours/minutes, refresh rate Hz, unavailable values.
   - `data/source/CpuSysFsParserTest`: CPU lists (`0-7`, `0-3,4-7`, bad
     input), kHz files (text, blank, missing), `/proc/cpuinfo` with and without
     `Hardware`.
@@ -22,8 +22,12 @@
     5 s after the last subscriber.
   - `feature/cpu/CpuRowMapperTest`, `feature/cpu/CpuViewModelTest`: CPU rows,
     per-core progress and Offline, notice row, live updates.
-  - `feature/device/DeviceRowMapperTest`, `feature/display/DisplayRowMapperTest`:
-    row values and unavailable handling.
+  - `feature/device/DeviceRowMapperTest`: row values and unavailable handling.
+  - `feature/display/DisplayRowMapperTest`: resolution and window rows,
+    density bucket, estimated diagonal, refresh rates, HDR ordering and None,
+    unavailable values (including no window snapshot).
+  - `feature/display/DisplayViewModelTest`: waits for the window snapshot;
+    an equal snapshot still reloads display values.
   - `feature/device/DeviceViewModelTest`: `INITIAL` then loaded rows (Turbine).
   - `feature/main/ShareReportRendererTest`: header and section layout with a
     fake resolver.

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import vn.npstudio.deviceinfo.domain.model.WindowSnapshot
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
@@ -38,7 +39,8 @@ class MainViewModel @Inject constructor(
         savedStateHandle[KEY_SELECTED_TAB] = tab
     }
 
-    fun onShareClicked() {
+    /** [window] is measured by the Activity so the report includes window size and cutout. */
+    fun onShareClicked(window: WindowSnapshot?) {
         viewModelScope.launch {
             val sections = listOf(
                 ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(deviceInfoRepository.getDeviceInfo())),
@@ -47,7 +49,7 @@ class MainViewModel @Inject constructor(
                     CpuRowMapper.map(cpuRepository.getCpuInfo(), cpuRepository.observeFrequencies().first()),
                 ),
                 ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(batteryRepository.observe().first())),
-                ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(displayRepository.getDisplayInfo())),
+                ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(displayRepository.getDisplayInfo(), window)),
             )
             _effects.send(MainUiEffect.Share(sections))
         }

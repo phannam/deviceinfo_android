@@ -16,6 +16,7 @@ import vn.npstudio.deviceinfo.BuildConfig
 import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
 import vn.npstudio.deviceinfo.databinding.ActivityMainBinding
+import vn.npstudio.deviceinfo.ui.window.WindowSnapshotReader
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.action_share) {
-                viewModel.onShareClicked()
+                viewModel.onShareClicked(WindowSnapshotReader.read(this, binding.root))
                 true
             } else {
                 false

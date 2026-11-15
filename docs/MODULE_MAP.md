@@ -24,13 +24,14 @@ Packages under `vn.npstudio.deviceinfo`:
 | `common.stateflow` | `LoadingMode` |
 | `common.text` | `UiText` |
 | `di` | `DispatcherModule`, `DataSourceModule`, `RepositoryModule` |
-| `domain.model` | `DeviceInfo`, `DisplayInfo`, `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus` |
+| `domain.model` | `DeviceInfo`, `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus` |
 | `domain.repository` | `DeviceInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository` |
 | `data` | `PollingIntervals` (live ticker intervals, provided in `DispatcherModule`) |
 | `data.source` | `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
 | `data.repository` | `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl` |
 | `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel` |
 | `ui.format` | `ValueFormatter` |
+| `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |
 | `feature.main` | `MainActivity`, `MainViewModel`, `MainTab`, `MainTabAdapter`, `MainUiEffect`, `ReportSection`, `ShareReportRenderer` |
 | `feature.device` | `DeviceFragment`, `DeviceViewModel`, `DeviceRowMapper` |
 | `feature.battery` | `BatteryFragment`, `BatteryViewModel`, `BatteryRowMapper` |

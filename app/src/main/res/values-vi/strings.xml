@@ -48,7 +48,6 @@
     <!-- Value formats -->
     <string name="value_duration_dhm">%1$d ngày %2$d giờ %3$d phút</string>
     <string name="value_resolution">%1$d × %2$d px</string>
-    <string name="value_dpi_int">%1$d dpi</string>
     <string name="value_dpi_decimal">%1$.1f dpi</string>
     <string name="value_scale">%1$.2f×</string>
 
@@ -117,4 +116,18 @@
     <string name="value_battery_health_failure">Lỗi</string>
     <string name="value_battery_health_cold">Quá lạnh</string>
     <string name="value_battery_health_unknown">Không xác định</string>
+
+    <string name="label_display_window_size">Kích thước cửa sổ app</string>
+    <string name="label_display_estimated_size">Kích thước màn hình (ước tính)</string>
+    <string name="label_display_refresh_rate">Tần số quét</string>
+    <string name="label_display_supported_refresh_rates">Tần số quét hỗ trợ</string>
+    <string name="label_display_hdr">HDR</string>
+    <string name="label_display_wide_color_gamut">Dải màu rộng</string>
+    <string name="label_display_cutout">Tai thỏ / đục lỗ</string>
+
+    <string name="value_dpi_bucket">%1$d dpi (%2$s)</string>
+    <string name="value_inches">%1$.2f inch</string>
+    <string name="value_hz_int">%1$d Hz</string>
+    <string name="value_hz_decimal">%1$.2f Hz</string>
+    <string name="value_hdr_none">Không hỗ trợ</string>
 </resources>

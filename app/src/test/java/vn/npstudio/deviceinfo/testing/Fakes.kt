@@ -17,8 +17,10 @@ import vn.npstudio.deviceinfo.domain.model.CpuCoreFrequency
 import vn.npstudio.deviceinfo.domain.model.CpuInfo
 import vn.npstudio.deviceinfo.domain.model.DeviceInfo
 import vn.npstudio.deviceinfo.domain.model.DisplayInfo
+import vn.npstudio.deviceinfo.domain.model.HdrType
 import vn.npstudio.deviceinfo.domain.model.PowerSource
 import vn.npstudio.deviceinfo.domain.model.ThermalStatus
+import vn.npstudio.deviceinfo.domain.model.WindowSnapshot
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
@@ -51,14 +53,26 @@ val sampleDisplayInfo = DisplayInfo(
     xdpi = 521.0f,
     ydpi = 520.5f,
     fontScale = 1.0f,
+    refreshRateHz = 60.000004f,
+    supportedRefreshRatesHz = listOf(60.000004f),
+    hdrTypes = listOf(HdrType.HDR10),
+    wideColorGamut = true,
 )
+
+val sampleWindowSnapshot = WindowSnapshot(widthPx = 1440, heightPx = 2960, hasCutout = false)
 
 class FakeDeviceInfoRepository(var info: DeviceInfo = sampleDeviceInfo) : DeviceInfoRepository {
     override suspend fun getDeviceInfo(): DeviceInfo = info
 }
 
 class FakeDisplayRepository(var info: DisplayInfo = sampleDisplayInfo) : DisplayRepository {
-    override suspend fun getDisplayInfo(): DisplayInfo = info
+    var loadCount = 0
+        private set
+
+    override suspend fun getDisplayInfo(): DisplayInfo {
+        loadCount++
+        return info
+    }
 }
 
 val sampleCpuInfo = CpuInfo(
