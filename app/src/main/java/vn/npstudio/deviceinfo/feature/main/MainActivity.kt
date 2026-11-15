@@ -17,6 +17,7 @@ import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
 import vn.npstudio.deviceinfo.databinding.ActivityMainBinding
 import vn.npstudio.deviceinfo.feature.config.ConfigActivity
+import vn.npstudio.deviceinfo.feature.tabmanager.TabManagerBottomSheet
 import vn.npstudio.deviceinfo.ui.window.WindowSnapshotReader
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var tabAdapter: MainTabAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -51,6 +53,10 @@ class MainActivity : AppCompatActivity() {
                     viewModel.onShareClicked(WindowSnapshotReader.read(this, binding.root))
                     true
                 }
+                R.id.action_tab_manager -> {
+                    TabManagerBottomSheet.show(supportFragmentManager)
+                    true
+                }
                 else -> false
             }
         }
@@ -64,16 +70,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpTabs() {
-        binding.viewPager.adapter = MainTabAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.setText(MainTab.entries[position].titleRes)
+        tabAdapter = MainTabAdapter(this)
+        binding.viewPager.adapter = tabAdapter
+        // autoRefresh rebuilds the tab titles whenever the adapter list changes.
+        TabLayoutMediator(binding.tabLayout, binding.viewPager, true) { tab, position ->
+            tab.setText(tabAdapter.tabs[position].titleRes)
         }.attach()
-        binding.viewPager.setCurrentItem(viewModel.selectedTab.value.ordinal, false)
+        // Fill the adapter synchronously so ViewPager2 can restore fragments and the current page.
+        showTabs(viewModel.visibleTabs.value)
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                viewModel.onTabSelected(MainTab.entries[position])
+                viewModel.onTabSelected(tabAdapter.tabs[position])
             }
         })
+        viewModel.visibleTabs.collectWithLifecycle(this) { showTabs(it) }
+    }
+
+    /** Applies the Tab Manager settings without recreating the Activity. */
+    private fun showTabs(tabs: List<MainTab>) {
+        if (tabs == tabAdapter.tabs) return
+        // Resolve before submitting: the adapter change can report a page that is not the user's choice.
+        val selected = viewModel.resolveSelectedTab(tabs)
+        tabAdapter.submit(tabs)
+        binding.viewPager.setCurrentItem(tabs.indexOf(selected), false)
     }
 
     private fun share(effect: MainUiEffect.Share) {

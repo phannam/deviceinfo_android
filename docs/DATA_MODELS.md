@@ -25,7 +25,8 @@ No network models exist. The only persisted data is the app configuration
 | `InfoListUiState` | `ui/list/InfoListUiState.kt` | `loadingMode: LoadingMode`, `rows: List<InfoRowUiModel>` |
 | `ScreenTestResult` | `domain/model/ScreenTestResult.kt` | `defects: Set<ScreenDefect>` (`DEAD_OR_STUCK_PIXELS`, `LINES_OR_BANDING`, `BURN_IN_OR_DISCOLORATION`); null in the repository means not tested |
 | `ScreenTestUiState` | `feature/screentest/ScreenTestUiState.kt` | `pattern`, `hintVisible`, `askingResult`, `defects`; `position`/`total` for the hint |
-| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY`, `MEMORY`, `SCREEN_TEST` with `@StringRes titleRes` |
+| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY`, `MEMORY`, `SCREEN_TEST` with `@StringRes titleRes` and `id: TabId`; `MainTab.of(TabId)` |
+| `TabManagerItem` | `feature/tabmanager/TabManagerUiState.kt` | `id: TabId`, `@StringRes title`, `visible`, `toggleEnabled` (false for the last visible tab) |
 | `ReportSection` | `feature/main/ReportSection.kt` | `@StringRes title`, `rows` |
 | `MainUiEffect.Share` | `feature/main/MainUiEffect.kt` | `sections: List<ReportSection>` |
 | `AppConfig` | `domain/model/AppConfig.kt` | `darkMode: DarkMode` (`OFF`, `ON`, `SYSTEM`), `primaryColor`/`accentColor: AppColor` (14 palette entries, `BRAND` default), `temperatureUnit: TemperatureUnit` (`CELSIUS`, `FAHRENHEIT`) |

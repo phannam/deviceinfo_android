@@ -28,26 +28,26 @@ The app lets users:
   and device; Screen Test shows Not tested until a test is saved) through
   the system share sheet.
 
-The app has no network access, no account, no database, and no persisted user
-data.
+The app has no network access, no account, and no database. The only
+persisted data is the app settings (SharedPreferences `app_config`).
 
-Current state (spec 001 `docs/requirements/001-device-diagnostics.md` done):
+Current state (specs 001 `docs/requirements/001-device-diagnostics.md` and
+002 `docs/requirements/002-settings-theme-tab-manager.md` done):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
 - Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
 - `MainActivity` hosts Device, CPU, Battery, Display, Memory, and Screen Test tabs with Material `TabLayout` +
-  `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
+  `ViewPager2`; lists use `RecyclerView` + `ListAdapter`. Users can hide and reorder tabs in the Tab Manager.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
-- In progress: spec 002 `docs/requirements/002-settings-theme-tab-manager.md`
-  (Settings page, light/dark mode, color picker, Tab Manager). Phase 1 done:
-  `AppConfigRepository` (SharedPreferences), brand colors `#31C7D6` /
-  `#2BB0C1`, palette theme overlays applied by `ThemeApplier`. Phase 2 done:
-  neutral gray surfaces, toolbar with app icon, rows drawn as rounded card
-  groups (`RowPosition`). Phase 3 done: `ConfigActivity` (Settings page:
-  dark mode, temperature unit, About, policy links); Battery and the report
-  follow the temperature unit. Phase 4 done: `ColorPickerDialog` for
-  primary/accent colors; `ThemeApplier` recreates open activities.
+- Spec 002 features: `AppConfigRepository` (SharedPreferences), brand colors
+  `#31C7D6` / `#2BB0C1`, palette theme overlays applied by `ThemeApplier`
+  (recreates open activities on color change), neutral gray surfaces,
+  rows drawn as rounded card groups (`RowPosition`), `ConfigActivity`
+  (Settings page: dark mode, primary/accent `ColorPickerDialog`, Tab
+  Manager, temperature unit, About, policy links), and
+  `TabManagerBottomSheet` (show, hide, and sort tabs; opened from the main
+  overflow menu and Settings).
 
 Modernization goal:
 
@@ -234,8 +234,12 @@ Be extra careful around these areas:
 - Battery current follows the API contract (signed µA). Some OEMs report mA
   or flip the sign; do not add guesses. Record such devices in spec 001
   section 10.
-- Tab restoration: `MainActivity` restores the selected tab from
-  `MainViewModel` before registering the page callback. Keep that order.
+- Tab restoration: `MainActivity` fills `MainTabAdapter` with
+  `MainViewModel.visibleTabs.value` and restores the selected tab before
+  registering the page callback. Keep that order. The tab list changes at
+  runtime: `MainTabAdapter` item ids are `MainTab.ordinal` (never positions),
+  and `showTabs` resolves the selected tab (`resolveSelectedTab`) before
+  submitting the new list. The share report always includes every tab.
 - `UiText.Resource` args are formatted with the string resource format; keep
   `values/` and `values-vi/` format specifiers identical.
 - Hilt + KSP with AGP built-in Kotlin: do not apply

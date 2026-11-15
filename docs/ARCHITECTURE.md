@@ -85,8 +85,8 @@ MainActivity share menu
 - Presentation: `MainActivity` (toolbar, `TabLayout` + `ViewPager2` via
   `TabLayoutMediator`, share chooser), `InfoListFragment` base with
   `DeviceFragment`/`DisplayFragment`, `InfoRowAdapter` (`ListAdapter`).
-- ViewModels: `MainViewModel` (selected tab in `SavedStateHandle`, share
-  effect through a `Channel`), `DeviceViewModel`, `DisplayViewModel`. No
+- ViewModels: `MainViewModel` (visible tabs from `AppConfigRepository.tabs`,
+  selected tab in `SavedStateHandle`, share effect through a `Channel`), `DeviceViewModel`, `DisplayViewModel`. No
   `Context`; user-visible text is `UiText`.
 - Domain: `DeviceInfo`, `DisplayInfo` models and repository interfaces.
 - Data: repository implementations switch to the injected
@@ -115,6 +115,14 @@ MainActivity share menu
   through AppCompat, and the temperature unit is read by `BatteryViewModel`
   (combined flow) and `MainViewModel.onShareClicked`. The selected tab is saved
   in `MainViewModel` (`SavedStateHandle`) and restored on recreation.
+- Tab Manager: `TabManagerBottomSheet` (`BottomSheetDialogFragment`, opened
+  from the main overflow menu and the Settings page) edits a draft in
+  `TabManagerViewModel`; Save calls `AppConfigRepository.saveTabs` and emits
+  `TabManagerUiEffect.Dismiss`. `MainActivity` collects
+  `MainViewModel.visibleTabs` and updates `MainTabAdapter` (stable ids =
+  `MainTab.ordinal`) and the `TabLayoutMediator` (`autoRefresh`) without
+  recreating; the selected tab stays if visible, otherwise the first visible
+  tab is selected. Fragments of tabs that stay visible keep their state.
 - Edge-to-edge: `enableEdgeToEdge()`; the app bar pads for top/side insets
   and each list pads for bottom/side insets (`clipToPadding=false`).
 - The activity is locked to portrait.

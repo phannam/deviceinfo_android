@@ -36,6 +36,7 @@ Packages under `vn.npstudio.deviceinfo`:
 | `feature.main` | `MainActivity`, `MainViewModel`, `MainTab`, `MainTabAdapter`, `MainUiEffect`, `ReportSection`, `ShareReportRenderer` |
 | `feature.device` | `DeviceFragment`, `DeviceViewModel`, `DeviceRowMapper` |
 | `feature.config` | `ConfigActivity` (Settings page), `ConfigViewModel`, `ConfigUiState`, `ColorPickerDialog`, `SwatchAdapter` (+ `DarkMode`/`TemperatureUnit` label resources) |
+| `feature.tabmanager` | `TabManagerBottomSheet`, `TabManagerViewModel`, `TabManagerUiState` (+ `TabManagerItem`, `TabManagerUiEffect`), `TabManagerAdapter` (drag + accessibility move actions) |
 | `feature.battery` | `BatteryFragment`, `BatteryViewModel`, `BatteryRowMapper` |
 | `feature.cpu` | `CpuFragment`, `CpuViewModel`, `CpuRowMapper` |
 | `feature.display` | `DisplayFragment`, `DisplayViewModel`, `DisplayRowMapper` |
@@ -66,7 +67,9 @@ Share report decision: `MainViewModel` emits structured
 **Dependency rules**
 
 - `feature.*` must not import another `feature.*` package, except
-  `feature.main` using tab fragments and row mappers.
+  `feature.main` using tab fragments and row mappers, `feature.tabmanager`
+  using `MainTab` (tab titles), and `feature.main`/`feature.config` opening
+  `TabManagerBottomSheet`.
 - `feature.*` and `ui` must not import `data`.
 - `domain` must not import Android framework classes or `R`.
 - `data` must not import `feature.*`, `ui`, or ViewModels.
@@ -75,8 +78,9 @@ Share report decision: `MainViewModel` emits structured
 **File placement rules for new code**
 
 - New tab: `feature/<name>/` with Fragment (extend `InfoListFragment` for
-  list tabs), ViewModel, and row mapper; add it to `MainTab` and
-  `MainTabAdapter`.
+  list tabs), ViewModel, and row mapper; add it to `TabId`, `MainTab`, and
+  `MainTabAdapter`. `AppConfigParser` appends the new tab as visible for
+  existing users; add its section to `MainViewModel.onShareClicked`.
 - New layout: `res/layout/` named per `docs/CONVENTIONS.md`.
 - New platform reader: a data source in `data/source/` plus a domain model
   and repository in `domain/`, bound in `di/`. Add any required permission

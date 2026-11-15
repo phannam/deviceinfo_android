@@ -32,6 +32,12 @@
         <item name="colorOnSurfaceInverse">@color/neutral_inverse_on_surface</item>
 
         <item name="materialCardViewStyle">@style/Widget.DeviceInfo.Card</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.DeviceInfo.BottomSheetDialog</item>
+    </style>
+
+    <!-- Sheets use the screen background so white cards stand out, as on the main screen. -->
+    <style name="ThemeOverlay.DeviceInfo.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.DeviceInfo.BottomSheet</item>
     </style>
 
     <style name="Theme.DeviceInfo.ScreenTest">

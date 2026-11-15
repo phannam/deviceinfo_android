@@ -24,6 +24,9 @@
   - `feature/config/ConfigViewModelTest`: state from stored config; dark mode,
     temperature unit, and primary/accent color selections update state and
     persist.
+  - `feature/tabmanager/TabManagerViewModelTest`: draft starts from saved
+    tabs; move (and out-of-range ignored), toggle, last visible tab locked,
+    Reset changes the draft only, Save persists and emits Dismiss.
   - `ui/theme/ThemeOverlaysTest`: every `AppColor` has distinct overlays per
     role, distinct swatches and names; BRAND maps to brand primary/accent.
   - `data/repository/MemoryRepositoryImplTest`: 2 s RAM polling (virtual
@@ -54,7 +57,9 @@
   - `feature/main/ShareReportRendererTest`: header and section layout with a
     fake resolver.
   - `feature/main/MainViewModelTest`: selected tab restored from
-    `SavedStateHandle`; share effect contains Device, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections; the Battery section uses the selected temperature unit.
+    `SavedStateHandle`; `visibleTabs` follows the tab settings; the selected
+    tab is kept if visible, otherwise the first visible tab; the report
+    ignores the tab settings; share effect contains Device, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections; the Battery section uses the selected temperature unit.
   - Shared helpers in `testing/`: `MainDispatcherRule`
     (`StandardTestDispatcher`), sample models, fake repositories and data sources, and
     `byLabel()` for row lookups (`rows[UiText.res(R.string.label_x)]`).
@@ -122,6 +127,13 @@
 
 Run these on a device after UI, tab, or share changes:
 
+- Tab Manager (overflow menu and Settings row): hide/show tabs, drag to
+  reorder (handle and long press), Reset, Save updates the main tabs
+  without recreating; dismiss without Save discards; the last visible
+  tab's switch is disabled; hiding the selected tab selects the first
+  visible tab; Screen Test result and live tabs keep working; settings
+  survive an app restart; TalkBack offers Move up/Move down on each card and
+  reads the tab name on each switch.
 - Color dialog: picking a swatch updates the header; Recommend selects
   cyan without closing; OK recolors the Settings page at once and the main
   screen on return (selected tab kept); Back or tapping outside discards;

@@ -6,10 +6,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import vn.npstudio.deviceinfo.domain.model.TabPreferences
 import vn.npstudio.deviceinfo.domain.model.WindowSnapshot
 import vn.npstudio.deviceinfo.domain.repository.AppConfigRepository
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
@@ -40,6 +44,11 @@ class MainViewModel @Inject constructor(
 
     val selectedTab: StateFlow<MainTab> = savedStateHandle.getStateFlow(KEY_SELECTED_TAB, MainTab.DEVICE)
 
+    /** Tabs the user keeps visible, in the user's order (spec 002 section 4.5). */
+    val visibleTabs: StateFlow<List<MainTab>> = appConfigRepository.tabs
+        .map(::toMainTabs)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), toMainTabs(appConfigRepository.tabs.value))
+
     private val _effects = Channel<MainUiEffect>(Channel.BUFFERED)
     val effects: Flow<MainUiEffect> = _effects.receiveAsFlow()
 
@@ -47,7 +56,17 @@ class MainViewModel @Inject constructor(
         savedStateHandle[KEY_SELECTED_TAB] = tab
     }
 
-    /** [window] is measured by the Activity so the report includes window size and cutout. */
+    /** Returns the saved tab if it is in [tabs], otherwise the first of [tabs], and stores the result. */
+    fun resolveSelectedTab(tabs: List<MainTab>): MainTab {
+        val tab = selectedTab.value.takeIf { it in tabs } ?: tabs.first()
+        onTabSelected(tab)
+        return tab
+    }
+
+    /**
+     * [window] is measured by the Activity so the report includes window size and cutout.
+     * The report always has all sections in default order, whatever the tab settings.
+     */
     fun onShareClicked(window: WindowSnapshot?) {
         viewModelScope.launch {
             val sections = listOf(
@@ -73,6 +92,8 @@ class MainViewModel @Inject constructor(
             _effects.send(MainUiEffect.Share(sections))
         }
     }
+
+    private fun toMainTabs(tabs: TabPreferences): List<MainTab> = tabs.visible.map(MainTab::of)
 
     private companion object {
         const val KEY_SELECTED_TAB = "selected_tab"

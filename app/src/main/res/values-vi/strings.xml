@@ -11,6 +11,7 @@
     <!-- Actions and share report -->
     <string name="action_settings">Cài đặt</string>
     <string name="action_share_report">Chia sẻ báo cáo thiết bị</string>
+    <string name="action_tab_manager">Quản lý tab</string>
     <string name="share_chooser_title">Chia sẻ báo cáo thiết bị</string>
     <string name="report_subject">Thông tin %1$s</string>
     <string name="report_header">%1$s %2$s\nThời gian: %3$s\nThiết bị: %4$s</string>
@@ -179,6 +180,15 @@
     <string name="config_navigate_up">Quay lại</string>
     <!-- Color dialog (spec 002 section 4.4) -->
     <string name="config_recommend">Đề xuất</string>
+    <string name="config_tab_manager_subtitle">Hiện, ẩn và sắp xếp các tab</string>
+
+    <!-- Tab Manager (spec 002 section 4.5) -->
+    <string name="tab_manager_title">Quản lý tab</string>
+    <string name="tab_manager_subtitle">Nhấn giữ và kéo để sắp xếp</string>
+    <string name="tab_manager_reset">Đặt lại</string>
+    <string name="tab_manager_save">Lưu</string>
+    <string name="tab_manager_move_up">Di chuyển lên</string>
+    <string name="tab_manager_move_down">Di chuyển xuống</string>
     <string name="color_brand">Xanh ngọc (mặc định)</string>
     <string name="color_red">Đỏ</string>
     <string name="color_pink">Hồng</string>

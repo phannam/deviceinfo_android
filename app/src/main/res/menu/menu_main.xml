@@ -12,4 +12,9 @@
         android:id="@+id/action_share_report"
         android:title="@string/action_share_report"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_tab_manager"
+        android:title="@string/action_tab_manager"
+        app:showAsAction="never" />
 </menu>

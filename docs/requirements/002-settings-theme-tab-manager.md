@@ -1,7 +1,7 @@
 # 002 - Settings, Theme, and Tab Manager
 
-- Status: In progress. Phases 1-4 implemented (pending owner build);
-  Phase 5 open.
+- Status: Done. Phases 1-5 implemented (pending owner build and device
+  checks).
 - Owner: @phannam
 - Spec author: planning agent
 - Builds on: `docs/requirements/001-device-diagnostics.md` (done)
@@ -142,7 +142,7 @@ The app works but looks plain. This spec:
 `ConfigActivity` (not exported, portrait), opened from the toolbar gear.
 Layout: `NestedScrollView` on `?android:attr/colorBackground` (same as the
 main screen, see 4.1), cards as in the screenshots. Up arrow returns to
-`MainActivity`. The Tab Manager row is added in Phase 5.
+`MainActivity`.
 
 Card 1 - Appearance and preferences:
 
@@ -353,13 +353,17 @@ the agent lists the Gradle command for the owner:
 - Tests: `ConfigViewModelTest` color cases; `ThemeOverlays` covers every
   `AppColor` for both roles (test iterates all entries).
 
-### Phase 5 - Tab Manager and docs
+### Phase 5 - Tab Manager and docs (implemented)
 
 - `TabManagerBottomSheet`, ViewModel, adapter, drag and accessibility
   actions; dynamic tabs in `MainActivity`; entries in the overflow menu and
   Settings.
 - Tests: `TabManagerViewModelTest` (move, toggle, last tab locked, reset,
   save), `MainViewModelTest` (visible tabs, selected tab fallback).
+- Notes: `MainViewModel.resolveSelectedTab(tabs)` picks and stores the
+  selected tab before `MainTabAdapter.submit`. The sheet uses the screen
+  background (`ThemeOverlay.DeviceInfo.BottomSheetDialog`) so cards stand
+  out, and turns off sheet dragging while a row is dragged.
 - Docs sweep (section 8).
 
 ## 7. Testing
@@ -379,7 +383,8 @@ the agent lists the Gradle command for the owner:
 
 ## 8. Strings and Docs
 
-- New prefixes: `settings_`, `tab_manager_`, `color_` (palette names),
+- New prefixes: `config_` (Settings page; see the content policy note in
+  `AGENTS.md`), `tab_manager_`, `color_` (palette names),
   `dark_mode_`, `temperature_unit_`, `url_` (non-translatable).
 - Every new string also in `values-vi/strings.xml` with the same format
   specifiers. Menu: `action_settings`, `action_share_report`,

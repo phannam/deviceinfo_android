@@ -21,6 +21,7 @@ import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
 import vn.npstudio.deviceinfo.databinding.ActivityConfigBinding
 import vn.npstudio.deviceinfo.domain.model.DarkMode
 import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
+import vn.npstudio.deviceinfo.feature.tabmanager.TabManagerBottomSheet
 import vn.npstudio.deviceinfo.ui.theme.ColorRole
 
 /** The user-facing "Settings" page (spec 002 section 4.3). */
@@ -51,6 +52,7 @@ class ConfigActivity : AppCompatActivity() {
         binding.darkModeTile.setOnClickListener { showDarkModeDialog() }
         binding.primaryColorTile.setOnClickListener { showColorDialog(ColorRole.PRIMARY) }
         binding.accentColorTile.setOnClickListener { showColorDialog(ColorRole.ACCENT) }
+        binding.tabManagerRow.setOnClickListener { TabManagerBottomSheet.show(supportFragmentManager) }
         binding.temperatureUnitRow.setOnClickListener { showTemperatureUnitDialog() }
         binding.privacyPolicyLink.setOnClickListener { openUrl(R.string.url_privacy_policy) }
         binding.termsOfServiceLink.setOnClickListener { openUrl(R.string.url_terms_of_service) }

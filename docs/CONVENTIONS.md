@@ -35,8 +35,10 @@
   - Strings in `values/strings.xml` (English) and `values-vi/strings.xml`
     (Vietnamese) with the same keys; `app_name` is `translatable="false"`.
     Prefixes: `tab_*`, `label_<section>_*`, `value_*`, `report_*`,
-    `common_*`, `action_*`.
-  - Row dimens in `values/dimens.xml`. Vector icon `drawable/ic_share.xml`.
+    `common_*`, `action_*`, `config_*` (Settings page), `tab_manager_*`,
+    `color_*` (palette names), `url_*` (non-translatable).
+  - Dimens in `values/dimens.xml`. Vector icons `drawable/ic_<name>.xml`
+    (Material icons, tinted with `app:tint`).
 
 ## Target Conventions (all new and refactored code must follow)
 
@@ -89,6 +91,8 @@
     created only in `MainTabAdapter.createFragment` (`FragmentStateAdapter`).
   - On Activity recreation, restore the selected tab from `MainViewModel`
     with `setCurrentItem(..., false)` before registering the page callback.
+  - The visible tabs come from `MainViewModel.visibleTabs`; `MainTabAdapter`
+    item ids are `MainTab.ordinal`, never positions.
   - Tab switches must not be added to the back stack; Back from the main
     screen exits the app.
   - Never call fragment lifecycle methods (`onPause`, `onStop`) manually.

@@ -119,6 +119,45 @@
                         android:background="?attr/colorOutlineVariant" />
 
                     <LinearLayout
+                        android:id="@+id/tab_manager_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/mediumGap">
+
+                        <ImageView
+                            android:layout_width="@dimen/configIconSize"
+                            android:layout_height="@dimen/configIconSize"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_tab"
+                            app:tint="?attr/colorPrimary" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/mediumGap"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/action_tab_manager"
+                                android:textAppearance="?attr/textAppearanceBodyLarge"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/config_tab_manager_subtitle"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/temperature_unit_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

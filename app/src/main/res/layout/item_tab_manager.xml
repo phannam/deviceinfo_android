@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Click toggles the switch; move accessibility actions are added in TabManagerAdapter. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/tabManagerItemGap">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/tabManagerItemHeight"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/mediumGap"
+        tools:ignore="RtlSymmetry">
+
+        <ImageView
+            android:id="@+id/drag_handle"
+            android:layout_width="@dimen/tabManagerHandleSize"
+            android:layout_height="@dimen/tabManagerHandleSize"
+            android:importantForAccessibility="no"
+            android:scaleType="center"
+            android:src="@drawable/ic_drag_handle"
+            app:tint="?attr/colorOnSurfaceVariant" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="Device" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/tab_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
