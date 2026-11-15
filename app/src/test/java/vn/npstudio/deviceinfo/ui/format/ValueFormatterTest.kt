@@ -43,4 +43,9 @@ class ValueFormatterTest {
         assertEquals(UiText.res(R.string.value_frequency_ghz, 2.3616), ValueFormatter.frequencyKhz(2_361_600L))
         assertEquals(ValueFormatter.unavailable, ValueFormatter.frequencyKhz(null))
     }
+
+    @Test
+    fun hoursMinutes_splitsHoursAndMinutes() {
+        assertEquals(UiText.res(R.string.value_duration_hm, 26L, 5L), ValueFormatter.hoursMinutes((26 * 60 + 5) * 60_000L))
+    }
 }

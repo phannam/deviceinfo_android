@@ -39,6 +39,24 @@ object ValueFormatter {
         )
     }
 
+    /** Formats a duration as hours and minutes, for example `1h 25m`. */
+    fun hoursMinutes(millis: Long): UiText {
+        val totalMinutes = millis.coerceAtLeast(0) / 60_000
+        return UiText.res(R.string.value_duration_hm, totalMinutes / 60, totalMinutes % 60)
+    }
+
+    fun yesNo(value: Boolean?): UiText = when (value) {
+        null -> unavailable
+        true -> UiText.res(R.string.common_yes)
+        false -> UiText.res(R.string.common_no)
+    }
+
+    fun onOff(value: Boolean?): UiText = when (value) {
+        null -> unavailable
+        true -> UiText.res(R.string.common_on)
+        false -> UiText.res(R.string.common_off)
+    }
+
     /** Formats an ISO `yyyy-MM-dd` date in [locale]; keeps the raw text when it does not parse. */
     fun isoDate(raw: String?, locale: Locale): UiText {
         if (raw == null) return unavailable

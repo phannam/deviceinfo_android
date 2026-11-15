@@ -1,16 +1,25 @@
 package vn.npstudio.deviceinfo.testing
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import vn.npstudio.deviceinfo.data.source.BatteryBroadcast
+import vn.npstudio.deviceinfo.data.source.BatteryDataSource
+import vn.npstudio.deviceinfo.data.source.BatteryProperties
 import vn.npstudio.deviceinfo.data.source.CpuInfoDataSource
 import vn.npstudio.deviceinfo.data.source.SysFsReader
+import vn.npstudio.deviceinfo.domain.model.BatteryHealth
+import vn.npstudio.deviceinfo.domain.model.BatteryInfo
+import vn.npstudio.deviceinfo.domain.model.BatteryStatus
 import vn.npstudio.deviceinfo.domain.model.CpuCluster
 import vn.npstudio.deviceinfo.domain.model.CpuCore
 import vn.npstudio.deviceinfo.domain.model.CpuCoreFrequency
 import vn.npstudio.deviceinfo.domain.model.CpuInfo
 import vn.npstudio.deviceinfo.domain.model.DeviceInfo
 import vn.npstudio.deviceinfo.domain.model.DisplayInfo
+import vn.npstudio.deviceinfo.domain.model.PowerSource
 import vn.npstudio.deviceinfo.domain.model.ThermalStatus
+import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
@@ -93,4 +102,63 @@ class FakeCpuInfoDataSource(
     override fun availableProcessors() = processors
     override fun thermalStatus(): ThermalStatus? = ThermalStatus.NONE
     override fun thermalHeadroom(): Float? = null
+}
+
+val sampleBatteryInfo = BatteryInfo(
+    levelPercent = 80,
+    status = BatteryStatus.CHARGING,
+    powerSource = PowerSource.AC,
+    health = BatteryHealth.GOOD,
+    temperatureTenthsCelsius = 312,
+    voltageMillivolts = 4_215,
+    technology = "Li-ion",
+    present = true,
+    cycleCount = null,
+    currentNowMicroamps = -450_000,
+    currentAverageMicroamps = null,
+    chargeCounterMicroampHours = 2_640_000,
+    chargeTimeRemainingMillis = 5_100_000L,
+    powerSaveMode = false,
+)
+
+class FakeBatteryRepository(
+    val flow: Flow<BatteryInfo> = flowOf(sampleBatteryInfo),
+) : BatteryRepository {
+    override fun observe(): Flow<BatteryInfo> = flow
+}
+
+val sampleBatteryBroadcast = BatteryBroadcast(
+    level = 80,
+    scale = 100,
+    status = 2,
+    plugged = 1,
+    health = 2,
+    temperature = 312,
+    voltage = 4_215,
+    technology = "Li-ion",
+    present = true,
+    cycleCount = -1,
+)
+
+val sampleBatteryProperties = BatteryProperties(
+    currentNow = -450_000,
+    currentAverage = Int.MIN_VALUE,
+    chargeCounter = 2_640_000,
+    chargeTimeRemainingMillis = 5_100_000L,
+    powerSaveMode = false,
+)
+
+class FakeBatteryDataSource(
+    var properties: BatteryProperties = sampleBatteryProperties,
+) : BatteryDataSource {
+    val broadcasts = MutableSharedFlow<BatteryBroadcast>(replay = 1)
+    var propertyReads = 0
+        private set
+
+    override fun batteryChanges(): Flow<BatteryBroadcast> = broadcasts
+
+    override fun readProperties(): BatteryProperties {
+        propertyReads++
+        return properties
+    }
 }

@@ -6,5 +6,6 @@ import vn.npstudio.deviceinfo.R
 enum class MainTab(@param:StringRes val titleRes: Int) {
     DEVICE(R.string.tab_device),
     CPU(R.string.tab_cpu),
+    BATTERY(R.string.tab_battery),
     DISPLAY(R.string.tab_display),
 }

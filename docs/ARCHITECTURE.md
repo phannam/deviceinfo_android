@@ -1,6 +1,6 @@
 # Architecture
 
-Based on the source in `app/` after Phase 2 of
+Based on the source in `app/` after Phase 3 of
 `docs/requirements/001-device-diagnostics.md`. The app uses XML layouts;
 Compose is not part of the target architecture.
 
@@ -14,8 +14,11 @@ Compose is not part of the target architecture.
   headroom from `Build`, `PowerManager`, `/proc/cpuinfo`, and
   `/sys/devices/system/cpu`; per-core current frequency polled every second
   while the tab is visible.
+- Battery tab: sticky `ACTION_BATTERY_CHANGED` extras (live receiver),
+  `BatteryManager` properties and `PowerManager.isPowerSaveMode` polled every
+  2 s while the tab is visible.
 - Display tab: resolution (display mode), density, dpi, and font scale.
-- Shares a plain-text report (Device + CPU + Display sections) through the system
+- Shares a plain-text report (Device + CPU + Battery + Display sections) through the system
   share sheet.
 
 **Pattern: strict MVVM with Hilt**
@@ -27,6 +30,15 @@ CpuFragment
                     flowOn IO; emits [] and completes when unreadable)
   -> CpuInfoDataSource (Build, PowerManager) + SysFsReader (/proc, /sys)
   -> CpuSysFsParser (pure) and CpuRowMapper (pure)
+
+BatteryFragment
+  -> BatteryViewModel   observe().map(rows)
+  -> BatteryRepository  combine(batteryChanges() callbackFlow receiver,
+                        2 s properties ticker) -> BatteryParser (pure)
+                        -> distinctUntilChanged, flowOn IO
+  -> BatteryDataSource  (ContextCompat.registerReceiver NOT_EXPORTED,
+                        BatteryManager, PowerManager)
+  -> BatteryRowMapper (pure)
 
 DeviceFragment / DisplayFragment (InfoListFragment, collect at RESUMED)
   -> DeviceViewModel / DisplayViewModel   StateFlow<InfoListUiState>

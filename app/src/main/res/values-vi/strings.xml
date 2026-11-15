@@ -3,6 +3,7 @@
     <!-- Tabs -->
     <string name="tab_device">Thiết bị</string>
     <string name="tab_cpu">CPU</string>
+    <string name="tab_battery">Pin</string>
     <string name="tab_display">Màn hình</string>
 
     <!-- Actions and share report -->
@@ -13,6 +14,10 @@
 
     <!-- Common -->
     <string name="common_unavailable">Không khả dụng</string>
+    <string name="common_yes">Có</string>
+    <string name="common_no">Không</string>
+    <string name="common_on">Bật</string>
+    <string name="common_off">Tắt</string>
 
     <!-- Device tab -->
     <string name="label_device_manufacturer">Nhà sản xuất</string>
@@ -72,4 +77,44 @@
     <string name="value_thermal_critical">Nguy hiểm</string>
     <string name="value_thermal_emergency">Khẩn cấp</string>
     <string name="value_thermal_shutdown">Sắp tắt máy</string>
+
+    <string name="label_battery_level">Mức pin</string>
+    <string name="label_battery_status">Trạng thái</string>
+    <string name="label_battery_power_source">Nguồn sạc</string>
+    <string name="label_battery_health">Tình trạng pin</string>
+    <string name="label_battery_temperature">Nhiệt độ</string>
+    <string name="label_battery_voltage">Điện áp</string>
+    <string name="label_battery_technology">Công nghệ</string>
+    <string name="label_battery_present">Có pin</string>
+    <string name="label_battery_cycle_count">Số chu kỳ sạc</string>
+    <string name="label_battery_current_now">Dòng điện hiện tại</string>
+    <string name="label_battery_current_average">Dòng điện trung bình</string>
+    <string name="label_battery_charge_counter">Dung lượng còn lại</string>
+    <string name="label_battery_estimated_capacity">Dung lượng đầy (ước tính)</string>
+    <string name="label_battery_time_to_full">Thời gian sạc đầy</string>
+    <string name="label_battery_saver">Tiết kiệm pin</string>
+
+    <string name="value_percent_int">%1$d%%</string>
+    <string name="value_temperature_celsius">%1$.1f °C</string>
+    <string name="value_voltage">%1$.3f V</string>
+    <string name="value_milliamps">%1$d mA</string>
+    <string name="value_milliamp_hours">%1$d mAh</string>
+    <string name="value_duration_hm">%1$d giờ %2$d phút</string>
+    <string name="value_battery_status_charging">Đang sạc</string>
+    <string name="value_battery_status_discharging">Đang xả</string>
+    <string name="value_battery_status_full">Đầy</string>
+    <string name="value_battery_status_not_charging">Không sạc</string>
+    <string name="value_battery_status_unknown">Không xác định</string>
+    <string name="value_power_source_ac">Sạc AC</string>
+    <string name="value_power_source_usb">USB</string>
+    <string name="value_power_source_wireless">Không dây</string>
+    <string name="value_power_source_dock">Dock</string>
+    <string name="value_power_source_none">Không cắm sạc</string>
+    <string name="value_battery_health_good">Tốt</string>
+    <string name="value_battery_health_overheat">Quá nhiệt</string>
+    <string name="value_battery_health_dead">Hỏng</string>
+    <string name="value_battery_health_over_voltage">Quá áp</string>
+    <string name="value_battery_health_failure">Lỗi</string>
+    <string name="value_battery_health_cold">Quá lạnh</string>
+    <string name="value_battery_health_unknown">Không xác định</string>
 </resources>

@@ -3,6 +3,7 @@ package vn.npstudio.deviceinfo.feature.main
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import vn.npstudio.deviceinfo.feature.battery.BatteryFragment
 import vn.npstudio.deviceinfo.feature.cpu.CpuFragment
 import vn.npstudio.deviceinfo.feature.device.DeviceFragment
 import vn.npstudio.deviceinfo.feature.display.DisplayFragment
@@ -14,6 +15,7 @@ class MainTabAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity
     override fun createFragment(position: Int): Fragment = when (MainTab.entries[position]) {
         MainTab.DEVICE -> DeviceFragment()
         MainTab.CPU -> CpuFragment()
+        MainTab.BATTERY -> BatteryFragment()
         MainTab.DISPLAY -> DisplayFragment()
     }
 }

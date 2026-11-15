@@ -1,6 +1,6 @@
 # 001 - Device Diagnostics
 
-- Status: In progress. Phase 1 implemented; Phase 2 implemented (pending owner build); Phases 3-7 open.
+- Status: In progress. Phases 1-2 implemented; Phase 3 implemented (pending owner build); Phases 4-7 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Implements: `docs/ARCHITECTURE.md` target rules, ADR-TARGET-001..004
@@ -406,7 +406,7 @@ owner builds, tests on device, and reports errors.
   change every second only while the tab is visible; unreadable sysfs shows
   the notice row, no crash.
 
-### Phase 3 - Battery tab
+### Phase 3 - Battery tab (implemented)
 
 - `BatteryDataSource` (receiver + properties), `BatteryRepository`, tab UI
   with level progress row.

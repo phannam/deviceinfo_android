@@ -13,10 +13,12 @@ No persistence or network models exist.
 | `CpuCluster` | `domain/model/CpuInfo.kt` | `coreCount`, `maxFreqKhz` |
 | `CpuCoreFrequency` | `domain/model/CpuInfo.kt` | `coreId`, `currentKhz: Long?` (null = offline or unreadable) |
 | `ThermalStatus` | `domain/model/ThermalStatus.kt` | Enum mirroring `PowerManager.THERMAL_STATUS_*` |
-| `PollingIntervals` | `data/PollingIntervals.kt` | `cpuFrequencyMillis` (1000) |
+| `BatteryInfo` | `domain/model/BatteryInfo.kt` | `levelPercent`, `status: BatteryStatus`, `powerSource: PowerSource?`, `health: BatteryHealth`, `temperatureTenthsCelsius`, `voltageMillivolts`, `technology`, `present`, `cycleCount` (API 34+), `currentNowMicroamps`/`currentAverageMicroamps` (signed µA), `chargeCounterMicroampHours`, `chargeTimeRemainingMillis`, `powerSaveMode`; all nullable except enums |
+| `BatteryBroadcast`, `BatteryProperties` | `data/source/BatteryDataSource.kt` | Raw intent extras and `BatteryManager` values (`-1` / `Int.MIN_VALUE` = missing); normalized by `BatteryParser` |
+| `PollingIntervals` | `data/PollingIntervals.kt` | `cpuFrequencyMillis` (1000), `batteryPropertiesMillis` (2000) |
 | `InfoRowUiModel` | `ui/list/InfoRowUiModel.kt` | `label: UiText` (secondary constructor takes `@StringRes Int`), `value: UiText`, `progress: Int?` (0-100) |
 | `InfoListUiState` | `ui/list/InfoListUiState.kt` | `loadingMode: LoadingMode`, `rows: List<InfoRowUiModel>` |
-| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `DISPLAY` with `@StringRes titleRes` |
+| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY` with `@StringRes titleRes` |
 | `ReportSection` | `feature/main/ReportSection.kt` | `@StringRes title`, `rows` |
 | `MainUiEffect.Share` | `feature/main/MainUiEffect.kt` | `sections: List<ReportSection>` |
 | `UiText` | `common/text/UiText.kt` | `Dynamic(value)`, `Resource(resId, args)` (args may be nested `UiText`), or `Joined(parts, separator)` |
@@ -25,7 +27,7 @@ Mapping:
 
 - Data sources -> domain models (raw values, nulls for unavailable).
 - Domain models -> `List<InfoRowUiModel>` in `DeviceRowMapper` /
-  `CpuRowMapper` / `DisplayRowMapper` using `ValueFormatter`. Null values become
+  `CpuRowMapper` / `BatteryRowMapper` / `DisplayRowMapper` using `ValueFormatter`. Null values become
   `common_unavailable`.
 - `ReportSection` list -> share text in `ShareReportRenderer`.
 

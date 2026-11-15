@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import vn.npstudio.deviceinfo.data.source.BatteryDataSource
+import vn.npstudio.deviceinfo.data.source.BatteryDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.BuildInfoDataSource
 import vn.npstudio.deviceinfo.data.source.BuildInfoDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.CpuInfoDataSource
@@ -28,4 +30,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindSysFsReader(impl: SysFsReaderImpl): SysFsReader
+
+    @Binds
+    abstract fun bindBatteryDataSource(impl: BatteryDataSourceImpl): BatteryDataSource
 }

@@ -16,20 +16,22 @@ The app lets users:
 - View display information (resolution, density, dpi, font scale).
 - View CPU information (SoC, ABIs, clusters, governor, thermal status) and
   live per-core frequencies.
+- View live battery information (level, status, power source, health,
+  temperature, voltage, current, charge counter, estimated capacity).
 - Share all collected information as plain text through the system share
   sheet.
-- Planned (spec `docs/requirements/001-device-diagnostics.md`): Battery,
+- Planned (spec `docs/requirements/001-device-diagnostics.md`):
   full Display, Memory & Storage, and Screen Test tabs.
 
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state (after Phase 2 of spec 001):
+Current state (after Phase 3 of spec 001):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
 - Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
-- `MainActivity` hosts Device, CPU, and Display tabs with Material `TabLayout` +
+- `MainActivity` hosts Device, CPU, Battery, and Display tabs with Material `TabLayout` +
   `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
 
@@ -203,9 +205,12 @@ Be extra careful around these areas:
 - `SysFsReader` is the only class that reads `/proc` and `/sys`; it never
   throws. Many files are blocked by SELinux on newer devices, so every sysfs
   value must have an unavailable path.
-- CPU frequency polling runs only while the CPU tab is subscribed
-  (`WhileSubscribed(5000)`, collected at `RESUMED`). Do not collect it from
-  a long-lived scope.
+- CPU frequency polling and the battery receiver/polling run only while
+  their tab is subscribed (`WhileSubscribed(5000)`, collected at `RESUMED`).
+  Do not collect them from a long-lived scope.
+- Battery current follows the API contract (signed µA). Some OEMs report mA
+  or flip the sign; do not add guesses. Record such devices in spec 001
+  section 10.
 - Tab restoration: `MainActivity` restores the selected tab from
   `MainViewModel` before registering the page callback. Keep that order.
 - `UiText.Resource` args are formatted with the string resource format; keep
