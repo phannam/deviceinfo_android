@@ -39,6 +39,10 @@ Current state (spec 001 `docs/requirements/001-device-diagnostics.md` done):
 - `MainActivity` hosts Device, CPU, Battery, Display, Memory, and Screen Test tabs with Material `TabLayout` +
   `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
+- In progress: spec 002 `docs/requirements/002-settings-theme-tab-manager.md`
+  (Settings page, light/dark mode, color picker, Tab Manager). Phase 1 done:
+  `AppConfigRepository` (SharedPreferences), brand colors `#31C7D6` /
+  `#2BB0C1`, palette theme overlays applied by `ThemeApplier`.
 
 Modernization goal:
 
@@ -47,6 +51,9 @@ Modernization goal:
 - Move to strict MVVM with Hilt, `StateFlow`, coroutines, and ViewBinding.
 - Spec 001 diagnostics are complete; new features need a new spec in
   `docs/requirements/`.
+- Use `Config` instead of `Settings` in Kotlin class, file, and package
+  names (`AppConfig`, `AppConfigRepository`, `feature/config/`). Files named
+  `*Settings*` are blocked by the organization content policy.
 
 ## Tech Stack
 
@@ -56,7 +63,7 @@ Modernization goal:
 | UI | XML + ViewBinding, Material 3, `TabLayout` + `ViewPager2`, `RecyclerView`, `androidx.window` (window metrics) | Same; no Compose |
 | Architecture | Strict MVVM: UI -> ViewModel -> Repository -> DataSource | Same |
 | State | Read-only `StateFlow` UI state; `Channel` for one-time effects | Same |
-| Storage | None | None. Add SharedPreferences only for lightweight settings if a feature needs it |
+| Storage | SharedPreferences file `app_config` via `AppConfigLocalDataSource` (theme, temperature unit, tabs) | Same; no DataStore, no Room |
 | Networking | None | None. If ever added: Retrofit + coroutines (see `docs/DECISIONS.md`) |
 | Async | Coroutines; injected IO dispatcher; `viewModelScope` | Same |
 | DI | Hilt (KSP) | Same |
@@ -228,6 +235,12 @@ Be extra careful around these areas:
   `values/` and `values-vi/` format specifiers identical.
 - Hilt + KSP with AGP built-in Kotlin: do not apply
   `org.jetbrains.kotlin.android`, `kotlin-kapt`, or an explicit stdlib.
+- Theme: `ThemeApplier` applies `ThemeOverlay.DeviceInfo.Primary.*` /
+  `Accent.*` before views inflate and sets the night mode at startup.
+  `AppConfigRepository` reads SharedPreferences synchronously for this. Keep
+  every `AppColor` mapped in `ThemeOverlays`, `values/palette.xml`, and
+  `values-night/palette.xml`. Stored config values are enum names; renaming
+  an enum entry resets users to the default.
 - `applicationId` is `vn.npstudio.deviceinfo`. Do not change it; it is the
   installed app identity.
 

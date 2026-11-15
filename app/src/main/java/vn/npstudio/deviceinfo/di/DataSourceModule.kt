@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import vn.npstudio.deviceinfo.data.source.AppConfigLocalDataSource
+import vn.npstudio.deviceinfo.data.source.AppConfigLocalDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.BatteryDataSource
 import vn.npstudio.deviceinfo.data.source.BatteryDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.BuildInfoDataSource
@@ -38,4 +40,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindMemoryDataSource(impl: MemoryDataSourceImpl): MemoryDataSource
+
+    @Binds
+    abstract fun bindAppConfigLocalDataSource(impl: AppConfigLocalDataSourceImpl): AppConfigLocalDataSource
 }

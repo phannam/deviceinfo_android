@@ -3,6 +3,7 @@ package vn.npstudio.deviceinfo.testing
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
+import vn.npstudio.deviceinfo.data.source.AppConfigLocalDataSource
 import vn.npstudio.deviceinfo.data.source.BatteryBroadcast
 import vn.npstudio.deviceinfo.data.source.BatteryDataSource
 import vn.npstudio.deviceinfo.data.source.BatteryProperties
@@ -218,4 +219,14 @@ class FakeMemoryDataSource(
     }
 
     override fun readStorage(): StorageInfo = storage
+}
+
+class FakeAppConfigLocalDataSource(
+    val values: MutableMap<String, String> = mutableMapOf(),
+) : AppConfigLocalDataSource {
+    override fun getString(key: String): String? = values[key]
+
+    override fun putString(key: String, value: String) {
+        values[key] = value
+    }
 }

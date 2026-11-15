@@ -2,7 +2,8 @@
 
 ## Current Models
 
-No persistence or network models exist.
+No network models exist. The only persisted data is the app configuration
+(SharedPreferences file `app_config`, see below).
 
 | Model | Location | Notes |
 |---|---|---|
@@ -27,7 +28,15 @@ No persistence or network models exist.
 | `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `BATTERY`, `DISPLAY`, `MEMORY`, `SCREEN_TEST` with `@StringRes titleRes` |
 | `ReportSection` | `feature/main/ReportSection.kt` | `@StringRes title`, `rows` |
 | `MainUiEffect.Share` | `feature/main/MainUiEffect.kt` | `sections: List<ReportSection>` |
+| `AppConfig` | `domain/model/AppConfig.kt` | `darkMode: DarkMode` (`OFF`, `ON`, `SYSTEM`), `primaryColor`/`accentColor: AppColor` (14 palette entries, `BRAND` default), `temperatureUnit: TemperatureUnit` (`CELSIUS`, `FAHRENHEIT`) |
+| `TabPreferences` | `domain/model/TabPreferences.kt` | `order: List<TabId>` (every tab once), `hidden: Set<TabId>` (never all), `visible` |
 | `UiText` | `common/text/UiText.kt` | `Dynamic(value)`, `Resource(resId, args)` (args may be nested `UiText`), or `Joined(parts, separator)` |
+
+Persisted keys (`AppConfigKeys`, values are enum names; tab lists are
+comma-joined `TabId` names): `dark_mode`, `primary_color`, `accent_color`,
+`temperature_unit`, `tab_order`, `tab_hidden`. `AppConfigParser` drops
+unknown names and duplicates, appends missing tabs as visible, and shows
+all tabs if every tab is hidden.
 
 Mapping:
 

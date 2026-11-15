@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Applied at runtime by ui/theme/ThemeApplier; one Primary and one Accent overlay per AppColor. -->
+<resources>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Brand" parent="">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorOnPrimary">@color/brand_on_primary</item>
+        <item name="colorPrimaryContainer">@color/brand_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/brand_on_primary_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Red" parent="">
+        <item name="colorPrimary">@color/palette_red</item>
+        <item name="colorOnPrimary">@color/palette_red_on</item>
+        <item name="colorPrimaryContainer">@color/palette_red_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_red_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Pink" parent="">
+        <item name="colorPrimary">@color/palette_pink</item>
+        <item name="colorOnPrimary">@color/palette_pink_on</item>
+        <item name="colorPrimaryContainer">@color/palette_pink_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_pink_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Purple" parent="">
+        <item name="colorPrimary">@color/palette_purple</item>
+        <item name="colorOnPrimary">@color/palette_purple_on</item>
+        <item name="colorPrimaryContainer">@color/palette_purple_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_purple_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.DeepPurple" parent="">
+        <item name="colorPrimary">@color/palette_deep_purple</item>
+        <item name="colorOnPrimary">@color/palette_deep_purple_on</item>
+        <item name="colorPrimaryContainer">@color/palette_deep_purple_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_deep_purple_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Indigo" parent="">
+        <item name="colorPrimary">@color/palette_indigo</item>
+        <item name="colorOnPrimary">@color/palette_indigo_on</item>
+        <item name="colorPrimaryContainer">@color/palette_indigo_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_indigo_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Blue" parent="">
+        <item name="colorPrimary">@color/palette_blue</item>
+        <item name="colorOnPrimary">@color/palette_blue_on</item>
+        <item name="colorPrimaryContainer">@color/palette_blue_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_blue_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Teal" parent="">
+        <item name="colorPrimary">@color/palette_teal</item>
+        <item name="colorOnPrimary">@color/palette_teal_on</item>
+        <item name="colorPrimaryContainer">@color/palette_teal_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_teal_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Green" parent="">
+        <item name="colorPrimary">@color/palette_green</item>
+        <item name="colorOnPrimary">@color/palette_green_on</item>
+        <item name="colorPrimaryContainer">@color/palette_green_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_green_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.LightGreen" parent="">
+        <item name="colorPrimary">@color/palette_light_green</item>
+        <item name="colorOnPrimary">@color/palette_light_green_on</item>
+        <item name="colorPrimaryContainer">@color/palette_light_green_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_light_green_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Amber" parent="">
+        <item name="colorPrimary">@color/palette_amber</item>
+        <item name="colorOnPrimary">@color/palette_amber_on</item>
+        <item name="colorPrimaryContainer">@color/palette_amber_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_amber_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.Orange" parent="">
+        <item name="colorPrimary">@color/palette_orange</item>
+        <item name="colorOnPrimary">@color/palette_orange_on</item>
+        <item name="colorPrimaryContainer">@color/palette_orange_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_orange_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.DeepOrange" parent="">
+        <item name="colorPrimary">@color/palette_deep_orange</item>
+        <item name="colorOnPrimary">@color/palette_deep_orange_on</item>
+        <item name="colorPrimaryContainer">@color/palette_deep_orange_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_deep_orange_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Primary.BlueGrey" parent="">
+        <item name="colorPrimary">@color/palette_blue_grey</item>
+        <item name="colorOnPrimary">@color/palette_blue_grey_on</item>
+        <item name="colorPrimaryContainer">@color/palette_blue_grey_container</item>
+        <item name="colorOnPrimaryContainer">@color/palette_blue_grey_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Brand" parent="">
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorOnSecondary">@color/brand_on_accent</item>
+        <item name="colorSecondaryContainer">@color/brand_accent_container</item>
+        <item name="colorOnSecondaryContainer">@color/brand_on_accent_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Red" parent="">
+        <item name="colorSecondary">@color/palette_red</item>
+        <item name="colorOnSecondary">@color/palette_red_on</item>
+        <item name="colorSecondaryContainer">@color/palette_red_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_red_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Pink" parent="">
+        <item name="colorSecondary">@color/palette_pink</item>
+        <item name="colorOnSecondary">@color/palette_pink_on</item>
+        <item name="colorSecondaryContainer">@color/palette_pink_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_pink_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Purple" parent="">
+        <item name="colorSecondary">@color/palette_purple</item>
+        <item name="colorOnSecondary">@color/palette_purple_on</item>
+        <item name="colorSecondaryContainer">@color/palette_purple_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_purple_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.DeepPurple" parent="">
+        <item name="colorSecondary">@color/palette_deep_purple</item>
+        <item name="colorOnSecondary">@color/palette_deep_purple_on</item>
+        <item name="colorSecondaryContainer">@color/palette_deep_purple_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_deep_purple_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Indigo" parent="">
+        <item name="colorSecondary">@color/palette_indigo</item>
+        <item name="colorOnSecondary">@color/palette_indigo_on</item>
+        <item name="colorSecondaryContainer">@color/palette_indigo_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_indigo_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Blue" parent="">
+        <item name="colorSecondary">@color/palette_blue</item>
+        <item name="colorOnSecondary">@color/palette_blue_on</item>
+        <item name="colorSecondaryContainer">@color/palette_blue_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_blue_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Teal" parent="">
+        <item name="colorSecondary">@color/palette_teal</item>
+        <item name="colorOnSecondary">@color/palette_teal_on</item>
+        <item name="colorSecondaryContainer">@color/palette_teal_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_teal_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Green" parent="">
+        <item name="colorSecondary">@color/palette_green</item>
+        <item name="colorOnSecondary">@color/palette_green_on</item>
+        <item name="colorSecondaryContainer">@color/palette_green_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_green_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.LightGreen" parent="">
+        <item name="colorSecondary">@color/palette_light_green</item>
+        <item name="colorOnSecondary">@color/palette_light_green_on</item>
+        <item name="colorSecondaryContainer">@color/palette_light_green_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_light_green_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Amber" parent="">
+        <item name="colorSecondary">@color/palette_amber</item>
+        <item name="colorOnSecondary">@color/palette_amber_on</item>
+        <item name="colorSecondaryContainer">@color/palette_amber_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_amber_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.Orange" parent="">
+        <item name="colorSecondary">@color/palette_orange</item>
+        <item name="colorOnSecondary">@color/palette_orange_on</item>
+        <item name="colorSecondaryContainer">@color/palette_orange_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_orange_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.DeepOrange" parent="">
+        <item name="colorSecondary">@color/palette_deep_orange</item>
+        <item name="colorOnSecondary">@color/palette_deep_orange_on</item>
+        <item name="colorSecondaryContainer">@color/palette_deep_orange_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_deep_orange_on_container</item>
+    </style>
+    <style name="ThemeOverlay.DeviceInfo.Accent.BlueGrey" parent="">
+        <item name="colorSecondary">@color/palette_blue_grey</item>
+        <item name="colorOnSecondary">@color/palette_blue_grey_on</item>
+        <item name="colorSecondaryContainer">@color/palette_blue_grey_container</item>
+        <item name="colorOnSecondaryContainer">@color/palette_blue_grey_on_container</item>
+    </style>
+</resources>

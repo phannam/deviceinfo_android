@@ -166,6 +166,24 @@
   same task.
 - Rejected alternatives: Room for settings-only data, Volley, callback-based
   Retrofit, and RxJava adapters.
+- Update (spec 002, owner decision): the app configuration uses
+  SharedPreferences (`AppConfigLocalDataSource`, file `app_config`), not
+  DataStore. `AppConfigRepositoryImpl` reads it once, synchronously, on the
+  main thread during `Application.onCreate` so the theme is known before the
+  first Activity inflates; this small StrictMode disk read is accepted.
+
+### ADR-TARGET-010: Fixed Color Palette Applied With Theme Overlays
+
+- Status: Accepted (spec 002)
+- Decision: User-selectable primary and accent colors come from the fixed
+  `AppColor` palette. Each entry has a `ThemeOverlay.DeviceInfo.Primary.*`
+  and `Accent.*` style with light/night colors; `ThemeApplier` applies them
+  per Activity before `setContentView`. Open activities recreate after a
+  change.
+- Why: XML views read colors from the theme; overlays keep every widget
+  consistent without tinting views in code and work on API 26.
+- Rejected alternatives: Material dynamic color (API 31+, tonal only),
+  tinting individual views at runtime, free hex input.
 
 ## Do Not Suggest
 

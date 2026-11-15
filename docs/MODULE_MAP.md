@@ -24,13 +24,14 @@ Packages under `vn.npstudio.deviceinfo`:
 | `common.stateflow` | `LoadingMode` |
 | `common.text` | `UiText` |
 | `di` | `DispatcherModule`, `DataSourceModule`, `RepositoryModule` |
-| `domain.model` | `DeviceInfo`, `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus`, `MemoryInfo`, `StorageInfo`, `ScreenTestResult` (+ `ScreenDefect`) |
-| `domain.repository` | `DeviceInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository`, `MemoryRepository`, `ScreenTestResultRepository` |
+| `domain.model` | `AppConfig` (+ `DarkMode`, `AppColor`, `TemperatureUnit`), `TabPreferences` (+ `TabId`), `DeviceInfo`, `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus`, `MemoryInfo`, `StorageInfo`, `ScreenTestResult` (+ `ScreenDefect`) |
+| `domain.repository` | `AppConfigRepository`, `DeviceInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository`, `MemoryRepository`, `ScreenTestResultRepository` |
 | `data` | `PollingIntervals` (live ticker intervals, provided in `DispatcherModule`) |
-| `data.source` | `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `MemoryDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
-| `data.repository` | `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl`, `ScreenTestResultRepositoryImpl` (`@Singleton`, in-memory) |
+| `data.source` | `AppConfigLocalDataSource(Impl)` (+ `AppConfigKeys`, SharedPreferences), `AppConfigParser`, `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `MemoryDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
+| `data.repository` | `AppConfigRepositoryImpl` (`@Singleton`, synchronous first read), `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl`, `ScreenTestResultRepositoryImpl` (`@Singleton`, in-memory) |
 | `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel` |
 | `ui.format` | `ValueFormatter` |
+| `ui.theme` | `ThemeApplier` (night mode + theme overlays per Activity), `ThemeOverlays` (`AppColor` -> style), `NightModeMapper` |
 | `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |
 | `feature.main` | `MainActivity`, `MainViewModel`, `MainTab`, `MainTabAdapter`, `MainUiEffect`, `ReportSection`, `ShareReportRenderer` |
 | `feature.device` | `DeviceFragment`, `DeviceViewModel`, `DeviceRowMapper` |

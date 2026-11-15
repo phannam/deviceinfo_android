@@ -4,12 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import vn.npstudio.deviceinfo.data.repository.AppConfigRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.BatteryRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.CpuRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.DeviceInfoRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.DisplayRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.MemoryRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.ScreenTestResultRepositoryImpl
+import vn.npstudio.deviceinfo.domain.repository.AppConfigRepository
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
@@ -38,4 +40,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindScreenTestResultRepository(impl: ScreenTestResultRepositoryImpl): ScreenTestResultRepository
+
+    @Binds
+    abstract fun bindAppConfigRepository(impl: AppConfigRepositoryImpl): AppConfigRepository
 }

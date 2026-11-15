@@ -22,6 +22,10 @@
     5 s after the last subscriber.
   - `data/repository/MemoryRepositoryImplTest`: 2 s RAM polling (virtual
     time), unchanged values are not re-emitted, storage read.
+  - `data/source/AppConfigParserTest`: enum fallback, tab list parsing
+    (unknown, duplicate, missing tabs), all-hidden reset, round trip.
+  - `data/repository/AppConfigRepositoryImplTest`: defaults, loading stored
+    values, setters persist, `saveTabs` normalizes (fake data source).
   - `feature/memory/MemoryRowMapperTest`: decimal byte units, used-percent
     bars, unavailable values without bars.
   - `feature/memory/MemoryViewModelTest`: live RAM combined with storage;

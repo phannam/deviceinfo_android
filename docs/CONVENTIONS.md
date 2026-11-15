@@ -56,6 +56,12 @@
     `BuildInfoDataSource`, `DisplayInfoDataSource`).
   - UI state: `FeatureUiState.kt` when shared across more than one file.
   - Mappers/formatters: `FeatureMapper.kt` or `FeatureFormatter.kt`.
+  - App settings code uses `Config`, never `Settings`, in class, file, and
+    package names (`AppConfig`, `AppConfigRepository`, `feature/config/`).
+    User-visible strings still say "Settings".
+  - Theme overlays: `ThemeOverlay.DeviceInfo.<Role>.<Color>`; palette colors
+    `palette_<color>`, `_on`, `_container`, `_on_container` in `values/` and
+    `values-night/palette.xml`.
 
 - XML layout naming: `activity_*`, `fragment_*`, `item_*`, `view_*`
   - Use `item_*` for RecyclerView rows and `view_*` for reusable includes,

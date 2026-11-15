@@ -92,6 +92,10 @@ MainActivity share menu
 - Data: repository implementations switch to the injected
   `CoroutineDispatcher` (IO) and call data sources. Data sources are
   interfaces with `Impl` classes bound in `di/`.
+- Theme: `ThemeApplier` (installed in `DeviceInfoApplication`) sets the
+  AppCompat night mode from `AppConfigRepository` and applies the primary
+  and accent theme overlays to each Activity before it inflates views.
+  Colors and tabs are stored in SharedPreferences (`app_config`).
 - Formatting: `ValueFormatter` and per-tab row mappers are pure Kotlin and
   unit tested. Labels are `UiText` (usually a string resource).
 

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brand_primary">#58595B</color>
-    <color name="brand_on_primary">#FFFFFF</color>
+    <color name="brand_primary">#31C7D6</color>
+    <color name="brand_on_primary">#00363C</color>
+    <color name="brand_primary_container">#C3F1F6</color>
+    <color name="brand_on_primary_container">#00363C</color>
+    <color name="brand_primary_dark">#28A6B3</color>
+    <color name="brand_accent">#2BB0C1</color>
+    <color name="brand_on_accent">#00363C</color>
+    <color name="brand_accent_container">#C0EDF3</color>
+    <color name="brand_on_accent_container">#00363C</color>
 </resources>
