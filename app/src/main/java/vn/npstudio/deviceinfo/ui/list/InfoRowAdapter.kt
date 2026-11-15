@@ -10,12 +10,6 @@ import vn.npstudio.deviceinfo.databinding.ItemInfoRowBinding
 
 class InfoRowAdapter : ListAdapter<InfoRowUiModel, InfoRowAdapter.ViewHolder>(DiffCallback) {
 
-    init {
-        setHasStableIds(true)
-    }
-
-    override fun getItemId(position: Int): Long = getItem(position).label.toLong()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemInfoRowBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
@@ -25,10 +19,10 @@ class InfoRowAdapter : ListAdapter<InfoRowUiModel, InfoRowAdapter.ViewHolder>(Di
 
         fun bind(row: InfoRowUiModel) {
             val context = binding.root.context
-            binding.nameText.setText(row.label)
+            binding.nameText.text = row.label.asString(context)
             binding.valueText.text = row.value.asString(context)
             binding.progressIndicator.isVisible = row.progress != null
-            row.progress?.let { binding.progressIndicator.progress = it }
+            row.progress?.let { binding.progressIndicator.setProgressCompat(it, false) }
         }
     }
 

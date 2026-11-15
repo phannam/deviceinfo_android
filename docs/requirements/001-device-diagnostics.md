@@ -1,6 +1,6 @@
 # 001 - Device Diagnostics
 
-- Status: In progress. Phase 1 implemented (pending owner build); Phases 2-7 open.
+- Status: In progress. Phase 1 implemented; Phase 2 implemented (pending owner build); Phases 3-7 open.
 - Owner: @phannam
 - Spec author: planning agent
 - Implements: `docs/ARCHITECTURE.md` target rules, ADR-TARGET-001..004
@@ -267,12 +267,15 @@ XxxRepository ──> XxxDataSource(s)                (platform only)
 XxxViewModel ──> XxxRowMapper (pure) ──> List<InfoRowUiModel>
 ```
 
-- `InfoRowUiModel(@StringRes label: Int, value: UiText, progress: Int? = null)`.
+- `InfoRowUiModel(label: UiText, value: UiText, progress: Int? = null)`, with a
+  secondary constructor taking `@StringRes label: Int` for fixed labels.
+  `UiText` labels allow per-core rows such as "Core 3".
   `progress` (0–100) renders a `LinearProgressIndicator` for level/usage rows.
 - `InfoListUiState(loadingMode: LoadingMode, rows: List<InfoRowUiModel>)`.
 - All list tabs share one layout `fragment_info_list.xml` (RecyclerView)
-  and `item_info_row.xml`. Rows use the label res id as stable id so live
-  updates do not flicker.
+  and `item_info_row.xml`. DiffUtil matches rows by label (no stable ids;
+  hashes can collide) and change animations are off, so live updates do not
+  flicker.
 
 ### 5.3 Live data
 
@@ -396,7 +399,7 @@ owner builds, tests on device, and reports errors.
   selected tab, Back exits the app from any tab, share sheet opens with the
   report, no `AppManager`, no legacy packages.
 
-### Phase 2 - CPU tab
+### Phase 2 - CPU tab (implemented)
 
 - `SysFsReader`, `CpuInfoDataSource`, parsers, `CpuRepository`, tab UI.
 - Acceptance: SoC and cluster rows correct on the test device; frequencies

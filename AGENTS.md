@@ -14,20 +14,22 @@ The app lets users:
 - View device and OS information (`android.os.Build`, kernel, Java VM,
   uptime).
 - View display information (resolution, density, dpi, font scale).
+- View CPU information (SoC, ABIs, clusters, governor, thermal status) and
+  live per-core frequencies.
 - Share all collected information as plain text through the system share
   sheet.
-- Planned (spec `docs/requirements/001-device-diagnostics.md`): CPU, Battery,
+- Planned (spec `docs/requirements/001-device-diagnostics.md`): Battery,
   full Display, Memory & Storage, and Screen Test tabs.
 
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state (after Phase 1 of spec 001):
+Current state (after Phase 2 of spec 001):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
 - Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
-- `MainActivity` hosts Device and Display tabs with Material `TabLayout` +
+- `MainActivity` hosts Device, CPU, and Display tabs with Material `TabLayout` +
   `ViewPager2`; lists use `RecyclerView` + `ListAdapter`.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
 
@@ -195,8 +197,15 @@ implement responsive Android layout behavior.
 
 Be extra careful around these areas:
 
-- `InfoRowAdapter` stable ids come from the row label resource id. Every row
-  in one list must have a unique label, or RecyclerView will misbehave.
+- `InfoRowAdapter` identifies rows by `label` (`UiText`) in DiffUtil. Every
+  row in one list must have a unique label. Do not add stable ids from
+  `label.hashCode()`: different labels can collide and crash RecyclerView.
+- `SysFsReader` is the only class that reads `/proc` and `/sys`; it never
+  throws. Many files are blocked by SELinux on newer devices, so every sysfs
+  value must have an unavailable path.
+- CPU frequency polling runs only while the CPU tab is subscribed
+  (`WhileSubscribed(5000)`, collected at `RESUMED`). Do not collect it from
+  a long-lived scope.
 - Tab restoration: `MainActivity` restores the selected tab from
   `MainViewModel` before registering the page callback. Keep that order.
 - `UiText.Resource` args are formatted with the string resource format; keep

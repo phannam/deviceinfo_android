@@ -8,7 +8,9 @@ import vn.npstudio.deviceinfo.ui.list.InfoRowUiModel
 
 class ShareReportRendererTest {
 
-    private val resolve: (UiText) -> String = { text ->
+    private val resolve: (UiText) -> String = { text -> resolveText(text) }
+
+    private fun resolveText(text: UiText): String =
         when (text) {
             is UiText.Dynamic -> text.value
             is UiText.Resource -> when (text.resId) {
@@ -18,8 +20,8 @@ class ShareReportRendererTest {
                 R.string.label_display_font_scale -> "Font scale"
                 else -> error("Unexpected resource ${text.resId}")
             }
+            is UiText.Joined -> text.parts.joinToString(text.separator) { resolveText(it) }
         }
-    }
 
     @Test
     fun render_writesHeaderThenSections() {

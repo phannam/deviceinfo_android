@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kotlinx.coroutines.flow.StateFlow
 import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
@@ -37,6 +38,8 @@ abstract class InfoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = InfoRowAdapter()
         binding.infoList.adapter = adapter
+        // Live tabs rebind every second; skip the change cross-fade.
+        (binding.infoList.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         binding.infoList.addItemDecoration(
             MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL)
                 .apply { isLastItemDecorated = false },

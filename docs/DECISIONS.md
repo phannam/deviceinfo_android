@@ -7,7 +7,7 @@
 - Status: Current
 - Decision observed: Layouts `activity_main`, `fragment_info_list`,
   `item_info_row`, and menu `menu_main`. Lists use `RecyclerView` +
-  `ListAdapter` with stable ids. Material 3 theme
+  `ListAdapter` (DiffUtil by row label, no stable ids). Material 3 theme
   (`Theme.Material3.DayNight.NoActionBar`), `MaterialToolbar`, `TabLayout` +
   `ViewPager2`.
 

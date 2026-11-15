@@ -9,6 +9,9 @@ sealed interface UiText {
     /** [args] may contain nested [UiText] values; they are resolved before formatting. */
     data class Resource(@param:StringRes val resId: Int, val args: List<Any> = emptyList()) : UiText
 
+    /** Resolves every part and joins them with [separator]. */
+    data class Joined(val parts: List<UiText>, val separator: String) : UiText
+
     fun asString(context: Context): String = when (this) {
         is Dynamic -> value
         is Resource -> if (args.isEmpty()) {
@@ -17,6 +20,7 @@ sealed interface UiText {
             val resolved = args.map { if (it is UiText) it.asString(context) else it }
             context.getString(resId, *resolved.toTypedArray())
         }
+        is Joined -> parts.joinToString(separator) { it.asString(context) }
     }
 
     companion object {

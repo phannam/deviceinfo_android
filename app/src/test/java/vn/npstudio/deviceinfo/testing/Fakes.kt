@@ -1,7 +1,17 @@
 package vn.npstudio.deviceinfo.testing
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import vn.npstudio.deviceinfo.data.source.CpuInfoDataSource
+import vn.npstudio.deviceinfo.data.source.SysFsReader
+import vn.npstudio.deviceinfo.domain.model.CpuCluster
+import vn.npstudio.deviceinfo.domain.model.CpuCore
+import vn.npstudio.deviceinfo.domain.model.CpuCoreFrequency
+import vn.npstudio.deviceinfo.domain.model.CpuInfo
 import vn.npstudio.deviceinfo.domain.model.DeviceInfo
 import vn.npstudio.deviceinfo.domain.model.DisplayInfo
+import vn.npstudio.deviceinfo.domain.model.ThermalStatus
+import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
 
@@ -40,4 +50,47 @@ class FakeDeviceInfoRepository(var info: DeviceInfo = sampleDeviceInfo) : Device
 
 class FakeDisplayRepository(var info: DisplayInfo = sampleDisplayInfo) : DisplayRepository {
     override suspend fun getDisplayInfo(): DisplayInfo = info
+}
+
+val sampleCpuInfo = CpuInfo(
+    socManufacturer = null,
+    socModel = "Qualcomm Technologies, Inc MSM8998",
+    supportedAbis = listOf("arm64-v8a", "armeabi-v7a", "armeabi"),
+    cores = (0..7).map { id ->
+        if (id < 4) CpuCore(id, 300_000L, 1_900_800L) else CpuCore(id, 300_000L, 2_361_600L)
+    },
+    clusters = listOf(CpuCluster(4, 1_900_800L), CpuCluster(4, 2_361_600L)),
+    governors = listOf("schedutil"),
+    thermalStatus = null,
+    thermalHeadroom = null,
+)
+
+val sampleFrequencies = (0..7).map { CpuCoreFrequency(it, if (it == 7) null else 1_100_400L) }
+
+class FakeCpuRepository(
+    var info: CpuInfo = sampleCpuInfo,
+    val frequencies: Flow<List<CpuCoreFrequency>> = flowOf(sampleFrequencies),
+) : CpuRepository {
+    override suspend fun getCpuInfo(): CpuInfo = info
+    override fun observeFrequencies(): Flow<List<CpuCoreFrequency>> = frequencies
+}
+
+/** In-memory `/proc` and `/sys`; missing paths read as null like the real reader. */
+class FakeSysFsReader(val files: MutableMap<String, String> = mutableMapOf()) : SysFsReader {
+    override fun read(path: String): String? = files[path]?.trim()?.ifEmpty { null }
+}
+
+class FakeCpuInfoDataSource(
+    var socManufacturer: String? = null,
+    var socModel: String? = null,
+    var hardware: String? = "qcom",
+    var processors: Int = 8,
+) : CpuInfoDataSource {
+    override fun socManufacturer() = socManufacturer
+    override fun socModel() = socModel
+    override fun hardware() = hardware
+    override fun supportedAbis() = listOf("arm64-v8a")
+    override fun availableProcessors() = processors
+    override fun thermalStatus(): ThermalStatus? = ThermalStatus.NONE
+    override fun thermalHeadroom(): Float? = null
 }

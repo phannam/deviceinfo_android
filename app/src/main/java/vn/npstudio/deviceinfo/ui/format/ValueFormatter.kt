@@ -17,6 +17,17 @@ object ValueFormatter {
 
     fun number(value: Int): UiText = UiText.Dynamic(value.toString())
 
+    /** Formats kHz as integer MHz below 1 GHz, otherwise as GHz with two decimals. */
+    fun frequencyKhz(khz: Long?): UiText = when {
+        khz == null -> unavailable
+        khz < 1_000_000 -> UiText.res(R.string.value_frequency_mhz, khz / 1_000)
+        else -> UiText.res(R.string.value_frequency_ghz, khz / 1_000_000.0)
+    }
+
+    /** Joins values with `, `, or returns unavailable when empty. */
+    fun list(values: List<String>): UiText =
+        if (values.isEmpty()) unavailable else UiText.Dynamic(values.joinToString(", "))
+
     /** Formats elapsed time as days, hours and minutes, for example `2d 3h 15m`. */
     fun duration(millis: Long): UiText {
         val totalMinutes = millis.coerceAtLeast(0) / 60_000

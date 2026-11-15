@@ -8,18 +8,24 @@ No persistence or network models exist.
 |---|---|---|
 | `DeviceInfo` | `domain/model/DeviceInfo.kt` | Build/OS strings (nullable when blank or `Build.UNKNOWN`), `apiLevel: Int`, `uptimeMillis: Long` |
 | `DisplayInfo` | `domain/model/DisplayInfo.kt` | `widthPx`/`heightPx: Int?` from the default display mode (physical), `densityDpi: Int`, `density`, `xdpi`, `ydpi`, `fontScale: Float` |
-| `InfoRowUiModel` | `ui/list/InfoRowUiModel.kt` | `@StringRes label`, `value: UiText`, `progress: Int?` (0-100) |
+| `CpuInfo` | `domain/model/CpuInfo.kt` | `socManufacturer`/`socModel: String?`, `supportedAbis`, `cores: List<CpuCore>`, `clusters: List<CpuCluster>` (by max freq, ascending), `governors`, `thermalStatus: ThermalStatus?`, `thermalHeadroom: Float?` |
+| `CpuCore` | `domain/model/CpuInfo.kt` | `id`, `minFreqKhz`/`maxFreqKhz: Long?` |
+| `CpuCluster` | `domain/model/CpuInfo.kt` | `coreCount`, `maxFreqKhz` |
+| `CpuCoreFrequency` | `domain/model/CpuInfo.kt` | `coreId`, `currentKhz: Long?` (null = offline or unreadable) |
+| `ThermalStatus` | `domain/model/ThermalStatus.kt` | Enum mirroring `PowerManager.THERMAL_STATUS_*` |
+| `PollingIntervals` | `data/PollingIntervals.kt` | `cpuFrequencyMillis` (1000) |
+| `InfoRowUiModel` | `ui/list/InfoRowUiModel.kt` | `label: UiText` (secondary constructor takes `@StringRes Int`), `value: UiText`, `progress: Int?` (0-100) |
 | `InfoListUiState` | `ui/list/InfoListUiState.kt` | `loadingMode: LoadingMode`, `rows: List<InfoRowUiModel>` |
-| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `DISPLAY` with `@StringRes titleRes` |
+| `MainTab` | `feature/main/MainTab.kt` | Enum `DEVICE`, `CPU`, `DISPLAY` with `@StringRes titleRes` |
 | `ReportSection` | `feature/main/ReportSection.kt` | `@StringRes title`, `rows` |
 | `MainUiEffect.Share` | `feature/main/MainUiEffect.kt` | `sections: List<ReportSection>` |
-| `UiText` | `common/text/UiText.kt` | `Dynamic(value)` or `Resource(resId, args)`; args may be nested `UiText` |
+| `UiText` | `common/text/UiText.kt` | `Dynamic(value)`, `Resource(resId, args)` (args may be nested `UiText`), or `Joined(parts, separator)` |
 
 Mapping:
 
 - Data sources -> domain models (raw values, nulls for unavailable).
 - Domain models -> `List<InfoRowUiModel>` in `DeviceRowMapper` /
-  `DisplayRowMapper` using `ValueFormatter`. Null values become
+  `CpuRowMapper` / `DisplayRowMapper` using `ValueFormatter`. Null values become
   `common_unavailable`.
 - `ReportSection` list -> share text in `ShareReportRenderer`.
 

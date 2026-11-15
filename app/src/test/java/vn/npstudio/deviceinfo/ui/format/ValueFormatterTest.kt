@@ -35,4 +35,12 @@ class ValueFormatterTest {
         assertEquals(ValueFormatter.unavailable, ValueFormatter.isoDate(null, Locale.US))
         assertEquals(ValueFormatter.unavailable, ValueFormatter.text(null))
     }
+
+    @Test
+    fun frequencyKhz_usesMhzBelowOneGhz() {
+        assertEquals(UiText.res(R.string.value_frequency_mhz, 999L), ValueFormatter.frequencyKhz(999_999L))
+        assertEquals(UiText.res(R.string.value_frequency_ghz, 1.0), ValueFormatter.frequencyKhz(1_000_000L))
+        assertEquals(UiText.res(R.string.value_frequency_ghz, 2.3616), ValueFormatter.frequencyKhz(2_361_600L))
+        assertEquals(ValueFormatter.unavailable, ValueFormatter.frequencyKhz(null))
+    }
 }

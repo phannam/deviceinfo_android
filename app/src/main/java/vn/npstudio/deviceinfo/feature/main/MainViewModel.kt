@@ -7,10 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
+import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
 import javax.inject.Inject
@@ -19,6 +22,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val deviceInfoRepository: DeviceInfoRepository,
+    private val cpuRepository: CpuRepository,
     private val displayRepository: DisplayRepository,
 ) : ViewModel() {
 
@@ -35,6 +39,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val sections = listOf(
                 ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(deviceInfoRepository.getDeviceInfo())),
+                ReportSection(
+                    MainTab.CPU.titleRes,
+                    CpuRowMapper.map(cpuRepository.getCpuInfo(), cpuRepository.observeFrequencies().first()),
+                ),
                 ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(displayRepository.getDisplayInfo())),
             )
             _effects.send(MainUiEffect.Share(sections))

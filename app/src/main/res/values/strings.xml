@@ -4,6 +4,7 @@
 
     <!-- Tabs -->
     <string name="tab_device">Device</string>
+    <string name="tab_cpu">CPU</string>
     <string name="tab_display">Display</string>
 
     <!-- Actions and share report -->
@@ -47,4 +48,30 @@
     <string name="value_dpi_int">%1$d dpi</string>
     <string name="value_dpi_decimal">%1$.1f dpi</string>
     <string name="value_scale">%1$.2f×</string>
+
+    <string name="label_cpu_soc_manufacturer">SoC manufacturer</string>
+    <string name="label_cpu_soc_model">SoC model</string>
+    <string name="label_cpu_abis">Supported ABIs</string>
+    <string name="label_cpu_cores">Cores</string>
+    <string name="label_cpu_clusters">Clusters</string>
+    <string name="label_cpu_governor">Governor</string>
+    <string name="label_cpu_thermal_status">Thermal status</string>
+    <string name="label_cpu_thermal_headroom">Thermal headroom (10 s)</string>
+    <string name="label_cpu_live_frequency">Live frequency</string>
+    <string name="label_cpu_core">Core %1$d</string>
+
+    <string name="value_frequency_mhz">%1$d MHz</string>
+    <string name="value_frequency_ghz">%1$.2f GHz</string>
+    <string name="value_percent_decimal">%1$.1f%%</string>
+    <string name="value_cpu_cluster">%1$d × %2$s</string>
+    <string name="value_cpu_core_frequency">%1$s (%2$s – %3$s)</string>
+    <string name="value_cpu_offline">Offline</string>
+    <string name="value_cpu_live_unavailable">Live frequency is not available on this device</string>
+    <string name="value_thermal_none">Normal</string>
+    <string name="value_thermal_light">Light</string>
+    <string name="value_thermal_moderate">Moderate</string>
+    <string name="value_thermal_severe">Severe</string>
+    <string name="value_thermal_critical">Critical</string>
+    <string name="value_thermal_emergency">Emergency</string>
+    <string name="value_thermal_shutdown">Shutdown</string>
 </resources>

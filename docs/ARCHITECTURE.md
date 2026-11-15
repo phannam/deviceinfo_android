@@ -1,6 +1,6 @@
 # Architecture
 
-Based on the source in `app/` after Phase 1 of
+Based on the source in `app/` after Phase 2 of
 `docs/requirements/001-device-diagnostics.md`. The app uses XML layouts;
 Compose is not part of the target architecture.
 
@@ -10,13 +10,24 @@ Compose is not part of the target architecture.
 
 - Device tab: build and OS information from `android.os.Build`,
   `System.getProperty`, and `SystemClock`.
+- CPU tab: SoC, ABIs, core count, clusters, governor, thermal status and
+  headroom from `Build`, `PowerManager`, `/proc/cpuinfo`, and
+  `/sys/devices/system/cpu`; per-core current frequency polled every second
+  while the tab is visible.
 - Display tab: resolution (display mode), density, dpi, and font scale.
-- Shares a plain-text report (Device + Display sections) through the system
+- Shares a plain-text report (Device + CPU + Display sections) through the system
   share sheet.
 
 **Pattern: strict MVVM with Hilt**
 
 ```text
+CpuFragment
+  -> CpuViewModel   flow { getCpuInfo(); emitAll(observeFrequencies().map(rows)) }
+  -> CpuRepository  getCpuInfo() (suspend) + observeFrequencies() (1 s ticker,
+                    flowOn IO; emits [] and completes when unreadable)
+  -> CpuInfoDataSource (Build, PowerManager) + SysFsReader (/proc, /sys)
+  -> CpuSysFsParser (pure) and CpuRowMapper (pure)
+
 DeviceFragment / DisplayFragment (InfoListFragment, collect at RESUMED)
   -> DeviceViewModel / DisplayViewModel   StateFlow<InfoListUiState>
        (flow { repository.get() }.stateIn(WhileSubscribed(5000)))
@@ -44,7 +55,7 @@ MainActivity share menu
   `CoroutineDispatcher` (IO) and call data sources. Data sources are
   interfaces with `Impl` classes bound in `di/`.
 - Formatting: `ValueFormatter` and per-tab row mappers are pure Kotlin and
-  unit tested. Labels are string resource ids.
+  unit tested. Labels are `UiText` (usually a string resource).
 
 **State and navigation**
 

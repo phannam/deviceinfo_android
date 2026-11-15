@@ -6,13 +6,17 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
+import vn.npstudio.deviceinfo.testing.FakeCpuRepository
 import vn.npstudio.deviceinfo.testing.FakeDeviceInfoRepository
 import vn.npstudio.deviceinfo.testing.FakeDisplayRepository
 import vn.npstudio.deviceinfo.testing.MainDispatcherRule
+import vn.npstudio.deviceinfo.testing.sampleCpuInfo
 import vn.npstudio.deviceinfo.testing.sampleDeviceInfo
 import vn.npstudio.deviceinfo.testing.sampleDisplayInfo
+import vn.npstudio.deviceinfo.testing.sampleFrequencies
 
 class MainViewModelTest {
 
@@ -20,7 +24,7 @@ class MainViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private fun createViewModel(handle: SavedStateHandle = SavedStateHandle()) =
-        MainViewModel(handle, FakeDeviceInfoRepository(), FakeDisplayRepository())
+        MainViewModel(handle, FakeDeviceInfoRepository(), FakeCpuRepository(), FakeDisplayRepository())
 
     @Test
     fun selectedTab_restoresFromSavedState() {
@@ -31,7 +35,7 @@ class MainViewModelTest {
     }
 
     @Test
-    fun onShareClicked_emitsDeviceAndDisplaySections() = runTest(mainDispatcherRule.dispatcher) {
+    fun onShareClicked_emitsDeviceCpuAndDisplaySections() = runTest(mainDispatcherRule.dispatcher) {
         val viewModel = createViewModel()
 
         viewModel.effects.test {
@@ -40,6 +44,7 @@ class MainViewModelTest {
             val expected = MainUiEffect.Share(
                 listOf(
                     ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(sampleDeviceInfo)),
+                    ReportSection(MainTab.CPU.titleRes, CpuRowMapper.map(sampleCpuInfo, sampleFrequencies)),
                     ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo)),
                 ),
             )

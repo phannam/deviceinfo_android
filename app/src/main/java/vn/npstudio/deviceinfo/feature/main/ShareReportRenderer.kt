@@ -13,7 +13,7 @@ object ShareReportRenderer {
                 append(resolve(UiText.res(section.title)))
                 section.rows.forEach { row ->
                     append('\n')
-                    append(resolve(UiText.res(row.label)))
+                    append(resolve(row.label))
                     append(": ")
                     append(resolve(row.value))
                 }

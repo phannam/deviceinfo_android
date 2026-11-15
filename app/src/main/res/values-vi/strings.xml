@@ -2,6 +2,7 @@
 <resources>
     <!-- Tabs -->
     <string name="tab_device">Thiết bị</string>
+    <string name="tab_cpu">CPU</string>
     <string name="tab_display">Màn hình</string>
 
     <!-- Actions and share report -->
@@ -45,4 +46,30 @@
     <string name="value_dpi_int">%1$d dpi</string>
     <string name="value_dpi_decimal">%1$.1f dpi</string>
     <string name="value_scale">%1$.2f×</string>
+
+    <string name="label_cpu_soc_manufacturer">Nhà sản xuất SoC</string>
+    <string name="label_cpu_soc_model">Mẫu SoC</string>
+    <string name="label_cpu_abis">ABI hỗ trợ</string>
+    <string name="label_cpu_cores">Số nhân</string>
+    <string name="label_cpu_clusters">Cụm nhân</string>
+    <string name="label_cpu_governor">Governor</string>
+    <string name="label_cpu_thermal_status">Trạng thái nhiệt</string>
+    <string name="label_cpu_thermal_headroom">Dư địa nhiệt (10 giây)</string>
+    <string name="label_cpu_live_frequency">Xung nhịp trực tiếp</string>
+    <string name="label_cpu_core">Nhân %1$d</string>
+
+    <string name="value_frequency_mhz">%1$d MHz</string>
+    <string name="value_frequency_ghz">%1$.2f GHz</string>
+    <string name="value_percent_decimal">%1$.1f%%</string>
+    <string name="value_cpu_cluster">%1$d × %2$s</string>
+    <string name="value_cpu_core_frequency">%1$s (%2$s – %3$s)</string>
+    <string name="value_cpu_offline">Đang tắt</string>
+    <string name="value_cpu_live_unavailable">Thiết bị không cho phép đọc xung nhịp trực tiếp</string>
+    <string name="value_thermal_none">Bình thường</string>
+    <string name="value_thermal_light">Nhẹ</string>
+    <string name="value_thermal_moderate">Trung bình</string>
+    <string name="value_thermal_severe">Nghiêm trọng</string>
+    <string name="value_thermal_critical">Nguy hiểm</string>
+    <string name="value_thermal_emergency">Khẩn cấp</string>
+    <string name="value_thermal_shutdown">Sắp tắt máy</string>
 </resources>
