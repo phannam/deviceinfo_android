@@ -1,6 +1,7 @@
 # 001 - Device Diagnostics
 
-- Status: In progress. Phases 1-5 implemented; Phase 6 implemented (pending owner build); Phase 7 open.
+- Status: Done. All phases are implemented; the owner build and on-device
+  checks for Phases 3-7 are pending.
 - Owner: @phannam
 - Spec author: planning agent
 - Implements: `docs/ARCHITECTURE.md` target rules, ADR-TARGET-001..004
@@ -251,34 +252,41 @@ decisions specific to this spec are listed here.
 vn.npstudio.deviceinfo
 ├── DeviceInfoApplication            @HiltAndroidApp
 ├── common/
-│   ├── extension/  collectWithLifecycle, Context helpers
-│   ├── stateflow/  LoadingMode, UiEffect
-│   └── text/       UiText
-├── di/             DispatcherModule, DataSourceModule, RepositoryModule
+│   ├── extension/  collectWithLifecycle
+│   ├── stateflow/  LoadingMode
+│   └── text/       UiText (Resource, Dynamic, Joined)
+├── di/             DispatcherModule (IO dispatcher, PollingIntervals),
+│                   DataSourceModule, RepositoryModule
 ├── domain/
-│   ├── model/      DeviceInfo, CpuInfo, CpuCoreFrequency, BatteryInfo,
-│   │               DisplayInfo, WindowSnapshot, MemoryInfo, StorageInfo,
-│   │               ScreenTestResult, enums (BatteryStatus, BatteryHealth,
-│   │               PowerSource, ThermalStatus, HdrType)
+│   ├── model/      DeviceInfo, CpuInfo (+ CpuCore, CpuCluster,
+│   │               CpuCoreFrequency), BatteryInfo, DisplayInfo, WindowSnapshot,
+│   │               MemoryInfo, StorageInfo, ScreenTestResult, enums
+│   │               (BatteryStatus, BatteryHealth, PowerSource, ThermalStatus,
+│   │               HdrType, ScreenDefect)
 │   └── repository/ DeviceInfoRepository, CpuRepository, BatteryRepository,
 │                   DisplayRepository, MemoryRepository, ScreenTestResultRepository
 ├── data/
+│   ├── PollingIntervals
 │   ├── source/     BuildInfoDataSource, CpuInfoDataSource, SysFsReader,
-│   │               BatteryDataSource, DisplayDataSource, MemoryDataSource
+│   │               CpuSysFsParser, BatteryDataSource, BatteryParser,
+│   │               DisplayDataSource, MemoryDataSource
 │   └── repository/ *RepositoryImpl
 ├── ui/
-│   ├── list/       InfoRowAdapter (ListAdapter), InfoRowUiModel
-│   └── format/     ValueFormatter (bytes, frequency, temperature, duration)
+│   ├── list/       InfoListFragment, InfoListUiState, InfoRowAdapter
+│   │               (ListAdapter), InfoRowUiModel
+│   ├── format/     ValueFormatter (bytes, frequency, refresh rate, durations)
+│   └── window/     WindowSnapshotReader
 └── feature/
-    ├── main/       MainActivity, MainViewModel, MainTab, MainUiEffect,
-    │               ReportSection, ShareReportRenderer
+    ├── main/       MainActivity, MainViewModel, MainTab, MainTabAdapter,
+    │               MainUiEffect, ReportSection, ShareReportRenderer
     ├── device/     DeviceFragment, DeviceViewModel, DeviceRowMapper
     ├── cpu/        CpuFragment, CpuViewModel, CpuRowMapper
     ├── battery/    BatteryFragment, BatteryViewModel, BatteryRowMapper
     ├── display/    DisplayFragment, DisplayViewModel, DisplayRowMapper
     ├── memory/     MemoryFragment, MemoryViewModel, MemoryRowMapper
-    └── screentest/ ScreenTestFragment, ScreenTestViewModel,
-                    ScreenTestActivity, ScreenTestPatternView, ScreenTestPattern
+    └── screentest/ ScreenTestFragment, ScreenTestResultViewModel,
+                    ScreenTestActivity, ScreenTestViewModel, ScreenTestUiState,
+                    ScreenTestPattern, ScreenTestPatternView, ScreenTestRowMapper
 ```
 
 Data sources are interfaces with an `Impl` bound in `di/`. `SysFsReader`
@@ -344,7 +352,7 @@ XxxViewModel ──> XxxRowMapper (pure) ──> List<InfoRowUiModel>
 Decision for the open question in `docs/MODULE_MAP.md` (where localized
 labels are resolved):
 
-- `MainViewModel.onShareClicked()` takes one snapshot from every
+- `MainViewModel.onShareClicked(window: WindowSnapshot?)` takes one snapshot from every
   repository (`first()` for flows), maps each section with the same row
   mappers as the tabs, and emits
   `MainUiEffect.Share(sections: List<ReportSection>)` where
@@ -460,7 +468,7 @@ owner builds, tests on device, and reports errors.
   system bar areas; hint hides after 2 s; Back exits at any time without
   results; results appear in the tab and in the share report.
 
-### Phase 7 - Report completion and docs
+### Phase 7 - Report completion and docs (implemented)
 
 - All sections in the share report, header, Not tested state.
 - Update `AGENTS.md` and all `docs/*.md` current-state sections; move
@@ -495,7 +503,8 @@ least one API 34+ device or emulator for API-gated rows.
 - Key prefixes: `tab_*`, `label_<section>_*`, `value_*` (enum values),
   `screen_test_*`, `report_*`, `common_*` (`common_unavailable`, `common_yes`,
   `common_no`).
-- Units use format strings, e.g. `<string name="unit_celsius">%1$s °C</string>`.
+- Units use `value_*` format strings, e.g.
+  `<string name="value_temperature_celsius">%1$.1f °C</string>`.
 
 ## 9. Docs To Update
 

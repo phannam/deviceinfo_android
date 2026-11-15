@@ -1,6 +1,6 @@
 # Architecture
 
-Based on the source in `app/` after Phase 6 of
+Based on the source in `app/` after completing
 `docs/requirements/001-device-diagnostics.md`. The app uses XML layouts;
 Compose is not part of the target architecture.
 
@@ -131,10 +131,11 @@ MainActivity share menu
 
 ## Gaps & Recommendations
 
-### 1. Remaining diagnostics tabs
+### 1. Screen Test results are not persisted
 
-- Current: Device, CPU, Battery, Display, Memory, and Screen Test exist.
-- Target: Report completion and docs per
-  `docs/requirements/001-device-diagnostics.md` Phase 7.
-- Priority: High
+- Current: `ScreenTestResultRepository` keeps the last result in memory, so
+  it is lost when the process dies (spec 001 decision).
+- Target: Persist with SharedPreferences only if the owner asks for it
+  (ADR-TARGET-009).
+- Priority: Low
 

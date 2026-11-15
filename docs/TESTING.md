@@ -111,13 +111,16 @@
 
 Run these on a device after UI, tab, or share changes:
 
-- Both tabs show all rows; long values (for example `Build.DISPLAY` or long
+- Every tab shows all rows; long values (for example `Build.DISPLAY` or long
   model names) are not clipped at large font scale.
 - Switch tabs several times, then press Back once: the app exits.
 - Rotate or enable **Don't keep activities**, leave and return: the selected
   tab and its content are restored without duplicates.
 - Share on Android 11+ and on an older device: the chooser opens and the
-  shared text contains both sections.
+  shared text contains the header and all six sections.
+- Compare values with references: `adb shell dumpsys display` (Display),
+  `adb shell dumpsys battery` (Battery), Settings > Storage and About phone
+  (Memory). Total RAM is lower than the marketing size.
 - Screen Test: every pattern covers the whole panel including the status
   bar, navigation bar, and cutout areas; the hint hides after 2 s; Back exits
   at any pattern without a result; after Save the tab and the share report

@@ -49,4 +49,4 @@ section 5.1 now exist.
 
 ## Gaps & Recommendations
 
-None open for Phase 1 models.
+None open.

@@ -22,17 +22,16 @@ The app lets users:
   temperature, voltage, current, charge counter, estimated capacity).
 - View RAM (total, available, low-memory threshold) refreshed every 2 s and
   internal storage (total, free) refreshed on resume.
-- Share all collected information as plain text through the system share
-  sheet.
 - Run a full-screen Screen Test (solid colors, gray, gradients, 1 px
   checkerboard) and record dead pixels, lines, or burn-in for the session.
-- Planned (spec `docs/requirements/001-device-diagnostics.md`): Phase 7
-  report completion and docs.
+- Share a plain-text report of every tab (header with app version, time,
+  and device; Screen Test shows Not tested until a test is saved) through
+  the system share sheet.
 
 The app has no network access, no account, no database, and no persisted user
 data.
 
-Current state (after Phase 6 of spec 001):
+Current state (spec 001 `docs/requirements/001-device-diagnostics.md` done):
 
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
@@ -46,7 +45,8 @@ Modernization goal:
 - Keep XML layouts. Do not move to Compose.
 - All code is Kotlin. Do not add Java.
 - Move to strict MVVM with Hilt, `StateFlow`, coroutines, and ViewBinding.
-- Add diagnostics features phase by phase per spec 001.
+- Spec 001 diagnostics are complete; new features need a new spec in
+  `docs/requirements/`.
 
 ## Tech Stack
 
@@ -214,6 +214,11 @@ Be extra careful around these areas:
 - CPU frequency polling, the battery receiver/polling, and RAM polling run only while
   their tab is subscribed (`WhileSubscribed(5000)`, collected at `RESUMED`).
   Do not collect them from a long-lived scope.
+- `ScreenTestActivity` sets window brightness, keep-screen-on, hidden system
+  bars, and cutout mode on its own window only. Do not change system
+  settings (`WRITE_SETTINGS`) or apply these flags to `MainActivity`.
+- Window-dependent values (`WindowSnapshot`) are measured in the UI
+  (`DisplayFragment`, `MainActivity`); data sources must not hold an Activity.
 - Battery current follows the API contract (signed µA). Some OEMs report mA
   or flip the sign; do not add guesses. Record such devices in spec 001
   section 10.
