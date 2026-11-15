@@ -1,4 +1,10 @@
 [versions]
+# SDK Versions
+compileSdk = "37"
+compileSdkMinor = "0"
+minSdk = "26"
+targetSdk = "37"
+
 agp = "9.4.1"
 appcompat = "1.8.0"
 fragment = "1.9.1"

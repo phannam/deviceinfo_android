@@ -3,15 +3,19 @@ plugins {
 }
 
 android {
-    namespace = "info.device.deviceinfo"
-    compileSdk = 36
+    namespace = "vn.npstudio.deviceinfo"
+    compileSdk {
+        version = release(libs.versions.compileSdk.get().toInt()) {
+            minorApiLevel = libs.versions.compileSdkMinor.get().toInt()
+        }
+    }
 
     defaultConfig {
-        applicationId = "info.device.deviceinfo"
-        minSdk = 23
-        targetSdk = 36
-        versionCode = 2
-        versionName = "1.0"
+        applicationId = "vn.npstudio.deviceinfo"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = 1
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
