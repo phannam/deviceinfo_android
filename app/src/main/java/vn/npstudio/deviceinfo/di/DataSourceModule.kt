@@ -12,12 +12,24 @@ import vn.npstudio.deviceinfo.data.source.BuildInfoDataSource
 import vn.npstudio.deviceinfo.data.source.BuildInfoDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.CpuInfoDataSource
 import vn.npstudio.deviceinfo.data.source.CpuInfoDataSourceImpl
+import vn.npstudio.deviceinfo.data.source.DeviceIdentifierDataSource
+import vn.npstudio.deviceinfo.data.source.DeviceIdentifierDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.DisplayDataSource
 import vn.npstudio.deviceinfo.data.source.DisplayDataSourceImpl
+import vn.npstudio.deviceinfo.data.source.FeatureDataSource
+import vn.npstudio.deviceinfo.data.source.FeatureDataSourceImpl
+import vn.npstudio.deviceinfo.data.source.MediaDataSource
+import vn.npstudio.deviceinfo.data.source.MediaDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.MemoryDataSource
 import vn.npstudio.deviceinfo.data.source.MemoryDataSourceImpl
+import vn.npstudio.deviceinfo.data.source.PlatformDataSource
+import vn.npstudio.deviceinfo.data.source.PlatformDataSourceImpl
+import vn.npstudio.deviceinfo.data.source.RuntimeDataSource
+import vn.npstudio.deviceinfo.data.source.RuntimeDataSourceImpl
 import vn.npstudio.deviceinfo.data.source.SysFsReader
 import vn.npstudio.deviceinfo.data.source.SysFsReaderImpl
+import vn.npstudio.deviceinfo.data.source.TelephonyDataSource
+import vn.npstudio.deviceinfo.data.source.TelephonyDataSourceImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -40,6 +52,24 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindMemoryDataSource(impl: MemoryDataSourceImpl): MemoryDataSource
+
+    @Binds
+    abstract fun bindDeviceIdentifierDataSource(impl: DeviceIdentifierDataSourceImpl): DeviceIdentifierDataSource
+
+    @Binds
+    abstract fun bindTelephonyDataSource(impl: TelephonyDataSourceImpl): TelephonyDataSource
+
+    @Binds
+    abstract fun bindFeatureDataSource(impl: FeatureDataSourceImpl): FeatureDataSource
+
+    @Binds
+    abstract fun bindMediaDataSource(impl: MediaDataSourceImpl): MediaDataSource
+
+    @Binds
+    abstract fun bindPlatformDataSource(impl: PlatformDataSourceImpl): PlatformDataSource
+
+    @Binds
+    abstract fun bindRuntimeDataSource(impl: RuntimeDataSourceImpl): RuntimeDataSource
 
     @Binds
     abstract fun bindAppConfigLocalDataSource(impl: AppConfigLocalDataSourceImpl): AppConfigLocalDataSource

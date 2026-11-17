@@ -24,7 +24,7 @@ class CpuViewModel @Inject constructor(
         val info = repository.getCpuInfo()
         emitAll(
             repository.observeFrequencies().map { frequencies ->
-                InfoListUiState(LoadingMode.IDLE, CpuRowMapper.map(info, frequencies))
+                InfoListUiState(LoadingMode.IDLE, CpuRowMapper.sections(info, frequencies))
             },
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), InfoListUiState())

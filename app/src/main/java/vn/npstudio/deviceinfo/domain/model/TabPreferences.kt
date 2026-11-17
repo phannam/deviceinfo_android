@@ -1,7 +1,7 @@
 package vn.npstudio.deviceinfo.domain.model
 
 /** Main screen tabs in their default order. */
-enum class TabId { DEVICE, CPU, BATTERY, DISPLAY, MEMORY, SCREEN_TEST }
+enum class TabId { DEVICE, SYSTEM, CPU, BATTERY, DISPLAY, MEMORY, SCREEN_TEST }
 
 /** [order] contains every [TabId] exactly once; at least one tab is not [hidden]. */
 data class TabPreferences(

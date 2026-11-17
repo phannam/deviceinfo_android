@@ -7,11 +7,17 @@ import vn.npstudio.deviceinfo.domain.model.ScreenDefect
 import vn.npstudio.deviceinfo.domain.model.ScreenTestResult
 import vn.npstudio.deviceinfo.ui.format.ValueFormatter
 import vn.npstudio.deviceinfo.ui.list.InfoRowUiModel
+import vn.npstudio.deviceinfo.ui.list.InfoSection
+import vn.npstudio.deviceinfo.ui.list.reportRows
 
 object ScreenTestRowMapper {
 
     /** One row per defect: Yes/No from [result], or Not tested when there is no result. */
-    fun map(result: ScreenTestResult?): List<InfoRowUiModel> = ScreenDefect.entries.map { defect ->
+    fun sections(result: ScreenTestResult?): List<InfoSection> = listOf(InfoSection(rows = rows(result)))
+
+    fun map(result: ScreenTestResult?): List<InfoRowUiModel> = sections(result).reportRows()
+
+    private fun rows(result: ScreenTestResult?) = ScreenDefect.entries.map { defect ->
         InfoRowUiModel(
             labelRes(defect),
             if (result == null) UiText.res(R.string.screen_test_not_tested) else ValueFormatter.yesNo(defect in result.defects),

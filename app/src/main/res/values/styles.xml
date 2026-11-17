@@ -73,4 +73,10 @@
         <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
         <item name="android:textColor">?attr/colorSecondaryOnBackground</item>
     </style>
+
+    <!-- Value column of a left-right info row (spec 003 section 4.1). -->
+    <style name="TextAppearance.DeviceInfo.RowValue" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

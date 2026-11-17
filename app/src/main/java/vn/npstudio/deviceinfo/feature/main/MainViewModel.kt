@@ -22,18 +22,24 @@ import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
 import vn.npstudio.deviceinfo.domain.repository.MemoryRepository
 import vn.npstudio.deviceinfo.domain.repository.ScreenTestResultRepository
+import vn.npstudio.deviceinfo.domain.repository.SystemInfoRepository
 import vn.npstudio.deviceinfo.feature.battery.BatteryRowMapper
 import vn.npstudio.deviceinfo.feature.cpu.CpuRowMapper
 import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
 import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
 import vn.npstudio.deviceinfo.feature.screentest.ScreenTestRowMapper
+import vn.npstudio.deviceinfo.feature.system.SystemRowMapper
+import vn.npstudio.deviceinfo.ui.list.reportRows
+import java.time.ZoneId
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val deviceInfoRepository: DeviceInfoRepository,
+    private val systemInfoRepository: SystemInfoRepository,
     private val cpuRepository: CpuRepository,
     private val batteryRepository: BatteryRepository,
     private val displayRepository: DisplayRepository,
@@ -66,11 +72,13 @@ class MainViewModel @Inject constructor(
     /**
      * [window] is measured by the Activity so the report includes window size and cutout.
      * The report always has all sections in default order, whatever the tab settings.
+     * Device identifiers are left out (spec 003 section 6).
      */
     fun onShareClicked(window: WindowSnapshot?) {
         viewModelScope.launch {
             val sections = listOf(
                 ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(deviceInfoRepository.getDeviceInfo())),
+                ReportSection(MainTab.SYSTEM.titleRes, systemRows()),
                 ReportSection(
                     MainTab.CPU.titleRes,
                     CpuRowMapper.map(cpuRepository.getCpuInfo(), cpuRepository.observeFrequencies().first()),
@@ -92,6 +100,13 @@ class MainViewModel @Inject constructor(
             _effects.send(MainUiEffect.Share(sections))
         }
     }
+
+    private suspend fun systemRows() = SystemRowMapper.sections(
+        systemInfoRepository.getSystemInfo(),
+        systemInfoRepository.observeUptime().first(),
+        Locale.getDefault(),
+        ZoneId.systemDefault(),
+    ).reportRows()
 
     private fun toMainTabs(tabs: TabPreferences): List<MainTab> = tabs.visible.map(MainTab::of)
 

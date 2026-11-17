@@ -65,11 +65,22 @@ class AppConfigRepositoryImplTest {
         )
 
         val expected = TabPreferences(
-            order = listOf(TabId.MEMORY, TabId.DEVICE, TabId.CPU, TabId.BATTERY, TabId.DISPLAY, TabId.SCREEN_TEST),
+            order = listOf(
+                TabId.MEMORY,
+                TabId.DEVICE,
+                TabId.SYSTEM,
+                TabId.CPU,
+                TabId.BATTERY,
+                TabId.DISPLAY,
+                TabId.SCREEN_TEST,
+            ),
             hidden = setOf(TabId.DEVICE),
         )
         assertEquals(expected, repository.tabs.value)
         assertEquals(expected, AppConfigRepositoryImpl(dataSource).tabs.value)
-        assertEquals(listOf(TabId.MEMORY, TabId.CPU, TabId.BATTERY, TabId.DISPLAY, TabId.SCREEN_TEST), expected.visible)
+        assertEquals(
+            listOf(TabId.MEMORY, TabId.SYSTEM, TabId.CPU, TabId.BATTERY, TabId.DISPLAY, TabId.SCREEN_TEST),
+            expected.visible,
+        )
     }
 }

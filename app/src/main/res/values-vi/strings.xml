@@ -2,6 +2,7 @@
 <resources>
     <!-- Tabs -->
     <string name="tab_device">Thiết bị</string>
+    <string name="tab_system">Hệ thống</string>
     <string name="tab_cpu">CPU</string>
     <string name="tab_battery">Pin</string>
     <string name="tab_display">Màn hình</string>
@@ -22,24 +23,150 @@
     <string name="common_no">Không</string>
     <string name="common_on">Bật</string>
     <string name="common_off">Tắt</string>
+    <string name="common_supported">Hỗ trợ</string>
+    <string name="common_not_supported">Không hỗ trợ</string>
+    <string name="common_none">Không có</string>
 
     <!-- Device tab -->
     <string name="label_device_manufacturer">Nhà sản xuất</string>
     <string name="label_device_brand">Thương hiệu</string>
+    <string name="label_device_name">Tên thiết bị</string>
+    <string name="label_device_bootloader_state">Trạng thái bootloader</string>
+    <string name="label_device_product_code">Mã sản phẩm</string>
+    <string name="label_device_serial_number">Số serial</string>
+    <string name="label_device_sales_region">Khu vực bán</string>
+    <string name="label_device_csc_firmware">Firmware CSC</string>
+    <string name="label_device_knox_fuse">Knox warranty fuse</string>
+    <string name="label_device_manufacture_date">Ngày sản xuất</string>
+    <string name="value_bootloader_locked">Đã khóa</string>
+    <string name="value_bootloader_unlocked">Đã mở khóa</string>
+    <string name="value_knox_secure">Nguyên vẹn (%1$d)</string>
+    <string name="value_knox_tripped">Đã kích hoạt (%1$d)</string>
     <string name="label_device_model">Mẫu máy</string>
     <string name="label_device_codename">Thiết bị (tên mã)</string>
     <string name="label_device_product">Sản phẩm</string>
     <string name="label_device_board">Bo mạch</string>
     <string name="label_device_hardware">Phần cứng</string>
-    <string name="label_device_android_version">Phiên bản Android</string>
-    <string name="label_device_api_level">Mức API</string>
-    <string name="label_device_security_patch">Bản vá bảo mật</string>
-    <string name="label_device_build_number">Số bản dựng</string>
     <string name="label_device_fingerprint">Dấu vân tay bản dựng</string>
-    <string name="label_device_bootloader">Bootloader</string>
-    <string name="label_device_kernel">Phiên bản kernel</string>
-    <string name="label_device_java_vm">Java VM</string>
-    <string name="label_device_uptime">Thời gian hoạt động</string>
+    <string name="label_device_android_id">Android ID</string>
+    <string name="label_device_gsf_id">GSF ID</string>
+    <string name="label_device_advertising_id">ID quảng cáo</string>
+    <string name="label_device_serial">Số serial phần cứng</string>
+    <string name="label_device_imei">IMEI</string>
+    <string name="label_device_sim_serial">Số serial SIM</string>
+    <string name="label_device_subscriber_id">ID thuê bao SIM</string>
+    <string name="label_device_wifi_mac">Địa chỉ MAC Wi-Fi</string>
+    <string name="label_device_bluetooth_mac">Địa chỉ MAC Bluetooth</string>
+    <string name="label_device_phone_type">Loại điện thoại</string>
+    <string name="label_device_sim_slots">Số khe SIM</string>
+    <string name="label_device_sim_operator">Nhà mạng SIM</string>
+    <string name="label_device_network_operator">Nhà mạng đang dùng</string>
+    <string name="label_device_network_type">Loại mạng</string>
+    <string name="label_device_usb_debugging">Gỡ lỗi USB</string>
+    <string name="label_device_developer_options">Tùy chọn nhà phát triển</string>
+    <string name="label_device_video_codecs">Codec video</string>
+    <string name="label_device_audio_codecs">Codec âm thanh</string>
+    <string name="label_device_container_formats">Định dạng container</string>
+    <string name="label_features_supported">Tính năng hỗ trợ</string>
+    <string name="label_features_unsupported">Tính năng không hỗ trợ</string>
+    <string name="value_phone_type_none">Không có</string>
+    <string name="value_codec_encoder">Bộ mã hóa</string>
+    <string name="value_codec_decoder">Bộ giải mã</string>
+    <string name="value_codec_hardware">Phần cứng</string>
+    <string name="value_codec_software">Phần mềm</string>
+
+    <!-- Hardware feature checklist -->
+    <string name="feature_nfc_hce">Giả lập thẻ NFC</string>
+    <string name="feature_fingerprint">Vân tay</string>
+    <string name="feature_face">Mở khóa khuôn mặt</string>
+    <string name="feature_iris">Mống mắt</string>
+    <string name="feature_ir_emitter">Phát hồng ngoại</string>
+    <string name="feature_uwb">Băng thông siêu rộng (UWB)</string>
+    <string name="feature_usb_host">USB host</string>
+    <string name="feature_flashlight">Đèn pin</string>
+    <string name="feature_telephony">Điện thoại</string>
+    <string name="feature_supported">%1$s: có hỗ trợ</string>
+    <string name="feature_not_supported">%1$s: không hỗ trợ</string>
+
+    <!-- System tab -->
+    <string name="label_system_android_version">Phiên bản Android</string>
+    <string name="label_system_api_level">Cấp API</string>
+    <string name="label_system_security_patch">Bản vá bảo mật</string>
+    <string name="label_system_build_number">Số bản dựng</string>
+    <string name="label_system_build_id">ID bản dựng</string>
+    <string name="label_system_build_time">Thời gian dựng</string>
+    <string name="label_system_build_type">Loại bản dựng</string>
+    <string name="label_system_build_tags">Thẻ bản dựng</string>
+    <string name="label_system_bootloader">Bootloader</string>
+    <string name="label_system_baseband">Baseband</string>
+    <string name="label_system_play_services">Dịch vụ Google Play</string>
+    <string name="label_system_play_system_update">Bản cập nhật hệ thống Google Play</string>
+    <string name="label_system_root">Quyền root</string>
+    <string name="label_system_as_root">System-as-root</string>
+    <string name="label_system_seamless_updates">Cập nhật liền mạch (A/B)</string>
+    <string name="label_system_dynamic_partitions">Phân vùng động</string>
+    <string name="label_system_treble">Project Treble</string>
+    <string name="label_system_features">Tính năng hệ thống</string>
+    <string name="label_system_kernel_arch">Kiến trúc kernel</string>
+    <string name="label_system_kernel_version">Phiên bản kernel</string>
+    <string name="label_system_java_runtime">Java runtime</string>
+    <string name="label_system_java_vm">Java VM</string>
+    <string name="label_system_vm_heap">Heap VM tối đa</string>
+    <string name="label_system_security_provider">Nhà cung cấp bảo mật</string>
+    <string name="label_system_uptime">Thời gian hoạt động</string>
+    <string name="label_system_boot_count">Số lần khởi động</string>
+    <string name="label_system_language">Ngôn ngữ</string>
+    <string name="label_system_time_zone">Múi giờ</string>
+    <string name="label_drm_vendor">Nhà cung cấp</string>
+    <string name="label_drm_version">Phiên bản</string>
+    <string name="label_drm_description">Mô tả</string>
+    <string name="label_drm_algorithms">Thuật toán</string>
+    <string name="label_drm_security_level">Cấp bảo mật</string>
+    <string name="label_drm_system_id">System ID</string>
+    <string name="label_drm_hdcp_level">Cấp HDCP</string>
+    <string name="label_drm_max_hdcp_level">Cấp HDCP tối đa</string>
+    <string name="label_drm_usage_reporting">Báo cáo sử dụng</string>
+    <string name="label_drm_max_sessions">Số phiên tối đa</string>
+    <string name="label_drm_open_sessions">Số phiên đang mở</string>
+    <string name="value_selinux_enforcing">Enforcing (bắt buộc)</string>
+    <string name="value_selinux_permissive">Permissive (cho phép)</string>
+    <string name="value_selinux_disabled">Đã tắt</string>
+    <string name="value_treble_vndk">%1$s (VNDK %2$s)</string>
+    <string name="value_widevine_not_supported">Không hỗ trợ</string>
+    <string name="value_android_version">Android %1$s</string>
+    <string name="value_release_date">Phát hành %1$s</string>
+
+    <!-- Info list sections -->
+    <string name="section_device">Thiết bị</string>
+    <string name="section_identifiers">Mã định danh</string>
+    <string name="section_telephony">SIM &amp; mạng</string>
+    <string name="section_developer">Nhà phát triển</string>
+    <string name="section_features">Tính năng phần cứng</string>
+    <string name="section_multimedia">Đa phương tiện</string>
+    <string name="section_security">Bảo mật &amp; phân vùng</string>
+    <string name="section_kernel_runtime">Kernel &amp; runtime</string>
+    <string name="section_status">Trạng thái &amp; khu vực</string>
+    <string name="section_drm">DRM (Widevine)</string>
+    <string name="section_processor">Bộ xử lý</string>
+    <string name="section_cores">Các nhân</string>
+    <string name="section_battery_status">Trạng thái</string>
+    <string name="section_electrical">Điện năng</string>
+    <string name="section_screen">Màn hình</string>
+    <string name="section_refresh_color">Tần số quét &amp; màu</string>
+    <string name="section_window">Cửa sổ</string>
+    <string name="section_storage">Bộ nhớ trong</string>
+
+    <!-- Info list rows -->
+    <string name="value_permission_required">Cần cấp quyền</string>
+    <string name="value_tap_to_grant">Chạm để cấp quyền</string>
+    <string name="value_restricted">Bị Android giới hạn</string>
+    <string name="value_view_count">Xem tất cả (%1$s)</string>
+    <string name="copied_to_clipboard">Đã sao chép</string>
+    <string name="permission_denied_message">Quyền bị từ chối. Hãy cho phép trong thông tin ứng dụng.</string>
+    <string name="permission_open_app_details">Thông tin ứng dụng</string>
+    <plurals name="list_sheet_count">
+        <item quantity="other">%1$d mục</item>
+    </plurals>
 
     <!-- Display tab -->
     <string name="label_display_resolution">Độ phân giải</string>
@@ -50,7 +177,7 @@
     <string name="label_display_font_scale">Tỉ lệ phông chữ</string>
 
     <!-- Value formats -->
-    <string name="value_duration_dhm">%1$d ngày %2$d giờ %3$d phút</string>
+    <string name="value_duration_dhms">%1$d ngày %2$d giờ %3$d phút %4$d giây</string>
     <string name="value_resolution">%1$d × %2$d px</string>
     <string name="value_dpi_decimal">%1$.1f dpi</string>
     <string name="value_scale">%1$.2f×</string>

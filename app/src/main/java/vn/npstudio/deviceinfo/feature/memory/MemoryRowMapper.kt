@@ -5,11 +5,20 @@ import vn.npstudio.deviceinfo.domain.model.MemoryInfo
 import vn.npstudio.deviceinfo.domain.model.StorageInfo
 import vn.npstudio.deviceinfo.ui.format.ValueFormatter
 import vn.npstudio.deviceinfo.ui.list.InfoRowUiModel
+import vn.npstudio.deviceinfo.ui.list.InfoSection
+import vn.npstudio.deviceinfo.ui.list.reportRows
 import kotlin.math.roundToInt
 
 object MemoryRowMapper {
 
-    fun map(ram: MemoryInfo, storage: StorageInfo): List<InfoRowUiModel> = listOf(
+    fun sections(ram: MemoryInfo, storage: StorageInfo): List<InfoSection> = listOf(
+        InfoSection(R.string.section_ram, R.drawable.ic_memory, ramRows(ram)),
+        InfoSection(R.string.section_storage, R.drawable.ic_sd_storage, storageRows(storage)),
+    )
+
+    fun map(ram: MemoryInfo, storage: StorageInfo): List<InfoRowUiModel> = sections(ram, storage).reportRows()
+
+    private fun ramRows(ram: MemoryInfo) = listOf(
         InfoRowUiModel(R.string.label_memory_ram_total, ValueFormatter.bytes(ram.totalBytes)),
         InfoRowUiModel(
             R.string.label_memory_ram_available,
@@ -18,6 +27,9 @@ object MemoryRowMapper {
         ),
         InfoRowUiModel(R.string.label_memory_low_threshold, ValueFormatter.bytes(ram.lowMemoryThresholdBytes)),
         InfoRowUiModel(R.string.label_memory_low_now, ValueFormatter.yesNo(ram.lowMemory)),
+    )
+
+    private fun storageRows(storage: StorageInfo) = listOf(
         InfoRowUiModel(R.string.label_memory_storage_total, ValueFormatter.bytes(storage.totalBytes)),
         InfoRowUiModel(
             R.string.label_memory_storage_free,

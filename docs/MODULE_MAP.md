@@ -24,17 +24,18 @@ Packages under `vn.npstudio.deviceinfo`:
 | `common.stateflow` | `LoadingMode` |
 | `common.text` | `UiText` |
 | `di` | `DispatcherModule`, `DataSourceModule`, `RepositoryModule` |
-| `domain.model` | `AppConfig` (+ `DarkMode`, `AppColor`, `TemperatureUnit`), `TabPreferences` (+ `TabId`), `DeviceInfo`, `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus`, `MemoryInfo`, `StorageInfo`, `ScreenTestResult` (+ `ScreenDefect`) |
-| `domain.repository` | `AppConfigRepository`, `DeviceInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository`, `MemoryRepository`, `ScreenTestResultRepository` |
+| `domain.model` | `AppConfig` (+ `DarkMode`, `AppColor`, `TemperatureUnit`), `TabPreferences` (+ `TabId`), `DeviceInfo` (+ `DeviceHardware`, `VendorDetails`, `DeviceIdentifiers`, `TelephonyInfo`, `GuardedValue`, `PhoneType`, `HardwareFeature`, `CodecInfo`, `CodecKind`), `SystemInfo` (+ `AndroidBuild`, `SystemSecurity`, `SelinuxMode`, `RuntimeInfo`, `RegionInfo`, `DrmInfo`), `DisplayInfo` (+ `HdrType`, `WindowSnapshot`), `BatteryInfo` (+ `BatteryStatus`, `PowerSource`, `BatteryHealth`), `CpuInfo` (+ `CpuCore`, `CpuCluster`, `CpuCoreFrequency`), `ThermalStatus`, `MemoryInfo`, `StorageInfo`, `ScreenTestResult` (+ `ScreenDefect`) |
+| `domain.repository` | `AppConfigRepository`, `DeviceInfoRepository`, `SystemInfoRepository`, `CpuRepository`, `BatteryRepository`, `DisplayRepository`, `MemoryRepository`, `ScreenTestResultRepository` |
 | `data` | `PollingIntervals` (live ticker intervals, provided in `DispatcherModule`) |
-| `data.source` | `AppConfigLocalDataSource(Impl)` (+ `AppConfigKeys`, SharedPreferences), `AppConfigParser`, `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DisplayDataSource(Impl)`, `MemoryDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
-| `data.repository` | `AppConfigRepositoryImpl` (`@Singleton`, synchronous first read), `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl`, `ScreenTestResultRepositoryImpl` (`@Singleton`, in-memory) |
-| `ui.list` | `InfoListFragment`, `InfoListUiState`, `InfoRowAdapter`, `InfoRowUiModel`, `RowPosition` |
+| `data.source` | `AppConfigLocalDataSource(Impl)` (+ `AppConfigKeys`, SharedPreferences), `AppConfigParser`, `BatteryDataSource(Impl)` (+ raw `BatteryBroadcast`, `BatteryProperties`), `BatteryParser`, `BuildInfoDataSource(Impl)`, `CpuInfoDataSource(Impl)`, `DeviceIdentifierDataSource(Impl)`, `FeatureDataSource(Impl)`, `MediaDataSource(Impl)`, `PlatformDataSource(Impl)`, `RuntimeDataSource(Impl)`, `TelephonyDataSource(Impl)`, `SystemPropertiesParser`, `DisplayDataSource(Impl)`, `MemoryDataSource(Impl)`, `SysFsReader(Impl)`, `CpuSysFsParser` |
+| `data.repository` | `AppConfigRepositoryImpl` (`@Singleton`, synchronous first read), `BatteryRepositoryImpl`, `DeviceInfoRepositoryImpl`, `CpuRepositoryImpl`, `DisplayRepositoryImpl`, `MemoryRepositoryImpl`, `ScreenTestResultRepositoryImpl` (`@Singleton`, in-memory), `SystemInfoRepositoryImpl` |
+| `ui.list` | `InfoListFragment` (copy, permission requests, list sheets), `InfoListUiState`, `InfoSection` (+ `FeatureUiModel`, `reportRows()`), `HeroUiModel`, `InfoListItem`, `InfoListAdapter`, `InfoRowUiModel` (+ `RowAction`, `ListEntryUiModel`), `ListEntriesBottomSheet`, `RowPosition` |
 | `ui.format` | `ValueFormatter` |
 | `ui.theme` | `ThemeApplier` (night mode + theme overlays per Activity), `ThemeOverlays` (`AppColor` -> overlay, swatch color, name), `ThemeColors`, `ColorRole`, `NightModeMapper` |
 | `ui.window` | `WindowSnapshotReader` (Activity window size and cutout for the UI) |
 | `feature.main` | `MainActivity`, `MainViewModel`, `MainTab`, `MainTabAdapter`, `MainUiEffect`, `ReportSection`, `ShareReportRenderer` |
 | `feature.device` | `DeviceFragment`, `DeviceViewModel`, `DeviceRowMapper` |
+| `feature.system` | `SystemFragment`, `SystemViewModel`, `SystemRowMapper`, `AndroidReleases` (API -> codename, release date) |
 | `feature.config` | `ConfigActivity` (Settings page), `ConfigViewModel`, `ConfigUiState`, `ColorPickerDialog`, `SwatchAdapter` (+ `DarkMode`/`TemperatureUnit` label resources) |
 | `feature.tabmanager` | `TabManagerBottomSheet`, `TabManagerViewModel`, `TabManagerUiState` (+ `TabManagerItem`, `TabManagerUiEffect`), `TabManagerAdapter` (drag + accessibility move actions) |
 | `feature.battery` | `BatteryFragment`, `BatteryViewModel`, `BatteryRowMapper` |

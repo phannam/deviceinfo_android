@@ -28,7 +28,15 @@ class AppConfigParserTest {
         )
 
         assertEquals(
-            listOf(TabId.MEMORY, TabId.CPU, TabId.DEVICE, TabId.BATTERY, TabId.DISPLAY, TabId.SCREEN_TEST),
+            listOf(
+                TabId.MEMORY,
+                TabId.CPU,
+                TabId.DEVICE,
+                TabId.SYSTEM,
+                TabId.BATTERY,
+                TabId.DISPLAY,
+                TabId.SCREEN_TEST,
+            ),
             tabs.order,
         )
         assertEquals(setOf(TabId.CPU), tabs.hidden)
@@ -43,10 +51,18 @@ class AppConfigParserTest {
 
     @Test
     fun joinTabIds_roundTrips() {
-        val order = listOf(TabId.SCREEN_TEST, TabId.DEVICE, TabId.CPU, TabId.BATTERY, TabId.DISPLAY, TabId.MEMORY)
+        val order = listOf(
+            TabId.SCREEN_TEST,
+            TabId.DEVICE,
+            TabId.CPU,
+            TabId.BATTERY,
+            TabId.DISPLAY,
+            TabId.MEMORY,
+            TabId.SYSTEM,
+        )
         val joined = AppConfigParser.joinTabIds(order)
 
-        assertEquals("SCREEN_TEST,DEVICE,CPU,BATTERY,DISPLAY,MEMORY", joined)
+        assertEquals("SCREEN_TEST,DEVICE,CPU,BATTERY,DISPLAY,MEMORY,SYSTEM", joined)
         assertEquals(order, AppConfigParser.parseTabs(joined, hidden = "").order)
     }
 }

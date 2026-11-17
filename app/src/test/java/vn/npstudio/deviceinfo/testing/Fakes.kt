@@ -17,37 +17,83 @@ import vn.npstudio.deviceinfo.domain.model.CpuCluster
 import vn.npstudio.deviceinfo.domain.model.CpuCore
 import vn.npstudio.deviceinfo.domain.model.CpuCoreFrequency
 import vn.npstudio.deviceinfo.domain.model.CpuInfo
+import vn.npstudio.deviceinfo.domain.model.AndroidBuild
+import vn.npstudio.deviceinfo.domain.model.CodecInfo
+import vn.npstudio.deviceinfo.domain.model.CodecKind
+import vn.npstudio.deviceinfo.domain.model.DeviceHardware
+import vn.npstudio.deviceinfo.domain.model.DeviceIdentifiers
 import vn.npstudio.deviceinfo.domain.model.DeviceInfo
 import vn.npstudio.deviceinfo.domain.model.DisplayInfo
+import vn.npstudio.deviceinfo.domain.model.GuardedValue
+import vn.npstudio.deviceinfo.domain.model.HardwareFeature
 import vn.npstudio.deviceinfo.domain.model.HdrType
 import vn.npstudio.deviceinfo.domain.model.MemoryInfo
+import vn.npstudio.deviceinfo.domain.model.PhoneType
 import vn.npstudio.deviceinfo.domain.model.PowerSource
+import vn.npstudio.deviceinfo.domain.model.RegionInfo
+import vn.npstudio.deviceinfo.domain.model.RuntimeInfo
+import vn.npstudio.deviceinfo.domain.model.SelinuxMode
 import vn.npstudio.deviceinfo.domain.model.StorageInfo
+import vn.npstudio.deviceinfo.domain.model.SystemInfo
+import vn.npstudio.deviceinfo.domain.model.SystemSecurity
+import vn.npstudio.deviceinfo.domain.model.TelephonyInfo
 import vn.npstudio.deviceinfo.domain.model.ThermalStatus
+import vn.npstudio.deviceinfo.domain.model.VendorDetails
 import vn.npstudio.deviceinfo.domain.model.WindowSnapshot
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
 import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
 import vn.npstudio.deviceinfo.domain.repository.MemoryRepository
+import vn.npstudio.deviceinfo.domain.repository.SystemInfoRepository
 
 val sampleDeviceInfo = DeviceInfo(
-    manufacturer = "samsung",
-    brand = "samsung",
-    model = "SM-N950U1",
-    device = "greatqlte",
-    product = "greatqlteue",
-    board = "msm8998",
-    hardware = "qcom",
-    androidVersion = "9",
-    apiLevel = 28,
-    securityPatch = "2021-03-01",
-    buildNumber = "PPR1.180610.011",
-    fingerprint = "samsung/greatqlteue/greatqlte:9/PPR1/N950U1:user/release-keys",
-    bootloader = "N950U1UES9DUC1",
-    kernelVersion = "4.4.153",
-    javaVmVersion = "2.1.0",
-    uptimeMillis = 90_061_000L,
+    deviceName = "Galaxy Note8",
+    hardware = DeviceHardware(
+        manufacturer = "samsung",
+        brand = "samsung",
+        model = "SM-N950U1",
+        device = "greatqlte",
+        product = "greatqlteue",
+        board = "msm8998",
+        hardware = "qcom",
+    ),
+    vendor = VendorDetails(
+        bootloaderLocked = true,
+        productCode = "SM-N950UZKAXAA",
+        serialNumber = "R28J9470XTT",
+        salesCode = "XAA",
+        country = "USA",
+        countryIso = "US",
+        warrantyBit = 0,
+    ),
+    identifiers = DeviceIdentifiers(
+        androidId = "9774d56d682e549c",
+        gsfId = "3A1B2C3D4E5F6071",
+        advertisingId = null,
+        hardwareSerial = GuardedValue.Restricted,
+        fingerprint = "samsung/greatqlteue/greatqlte:9/PPR1/N950U1:user/release-keys",
+        imei = GuardedValue.NeedsPermission("android.permission.READ_PHONE_STATE"),
+        simSerial = GuardedValue.Restricted,
+        subscriberId = GuardedValue.Unavailable,
+        wifiMac = GuardedValue.Available("ac:5f:3e:00:11:22"),
+        bluetoothMac = GuardedValue.Restricted,
+        usbDebugging = true,
+        developerOptions = true,
+    ),
+    telephony = TelephonyInfo(
+        phoneType = PhoneType.GSM,
+        simSlots = 2,
+        simOperator = "Viettel",
+        networkOperator = "Viettel",
+        networkType = GuardedValue.NeedsPermission("android.permission.READ_PHONE_STATE"),
+    ),
+    features = mapOf(HardwareFeature.NFC to true, HardwareFeature.UWB to false),
+    codecs = listOf(
+        CodecInfo("c2.android.avc.decoder", CodecKind.VIDEO, listOf("video/avc"), false, false),
+        CodecInfo("c2.qti.avc.encoder", CodecKind.VIDEO, listOf("video/avc"), true, true),
+        CodecInfo("c2.android.aac.decoder", CodecKind.AUDIO, listOf("audio/mp4a-latm"), false, null),
+    ),
 )
 
 val sampleDisplayInfo = DisplayInfo(
@@ -66,8 +112,64 @@ val sampleDisplayInfo = DisplayInfo(
 
 val sampleWindowSnapshot = WindowSnapshot(widthPx = 1440, heightPx = 2960, hasCutout = false)
 
-class FakeDeviceInfoRepository(var info: DeviceInfo = sampleDeviceInfo) : DeviceInfoRepository {
-    override suspend fun getDeviceInfo(): DeviceInfo = info
+class FakeDeviceInfoRepository(
+    var info: DeviceInfo = sampleDeviceInfo,
+    var phonePermissionGranted: Boolean = false,
+) : DeviceInfoRepository {
+    var loadCount = 0
+        private set
+
+    override suspend fun getDeviceInfo(): DeviceInfo {
+        loadCount++
+        return info
+    }
+
+    override fun isPhonePermissionGranted(): Boolean = phonePermissionGranted
+}
+
+val sampleSystemInfo = SystemInfo(
+    build = AndroidBuild(
+        release = "9",
+        apiLevel = 28,
+        securityPatch = "2021-03-01",
+        displayId = "PPR1.180610.011",
+        buildId = "PPR1.180610.011",
+        buildTimeMillis = 1_614_556_800_000L,
+        type = "user",
+        tags = "release-keys",
+        bootloader = "N950U1UES9DUC1",
+        baseband = "N950U1UES9DUC1",
+    ),
+    security = SystemSecurity(
+        rooted = false,
+        selinux = SelinuxMode.ENFORCING,
+        systemAsRoot = false,
+        seamlessUpdates = false,
+        dynamicPartitions = false,
+        treble = true,
+        vndkVersion = "28",
+    ),
+    systemFeatures = listOf("android.hardware.nfc", "android.software.webview"),
+    runtime = RuntimeInfo(
+        kernelArchitecture = "aarch64",
+        kernelVersion = "4.4.153",
+        javaRuntime = "Android Runtime 0.9",
+        javaVm = "Dalvik 2.1.0",
+        vmHeapMaxBytes = 536_870_912L,
+        securityProvider = "AndroidOpenSSL 1.0",
+        playServicesVersion = "24.20.13",
+        playSystemUpdate = null,
+    ),
+    region = RegionInfo(languageTag = "vi-VN", timeZoneId = "Asia/Ho_Chi_Minh", bootCount = 42),
+    drm = null,
+)
+
+class FakeSystemInfoRepository(
+    var info: SystemInfo = sampleSystemInfo,
+    val uptime: Flow<Long> = flowOf(90_061_000L),
+) : SystemInfoRepository {
+    override suspend fun getSystemInfo(): SystemInfo = info
+    override fun observeUptime(): Flow<Long> = uptime
 }
 
 class FakeDisplayRepository(var info: DisplayInfo = sampleDisplayInfo) : DisplayRepository {

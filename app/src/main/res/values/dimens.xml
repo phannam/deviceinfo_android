@@ -16,4 +16,11 @@
     <dimen name="tabManagerItemGap">8dp</dimen>
     <dimen name="tabManagerItemHeight">64dp</dimen>
     <dimen name="tabManagerHandleSize">48dp</dimen>
+    <dimen name="cardGap">12dp</dimen>
+    <dimen name="sectionIconSize">20dp</dimen>
+    <dimen name="rowActionIconSize">18dp</dimen>
+    <dimen name="rowMinHeight">48dp</dimen>
+    <dimen name="heroBadgeSize">72dp</dimen>
+    <dimen name="heroBadgeIconSize">36dp</dimen>
+    <dimen name="heroCornerRadius">24dp</dimen>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Background (rounded corners) and divider visibility are set per RowPosition in InfoRowAdapter. -->
+<!-- Left-right row: label column (42%) and value column (58%). Background and divider follow RowPosition. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,44 +11,77 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        android:baselineAligned="false"
+        android:duplicateParentState="true"
+        android:minHeight="@dimen/rowMinHeight"
+        android:orientation="horizontal"
         android:paddingHorizontal="@dimen/mediumGap"
         android:paddingVertical="@dimen/smallGap">
 
         <TextView
             android:id="@+id/name_text"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginEnd="@dimen/smallGap"
+            android:layout_weight="0.42"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="Model" />
 
-        <TextView
-            android:id="@+id/value_text"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tinyGap"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/colorOnSurface"
-            tools:text="SM-N950U1" />
+            android:layout_weight="0.58"
+            android:orientation="vertical">
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progress_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tinyGap"
-            android:visibility="gone"
-            app:indicatorColor="?attr/colorSecondary"
-            app:trackCornerRadius="@dimen/tinyGap"
-            app:trackThickness="@dimen/tinyGap"
-            tools:progress="60"
-            tools:visibility="visible" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/value_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.DeviceInfo.RowValue"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textIsSelectable="false"
+                    tools:text="SM-N950U1" />
+
+                <ImageView
+                    android:id="@+id/action_icon"
+                    android:layout_width="@dimen/rowActionIconSize"
+                    android:layout_height="@dimen/rowActionIconSize"
+                    android:layout_marginStart="@dimen/tinyGap"
+                    android:importantForAccessibility="no"
+                    android:visibility="gone"
+                    app:tint="?attr/colorPrimaryOnBackground"
+                    tools:src="@drawable/ic_chevron_right"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tinyGap"
+                android:visibility="gone"
+                app:indicatorColor="?attr/colorSecondary"
+                app:trackCornerRadius="@dimen/tinyGap"
+                app:trackThickness="@dimen/tinyGap"
+                tools:progress="60"
+                tools:visibility="visible" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dividerHeight"
-        android:layout_marginStart="@dimen/mediumGap"
+        android:layout_marginHorizontal="@dimen/mediumGap"
         android:background="?attr/colorOutlineVariant" />
 </LinearLayout>

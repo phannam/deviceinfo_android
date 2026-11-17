@@ -2,16 +2,21 @@ package vn.npstudio.deviceinfo.data.source
 
 import android.os.Build
 import android.os.SystemClock
-import vn.npstudio.deviceinfo.domain.model.DeviceInfo
+import vn.npstudio.deviceinfo.domain.model.AndroidBuild
+import vn.npstudio.deviceinfo.domain.model.DeviceHardware
 import javax.inject.Inject
 
+/** Reads `android.os.Build` and the boot clock. */
 interface BuildInfoDataSource {
-    fun getDeviceInfo(): DeviceInfo
+    fun hardware(): DeviceHardware
+    fun fingerprint(): String?
+    fun androidBuild(): AndroidBuild
+    fun uptimeMillis(): Long
 }
 
 class BuildInfoDataSourceImpl @Inject constructor() : BuildInfoDataSource {
 
-    override fun getDeviceInfo(): DeviceInfo = DeviceInfo(
+    override fun hardware(): DeviceHardware = DeviceHardware(
         manufacturer = Build.MANUFACTURER.orNullIfUnknown(),
         brand = Build.BRAND.orNullIfUnknown(),
         model = Build.MODEL.orNullIfUnknown(),
@@ -19,16 +24,24 @@ class BuildInfoDataSourceImpl @Inject constructor() : BuildInfoDataSource {
         product = Build.PRODUCT.orNullIfUnknown(),
         board = Build.BOARD.orNullIfUnknown(),
         hardware = Build.HARDWARE.orNullIfUnknown(),
-        androidVersion = Build.VERSION.RELEASE.orNullIfUnknown(),
+    )
+
+    override fun fingerprint(): String? = Build.FINGERPRINT.orNullIfUnknown()
+
+    override fun androidBuild(): AndroidBuild = AndroidBuild(
+        release = Build.VERSION.RELEASE.orNullIfUnknown(),
         apiLevel = Build.VERSION.SDK_INT,
         securityPatch = Build.VERSION.SECURITY_PATCH.orNullIfUnknown(),
-        buildNumber = Build.DISPLAY.orNullIfUnknown(),
-        fingerprint = Build.FINGERPRINT.orNullIfUnknown(),
+        displayId = Build.DISPLAY.orNullIfUnknown(),
+        buildId = Build.ID.orNullIfUnknown(),
+        buildTimeMillis = Build.TIME.takeIf { it > 0 },
+        type = Build.TYPE.orNullIfUnknown(),
+        tags = Build.TAGS.orNullIfUnknown(),
         bootloader = Build.BOOTLOADER.orNullIfUnknown(),
-        kernelVersion = System.getProperty("os.version").orNullIfUnknown(),
-        javaVmVersion = System.getProperty("java.vm.version").orNullIfUnknown(),
-        uptimeMillis = SystemClock.elapsedRealtime(),
+        baseband = Build.getRadioVersion().orNullIfUnknown(),
     )
+
+    override fun uptimeMillis(): Long = SystemClock.elapsedRealtime()
 
     private fun String?.orNullIfUnknown(): String? =
         this?.trim()?.takeUnless { it.isEmpty() || it == Build.UNKNOWN }

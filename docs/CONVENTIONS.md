@@ -121,7 +121,9 @@
   - Each screen has an explicit UI state with `loadingMode` and its data.
   - `LoadingMode` (`IDLE`, `INITIAL`, `REFRESH`) lives in
     `common.stateflow`. Add more values only when a screen needs them.
-  - Info list screens use `InfoListUiState(loadingMode, rows)`.
+  - Info list screens use `InfoListUiState(loadingMode, sections, hero)`;
+    mappers return `List<InfoSection>` (titled card with icon) and expose
+    `map()` = `sections().reportRows()` for the share report.
   - Do not add ad-hoc nullable `isLoading`/`errorMessage` flags.
 
 - Coroutines in viewModelScope only

@@ -8,12 +8,19 @@ import vn.npstudio.deviceinfo.domain.model.CpuInfo
 import vn.npstudio.deviceinfo.domain.model.ThermalStatus
 import vn.npstudio.deviceinfo.ui.format.ValueFormatter
 import vn.npstudio.deviceinfo.ui.list.InfoRowUiModel
+import vn.npstudio.deviceinfo.ui.list.InfoSection
+import vn.npstudio.deviceinfo.ui.list.reportRows
 
 object CpuRowMapper {
 
     /** An empty [frequencies] list means live frequency is not readable on this device. */
+    fun sections(info: CpuInfo, frequencies: List<CpuCoreFrequency>): List<InfoSection> = listOf(
+        InfoSection(R.string.section_processor, R.drawable.ic_memory, staticRows(info)),
+        InfoSection(R.string.section_cores, R.drawable.ic_show_chart, liveRows(info.cores, frequencies)),
+    )
+
     fun map(info: CpuInfo, frequencies: List<CpuCoreFrequency>): List<InfoRowUiModel> =
-        staticRows(info) + liveRows(info.cores, frequencies)
+        sections(info, frequencies).reportRows()
 
     private fun staticRows(info: CpuInfo) = listOf(
         InfoRowUiModel(R.string.label_cpu_soc_manufacturer, ValueFormatter.text(info.socManufacturer)),

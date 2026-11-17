@@ -2,7 +2,9 @@ package vn.npstudio.deviceinfo.ui.format
 
 import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.text.UiText
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.format.FormatStyle
@@ -49,14 +51,15 @@ object ValueFormatter {
     fun list(values: List<String>): UiText =
         if (values.isEmpty()) unavailable else UiText.Dynamic(values.joinToString(", "))
 
-    /** Formats elapsed time as days, hours and minutes, for example `2d 3h 15m`. */
-    fun duration(millis: Long): UiText {
-        val totalMinutes = millis.coerceAtLeast(0) / 60_000
+    /** Formats elapsed time with seconds, for example `2d 3h 15m 42s`, for live uptime. */
+    fun durationSeconds(millis: Long): UiText {
+        val totalSeconds = millis.coerceAtLeast(0) / 1_000
         return UiText.res(
-            R.string.value_duration_dhm,
-            totalMinutes / (24 * 60),
-            totalMinutes / 60 % 24,
-            totalMinutes % 60,
+            R.string.value_duration_dhms,
+            totalSeconds / 86_400,
+            totalSeconds / 3_600 % 24,
+            totalSeconds / 60 % 60,
+            totalSeconds % 60,
         )
     }
 
@@ -87,6 +90,19 @@ object ValueFormatter {
         null -> unavailable
         true -> UiText.res(R.string.common_on)
         false -> UiText.res(R.string.common_off)
+    }
+
+    fun supported(value: Boolean?): UiText = when (value) {
+        null -> unavailable
+        true -> UiText.res(R.string.common_supported)
+        false -> UiText.res(R.string.common_not_supported)
+    }
+
+    /** Formats epoch [millis] as a medium date and short time in [zone] and [locale]. */
+    fun dateTime(millis: Long?, zone: ZoneId, locale: Locale): UiText {
+        if (millis == null || millis <= 0) return unavailable
+        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT).withLocale(locale)
+        return UiText.Dynamic(Instant.ofEpochMilli(millis).atZone(zone).format(formatter))
     }
 
     /** Formats an ISO `yyyy-MM-dd` date in [locale]; keeps the raw text when it does not parse. */

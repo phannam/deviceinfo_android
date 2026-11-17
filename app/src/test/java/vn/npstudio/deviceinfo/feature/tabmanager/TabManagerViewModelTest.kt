@@ -40,7 +40,15 @@ class TabManagerViewModelTest {
             awaitItem()
             viewModel.onMoved(0, 2)
             assertEquals(
-                listOf(TabId.CPU, TabId.BATTERY, TabId.DEVICE, TabId.DISPLAY, TabId.MEMORY, TabId.SCREEN_TEST),
+                listOf(
+                    TabId.SYSTEM,
+                    TabId.CPU,
+                    TabId.DEVICE,
+                    TabId.BATTERY,
+                    TabId.DISPLAY,
+                    TabId.MEMORY,
+                    TabId.SCREEN_TEST,
+                ),
                 awaitItem().items.map { it.id },
             )
         }

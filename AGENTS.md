@@ -37,9 +37,11 @@ Current state (specs 001 `docs/requirements/001-device-diagnostics.md` and
 - Single `:app` module, 100% Kotlin. AGP 9.4.1, Gradle 9.9.1, Kotlin DSL,
   version catalog, namespace `vn.npstudio.deviceinfo`.
 - Strict MVVM with Hilt (KSP), coroutines, `StateFlow`, ViewBinding.
-- `MainActivity` hosts Device, CPU, Battery, Display, Memory, and Screen Test tabs with Material `TabLayout` +
+- `MainActivity` hosts Device, System, CPU, Battery, Display, Memory, and Screen Test tabs with Material `TabLayout` +
   `ViewPager2`; lists use `RecyclerView` + `ListAdapter`. Users can hide and reorder tabs in the Tab Manager.
 - Strings in English (`values/`) and Vietnamese (`values-vi/`).
+- Spec 003: Device details (identifiers, telephony, features, codecs),
+  System tab, section card list style (`InfoSection`, `InfoListAdapter`).
 - Spec 002 features: `AppConfigRepository` (SharedPreferences), brand colors
   `#31C7D6` / `#2BB0C1`, palette theme overlays applied by `ThemeApplier`
   (recreates open activities on color change), neutral gray surfaces,
@@ -217,9 +219,14 @@ implement responsive Android layout behavior.
 
 Be extra careful around these areas:
 
-- `InfoRowAdapter` identifies rows by `label` (`UiText`) in DiffUtil. Every
-  row in one list must have a unique label. Do not add stable ids from
-  `label.hashCode()`: different labels can collide and crash RecyclerView.
+- `InfoListAdapter` identifies items by `InfoListItem.key` in DiffUtil (rows
+  by section index + `label`). Every row in one section must have a unique
+  label. Do not add stable ids from `hashCode()`: different keys can collide
+  and crash RecyclerView.
+- Device identifiers (IMEI, SIM serial, subscriber ID, serial, MAC addresses)
+  are restricted on newer Android versions; every identifier needs
+  `GuardedValue` handling. The Identifiers section is `inReport = false` and
+  must never enter the share report.
 - `SysFsReader` is the only class that reads `/proc` and `/sys`; it never
   throws. Many files are blocked by SELinux on newer devices, so every sysfs
   value must have an unavailable path.

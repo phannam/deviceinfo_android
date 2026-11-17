@@ -12,4 +12,11 @@ class DeviceFragment : InfoListFragment() {
     private val viewModel: DeviceViewModel by viewModels()
 
     override val uiState: StateFlow<InfoListUiState> get() = viewModel.uiState
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResumed()
+    }
+
+    override fun onPermissionGranted() = viewModel.refresh()
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/rowMinHeight"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/mediumGap"
+    android:paddingVertical="@dimen/smallGap">
+
+    <TextView
+        android:id="@+id/entry_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.DeviceInfo.RowValue"
+        android:textColor="?attr/colorOnSurface"
+        android:textIsSelectable="true"
+        tools:text="c2.android.avc.decoder" />
+
+    <TextView
+        android:id="@+id/entry_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tinyGap"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        tools:text="video/avc · Decoder · Software" />
+</LinearLayout>

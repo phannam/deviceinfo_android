@@ -4,6 +4,7 @@
 
     <!-- Tabs -->
     <string name="tab_device">Device</string>
+    <string name="tab_system">System</string>
     <string name="tab_cpu">CPU</string>
     <string name="tab_battery">Battery</string>
     <string name="tab_display">Display</string>
@@ -24,24 +25,167 @@
     <string name="common_no">No</string>
     <string name="common_on">On</string>
     <string name="common_off">Off</string>
+    <string name="common_supported">Supported</string>
+    <string name="common_not_supported">Not supported</string>
+    <string name="common_none">None</string>
 
     <!-- Device tab -->
     <string name="label_device_manufacturer">Manufacturer</string>
     <string name="label_device_brand">Brand</string>
+    <string name="label_device_name">Device name</string>
+    <string name="label_device_bootloader_state">Bootloader state</string>
+    <string name="label_device_product_code">Product code</string>
+    <string name="label_device_serial_number">Serial number</string>
+    <string name="label_device_sales_region">Sales region</string>
+    <string name="label_device_csc_firmware">CSC firmware</string>
+    <string name="label_device_knox_fuse">Knox warranty fuse</string>
+    <string name="label_device_manufacture_date">Manufacture date</string>
+    <string name="value_bootloader_locked">Locked</string>
+    <string name="value_bootloader_unlocked">Unlocked</string>
+    <string name="value_knox_secure">Intact (%1$d)</string>
+    <string name="value_knox_tripped">Tripped (%1$d)</string>
     <string name="label_device_model">Model</string>
     <string name="label_device_codename">Device (codename)</string>
     <string name="label_device_product">Product</string>
     <string name="label_device_board">Board</string>
     <string name="label_device_hardware">Hardware</string>
-    <string name="label_device_android_version">Android version</string>
-    <string name="label_device_api_level">API level</string>
-    <string name="label_device_security_patch">Security patch</string>
-    <string name="label_device_build_number">Build number</string>
     <string name="label_device_fingerprint">Build fingerprint</string>
-    <string name="label_device_bootloader">Bootloader</string>
-    <string name="label_device_kernel">Kernel version</string>
-    <string name="label_device_java_vm">Java VM</string>
-    <string name="label_device_uptime">Uptime</string>
+    <string name="label_device_android_id">Android ID</string>
+    <string name="label_device_gsf_id">GSF ID</string>
+    <string name="label_device_advertising_id">Advertising ID</string>
+    <string name="label_device_serial">Hardware serial</string>
+    <string name="label_device_imei">IMEI</string>
+    <string name="label_device_sim_serial">SIM serial</string>
+    <string name="label_device_subscriber_id">SIM subscriber ID</string>
+    <string name="label_device_wifi_mac">Wi-Fi MAC address</string>
+    <string name="label_device_bluetooth_mac">Bluetooth MAC address</string>
+    <string name="label_device_phone_type">Phone type</string>
+    <string name="label_device_sim_slots">SIM slots</string>
+    <string name="label_device_sim_operator">SIM operator</string>
+    <string name="label_device_network_operator">Network operator</string>
+    <string name="label_device_network_type">Network type</string>
+    <string name="label_device_usb_debugging">USB debugging</string>
+    <string name="label_device_developer_options">Developer options</string>
+    <string name="label_device_video_codecs">Video codecs</string>
+    <string name="label_device_audio_codecs">Audio codecs</string>
+    <string name="label_device_container_formats">Container formats</string>
+    <string name="label_features_supported">Supported features</string>
+    <string name="label_features_unsupported">Unsupported features</string>
+    <string name="value_phone_type_none">None</string>
+    <string name="value_phone_type_gsm" translatable="false">GSM</string>
+    <string name="value_phone_type_cdma" translatable="false">CDMA</string>
+    <string name="value_phone_type_sip" translatable="false">SIP</string>
+    <string name="value_codec_encoder">Encoder</string>
+    <string name="value_codec_decoder">Decoder</string>
+    <string name="value_codec_hardware">Hardware</string>
+    <string name="value_codec_software">Software</string>
+
+    <!-- Hardware feature checklist -->
+    <string name="feature_nfc" translatable="false">NFC</string>
+    <string name="feature_nfc_hce">NFC card emulation</string>
+    <string name="feature_fingerprint">Fingerprint</string>
+    <string name="feature_face">Face unlock</string>
+    <string name="feature_iris">Iris</string>
+    <string name="feature_bluetooth" translatable="false">Bluetooth</string>
+    <string name="feature_bluetooth_le" translatable="false">Bluetooth LE</string>
+    <string name="feature_ir_emitter">IR blaster</string>
+    <string name="feature_uwb">Ultra-wideband</string>
+    <string name="feature_wifi" translatable="false">Wi-Fi</string>
+    <string name="feature_wifi_direct" translatable="false">Wi-Fi Direct</string>
+    <string name="feature_ethernet" translatable="false">Ethernet</string>
+    <string name="feature_gps" translatable="false">GPS</string>
+    <string name="feature_usb_host">USB host</string>
+    <string name="feature_flashlight">Flashlight</string>
+    <string name="feature_telephony">Telephony</string>
+    <string name="feature_esim" translatable="false">eSIM</string>
+    <string name="feature_supported">%1$s: supported</string>
+    <string name="feature_not_supported">%1$s: not supported</string>
+
+    <!-- System tab -->
+    <string name="label_system_android_version">Android version</string>
+    <string name="label_system_api_level">API level</string>
+    <string name="label_system_security_patch">Security patch</string>
+    <string name="label_system_build_number">Build number</string>
+    <string name="label_system_build_id">Build ID</string>
+    <string name="label_system_build_time">Build time</string>
+    <string name="label_system_build_type">Build type</string>
+    <string name="label_system_build_tags">Build tags</string>
+    <string name="label_system_bootloader">Bootloader</string>
+    <string name="label_system_baseband">Baseband</string>
+    <string name="label_system_play_services">Google Play services</string>
+    <string name="label_system_play_system_update">Google Play system update</string>
+    <string name="label_system_root">Root access</string>
+    <string name="label_system_selinux" translatable="false">SELinux</string>
+    <string name="label_system_as_root">System-as-root</string>
+    <string name="label_system_seamless_updates">Seamless updates (A/B)</string>
+    <string name="label_system_dynamic_partitions">Dynamic partitions</string>
+    <string name="label_system_treble">Project Treble</string>
+    <string name="label_system_features">System features</string>
+    <string name="label_system_kernel_arch">Kernel architecture</string>
+    <string name="label_system_kernel_version">Kernel version</string>
+    <string name="label_system_java_runtime">Java runtime</string>
+    <string name="label_system_java_vm">Java VM</string>
+    <string name="label_system_vm_heap">Max VM heap</string>
+    <string name="label_system_security_provider">Security provider</string>
+    <string name="label_system_uptime">Uptime</string>
+    <string name="label_system_boot_count">Boot count</string>
+    <string name="label_system_language">Language</string>
+    <string name="label_system_time_zone">Time zone</string>
+    <string name="label_drm_widevine" translatable="false">Widevine</string>
+    <string name="label_drm_vendor">Vendor</string>
+    <string name="label_drm_version">Version</string>
+    <string name="label_drm_description">Description</string>
+    <string name="label_drm_algorithms">Algorithms</string>
+    <string name="label_drm_security_level">Security level</string>
+    <string name="label_drm_system_id">System ID</string>
+    <string name="label_drm_hdcp_level">HDCP level</string>
+    <string name="label_drm_max_hdcp_level">Max HDCP level</string>
+    <string name="label_drm_usage_reporting">Usage reporting</string>
+    <string name="label_drm_max_sessions">Max sessions</string>
+    <string name="label_drm_open_sessions">Open sessions</string>
+    <string name="value_selinux_enforcing">Enforcing</string>
+    <string name="value_selinux_permissive">Permissive</string>
+    <string name="value_selinux_disabled">Disabled</string>
+    <string name="value_treble_vndk">%1$s (VNDK %2$s)</string>
+    <string name="value_widevine_not_supported">Not supported</string>
+    <string name="hero_api" translatable="false">API</string>
+    <string name="value_android_version">Android %1$s</string>
+    <string name="value_release_date">Released %1$s</string>
+
+    <!-- Info list sections -->
+    <string name="section_device">Device</string>
+    <string name="section_identifiers">Identifiers</string>
+    <string name="section_telephony">SIM &amp; network</string>
+    <string name="section_developer">Developer</string>
+    <string name="section_features">Hardware features</string>
+    <string name="section_multimedia">Multimedia</string>
+    <string name="section_android" translatable="false">Android</string>
+    <string name="section_security">Security &amp; partitions</string>
+    <string name="section_kernel_runtime">Kernel &amp; runtime</string>
+    <string name="section_status">Status &amp; region</string>
+    <string name="section_drm">DRM (Widevine)</string>
+    <string name="section_processor">Processor</string>
+    <string name="section_cores">Cores</string>
+    <string name="section_battery_status">Status</string>
+    <string name="section_electrical">Electrical</string>
+    <string name="section_screen">Screen</string>
+    <string name="section_refresh_color">Refresh rate &amp; color</string>
+    <string name="section_window">Window</string>
+    <string name="section_ram" translatable="false">RAM</string>
+    <string name="section_storage">Storage</string>
+
+    <!-- Info list rows -->
+    <string name="value_permission_required">Permission required</string>
+    <string name="value_tap_to_grant">Tap to grant permission</string>
+    <string name="value_restricted">Restricted by Android</string>
+    <string name="value_view_count">View all (%1$s)</string>
+    <string name="copied_to_clipboard">Copied</string>
+    <string name="permission_denied_message">Permission denied. Allow it in app info.</string>
+    <string name="permission_open_app_details">App info</string>
+    <plurals name="list_sheet_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
 
     <!-- Display tab -->
     <string name="label_display_resolution">Resolution</string>
@@ -52,7 +196,7 @@
     <string name="label_display_font_scale">Font scale</string>
 
     <!-- Value formats -->
-    <string name="value_duration_dhm">%1$dd %2$dh %3$dm</string>
+    <string name="value_duration_dhms">%1$dd %2$dh %3$dm %4$ds</string>
     <string name="value_resolution">%1$d × %2$d px</string>
     <string name="value_dpi_decimal">%1$.1f dpi</string>
     <string name="value_scale">%1$.2f×</string>

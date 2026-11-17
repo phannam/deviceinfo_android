@@ -6,6 +6,7 @@ import vn.npstudio.deviceinfo.domain.model.TabId
 
 enum class MainTab(@param:StringRes val titleRes: Int, val id: TabId) {
     DEVICE(R.string.tab_device, TabId.DEVICE),
+    SYSTEM(R.string.tab_system, TabId.SYSTEM),
     CPU(R.string.tab_cpu, TabId.CPU),
     BATTERY(R.string.tab_battery, TabId.BATTERY),
     DISPLAY(R.string.tab_display, TabId.DISPLAY),

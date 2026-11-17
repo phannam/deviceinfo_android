@@ -26,7 +26,7 @@ class MemoryViewModel @Inject constructor(
     val uiState: StateFlow<InfoListUiState> = combine(
         repository.observeRam(),
         resumes.map { repository.getStorageInfo() },
-    ) { ram, storage -> InfoListUiState(LoadingMode.IDLE, MemoryRowMapper.map(ram, storage)) }
+    ) { ram, storage -> InfoListUiState(LoadingMode.IDLE, MemoryRowMapper.sections(ram, storage)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), InfoListUiState())
 
     fun onResumed() {

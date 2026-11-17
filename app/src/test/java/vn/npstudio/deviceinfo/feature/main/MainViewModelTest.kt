@@ -17,12 +17,14 @@ import vn.npstudio.deviceinfo.feature.device.DeviceRowMapper
 import vn.npstudio.deviceinfo.feature.display.DisplayRowMapper
 import vn.npstudio.deviceinfo.feature.memory.MemoryRowMapper
 import vn.npstudio.deviceinfo.feature.screentest.ScreenTestRowMapper
+import vn.npstudio.deviceinfo.feature.system.SystemRowMapper
 import vn.npstudio.deviceinfo.testing.FakeAppConfigLocalDataSource
 import vn.npstudio.deviceinfo.testing.FakeBatteryRepository
 import vn.npstudio.deviceinfo.testing.FakeCpuRepository
 import vn.npstudio.deviceinfo.testing.FakeDeviceInfoRepository
 import vn.npstudio.deviceinfo.testing.FakeDisplayRepository
 import vn.npstudio.deviceinfo.testing.FakeMemoryRepository
+import vn.npstudio.deviceinfo.testing.FakeSystemInfoRepository
 import vn.npstudio.deviceinfo.testing.MainDispatcherRule
 import vn.npstudio.deviceinfo.testing.sampleBatteryInfo
 import vn.npstudio.deviceinfo.testing.sampleCpuInfo
@@ -31,7 +33,11 @@ import vn.npstudio.deviceinfo.testing.sampleDisplayInfo
 import vn.npstudio.deviceinfo.testing.sampleFrequencies
 import vn.npstudio.deviceinfo.testing.sampleMemoryInfo
 import vn.npstudio.deviceinfo.testing.sampleStorageInfo
+import vn.npstudio.deviceinfo.testing.sampleSystemInfo
 import vn.npstudio.deviceinfo.testing.sampleWindowSnapshot
+import vn.npstudio.deviceinfo.ui.list.reportRows
+import java.time.ZoneId
+import java.util.Locale
 
 class MainViewModelTest {
 
@@ -45,6 +51,7 @@ class MainViewModelTest {
         MainViewModel(
             handle,
             FakeDeviceInfoRepository(),
+            FakeSystemInfoRepository(),
             FakeCpuRepository(),
             FakeBatteryRepository(),
             FakeDisplayRepository(),
@@ -69,7 +76,14 @@ class MainViewModelTest {
 
         viewModel.visibleTabs.test {
             assertEquals(
-                listOf(MainTab.SCREEN_TEST, MainTab.MEMORY, MainTab.DISPLAY, MainTab.BATTERY, MainTab.DEVICE),
+                listOf(
+                    MainTab.SCREEN_TEST,
+                    MainTab.MEMORY,
+                    MainTab.DISPLAY,
+                    MainTab.BATTERY,
+                    MainTab.SYSTEM,
+                    MainTab.DEVICE,
+                ),
                 awaitItem(),
             )
             config.saveTabs(TabPreferences())
@@ -119,6 +133,15 @@ class MainViewModelTest {
             val expected = MainUiEffect.Share(
                 listOf(
                     ReportSection(MainTab.DEVICE.titleRes, DeviceRowMapper.map(sampleDeviceInfo)),
+                    ReportSection(
+                        MainTab.SYSTEM.titleRes,
+                        SystemRowMapper.sections(
+                            sampleSystemInfo,
+                            90_061_000L,
+                            Locale.getDefault(),
+                            ZoneId.systemDefault(),
+                        ).reportRows(),
+                    ),
                     ReportSection(MainTab.CPU.titleRes, CpuRowMapper.map(sampleCpuInfo, sampleFrequencies)),
                     ReportSection(MainTab.BATTERY.titleRes, BatteryRowMapper.map(sampleBatteryInfo, TemperatureUnit.CELSIUS)),
                     ReportSection(MainTab.DISPLAY.titleRes, DisplayRowMapper.map(sampleDisplayInfo, sampleWindowSnapshot)),

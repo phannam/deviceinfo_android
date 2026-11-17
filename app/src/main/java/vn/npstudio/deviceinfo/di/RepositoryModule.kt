@@ -11,6 +11,7 @@ import vn.npstudio.deviceinfo.data.repository.DeviceInfoRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.DisplayRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.MemoryRepositoryImpl
 import vn.npstudio.deviceinfo.data.repository.ScreenTestResultRepositoryImpl
+import vn.npstudio.deviceinfo.data.repository.SystemInfoRepositoryImpl
 import vn.npstudio.deviceinfo.domain.repository.AppConfigRepository
 import vn.npstudio.deviceinfo.domain.repository.BatteryRepository
 import vn.npstudio.deviceinfo.domain.repository.CpuRepository
@@ -18,6 +19,7 @@ import vn.npstudio.deviceinfo.domain.repository.DeviceInfoRepository
 import vn.npstudio.deviceinfo.domain.repository.DisplayRepository
 import vn.npstudio.deviceinfo.domain.repository.MemoryRepository
 import vn.npstudio.deviceinfo.domain.repository.ScreenTestResultRepository
+import vn.npstudio.deviceinfo.domain.repository.SystemInfoRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,6 +27,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindDeviceInfoRepository(impl: DeviceInfoRepositoryImpl): DeviceInfoRepository
+
+    @Binds
+    abstract fun bindSystemInfoRepository(impl: SystemInfoRepositoryImpl): SystemInfoRepository
 
     @Binds
     abstract fun bindDisplayRepository(impl: DisplayRepositoryImpl): DisplayRepository

@@ -9,15 +9,28 @@ import java.util.Locale
 class ValueFormatterTest {
 
     @Test
-    fun duration_splitsIntoDaysHoursMinutes() {
-        val millis = ((2 * 24 + 3) * 60 + 15) * 60_000L + 59_000L
+    fun durationSeconds_splitsIntoDaysHoursMinutesSeconds() {
+        val millis = (((2 * 24 + 3) * 60 + 15) * 60 + 42) * 1_000L + 999L
 
-        assertEquals(UiText.res(R.string.value_duration_dhm, 2L, 3L, 15L), ValueFormatter.duration(millis))
+        assertEquals(
+            UiText.res(R.string.value_duration_dhms, 2L, 3L, 15L, 42L),
+            ValueFormatter.durationSeconds(millis),
+        )
     }
 
     @Test
-    fun duration_negativeIsZero() {
-        assertEquals(UiText.res(R.string.value_duration_dhm, 0L, 0L, 0L), ValueFormatter.duration(-5L))
+    fun durationSeconds_negativeIsZero() {
+        assertEquals(UiText.res(R.string.value_duration_dhms, 0L, 0L, 0L, 0L), ValueFormatter.durationSeconds(-5L))
+    }
+
+    @Test
+    fun dateTime_formatsInZoneAndLocale() {
+        val millis = java.time.Instant.parse("2021-03-01T17:30:00Z").toEpochMilli()
+
+        val text = ValueFormatter.dateTime(millis, java.time.ZoneId.of("Asia/Ho_Chi_Minh"), Locale.US)
+
+        assertEquals(true, (text as UiText.Dynamic).value.startsWith("Mar 2, 2021"))
+        assertEquals(ValueFormatter.unavailable, ValueFormatter.dateTime(null, java.time.ZoneId.of("UTC"), Locale.US))
     }
 
     @Test

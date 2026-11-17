@@ -23,7 +23,7 @@ class DisplayViewModel @Inject constructor(
     private val windowSnapshots = MutableSharedFlow<WindowSnapshot>(replay = 1)
 
     val uiState: StateFlow<InfoListUiState> = windowSnapshots
-        .map { window -> InfoListUiState(LoadingMode.IDLE, DisplayRowMapper.map(repository.getDisplayInfo(), window)) }
+        .map { window -> InfoListUiState(LoadingMode.IDLE, DisplayRowMapper.sections(repository.getDisplayInfo(), window)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), InfoListUiState())
 
     fun onWindowMeasured(window: WindowSnapshot) {

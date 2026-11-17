@@ -11,7 +11,8 @@ import vn.npstudio.deviceinfo.R
 import vn.npstudio.deviceinfo.common.extension.applySystemBarPadding
 import vn.npstudio.deviceinfo.common.extension.collectWithLifecycle
 import vn.npstudio.deviceinfo.databinding.FragmentScreenTestBinding
-import vn.npstudio.deviceinfo.ui.list.InfoRowAdapter
+import vn.npstudio.deviceinfo.ui.list.InfoListAdapter
+import vn.npstudio.deviceinfo.ui.list.InfoListItem
 
 @AndroidEntryPoint
 class ScreenTestFragment : Fragment(R.layout.fragment_screen_test) {
@@ -21,7 +22,7 @@ class ScreenTestFragment : Fragment(R.layout.fragment_screen_test) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentScreenTestBinding.bind(view)
-        val adapter = InfoRowAdapter()
+        val adapter = InfoListAdapter()
         binding.resultList.adapter = adapter
         binding.root.applySystemBarPadding()
         binding.startButton.setOnClickListener {
@@ -29,7 +30,7 @@ class ScreenTestFragment : Fragment(R.layout.fragment_screen_test) {
         }
 
         viewModel.uiState.collectWithLifecycle(viewLifecycleOwner, Lifecycle.State.RESUMED) { state ->
-            adapter.submitList(state.rows)
+            adapter.submitList(InfoListItem.from(state))
         }
     }
 }

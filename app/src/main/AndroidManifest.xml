@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Device tab (spec 003): network type, and IMEI/SIM/serial on Android 8-9. Asked on tap. -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Device tab: Google Services Framework ID. -->
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <queries>
+        <package android:name="com.google.android.gms" />
+        <package android:name="com.google.android.gsf" />
+        <package android:name="com.google.android.modulemetadata" />
+    </queries>
+
     <application
         android:name=".DeviceInfoApplication"
         android:allowBackup="true"

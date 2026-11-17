@@ -47,19 +47,30 @@
     Not tested vs Yes/No rows; tab follows the saved result.
   - `feature/cpu/CpuRowMapperTest`, `feature/cpu/CpuViewModelTest`: CPU rows,
     per-core progress and Offline, notice row, live updates.
-  - `feature/device/DeviceRowMapperTest`: row values and unavailable handling.
+  - `feature/device/DeviceRowMapperTest`: section order, guarded values
+    (permission action, Restricted), feature chips, codec list entries,
+    identifiers excluded from the report.
+  - `feature/system/SystemRowMapperTest`: hero, release codename and date,
+    security and runtime rows, language and time zone formatting, DRM
+    section only when Widevine is present.
+  - `feature/system/SystemViewModelTest`: sections update when uptime ticks.
+  - `data/source/SystemPropertiesParserTest`: `getprop` output parsing,
+    SELinux modes, partition flags.
+  - `ui/list/InfoListItemTest`: flattening sections into hero / header /
+    row / feature items, empty sections skipped, `reportRows()`.
   - `feature/display/DisplayRowMapperTest`: resolution and window rows,
     density bucket, estimated diagonal, refresh rates, HDR ordering and None,
     unavailable values (including no window snapshot).
   - `feature/display/DisplayViewModelTest`: waits for the window snapshot;
     an equal snapshot still reloads display values.
-  - `feature/device/DeviceViewModelTest`: `INITIAL` then loaded rows (Turbine).
+  - `feature/device/DeviceViewModelTest`: `INITIAL` then loaded sections
+    (Turbine); reload on resume only when the phone permission changed.
   - `feature/main/ShareReportRendererTest`: header and section layout with a
     fake resolver.
   - `feature/main/MainViewModelTest`: selected tab restored from
     `SavedStateHandle`; `visibleTabs` follows the tab settings; the selected
     tab is kept if visible, otherwise the first visible tab; the report
-    ignores the tab settings; share effect contains Device, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections; the Battery section uses the selected temperature unit.
+    ignores the tab settings; share effect contains Device, System, CPU, Battery, Display, Memory, and Screen Test (Not tested) sections; the Battery section uses the selected temperature unit.
   - Shared helpers in `testing/`: `MainDispatcherRule`
     (`StandardTestDispatcher`), sample models, fake repositories and data sources, and
     `byLabel()` for row lookups (`rows[UiText.res(R.string.label_x)]`).

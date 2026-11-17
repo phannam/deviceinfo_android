@@ -19,6 +19,7 @@ viewpager2 = "1.1.0"
 material = "1.14.0"
 annotation = "1.11.0"
 window = "1.5.1"
+playServicesAdsIdentifier = "18.3.0"
 junit = "4.13.2"
 turbine = "1.2.1"
 androidxJunit = "1.3.0"
@@ -35,6 +36,7 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-window = { group = "androidx.window", name = "window", version.ref = "window" }
+play-services-ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

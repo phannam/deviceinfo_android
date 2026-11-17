@@ -25,6 +25,6 @@ class BatteryViewModel @Inject constructor(
     val uiState: StateFlow<InfoListUiState> = combine(
         repository.observe(),
         appConfigRepository.config.map { it.temperatureUnit }.distinctUntilChanged(),
-    ) { info, unit -> InfoListUiState(LoadingMode.IDLE, BatteryRowMapper.map(info, unit)) }
+    ) { info, unit -> InfoListUiState(LoadingMode.IDLE, BatteryRowMapper.sections(info, unit)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), InfoListUiState())
 }

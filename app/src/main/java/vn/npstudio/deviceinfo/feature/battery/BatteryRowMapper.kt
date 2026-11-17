@@ -9,13 +9,22 @@ import vn.npstudio.deviceinfo.domain.model.PowerSource
 import vn.npstudio.deviceinfo.domain.model.TemperatureUnit
 import vn.npstudio.deviceinfo.ui.format.ValueFormatter
 import vn.npstudio.deviceinfo.ui.list.InfoRowUiModel
+import vn.npstudio.deviceinfo.ui.list.InfoSection
+import vn.npstudio.deviceinfo.ui.list.reportRows
 
 object BatteryRowMapper {
 
     /** Below this level the charge counter is too coarse to estimate full capacity. */
     private const val MIN_LEVEL_FOR_CAPACITY = 10
 
-    fun map(info: BatteryInfo, unit: TemperatureUnit): List<InfoRowUiModel> = listOf(
+    fun sections(info: BatteryInfo, unit: TemperatureUnit): List<InfoSection> = listOf(
+        InfoSection(R.string.section_battery_status, R.drawable.ic_battery_std, statusRows(info, unit)),
+        InfoSection(R.string.section_electrical, R.drawable.ic_flash_on, electricalRows(info)),
+    )
+
+    fun map(info: BatteryInfo, unit: TemperatureUnit): List<InfoRowUiModel> = sections(info, unit).reportRows()
+
+    private fun statusRows(info: BatteryInfo, unit: TemperatureUnit) = listOf(
         InfoRowUiModel(
             R.string.label_battery_level,
             info.levelPercent?.let { UiText.res(R.string.value_percent_int, it) } ?: ValueFormatter.unavailable,
@@ -28,16 +37,20 @@ object BatteryRowMapper {
             R.string.label_battery_temperature,
             info.temperatureTenthsCelsius?.let { temperature(it, unit) } ?: ValueFormatter.unavailable,
         ),
-        InfoRowUiModel(
-            R.string.label_battery_voltage,
-            info.voltageMillivolts?.let { UiText.res(R.string.value_voltage, it / 1_000.0) }
-                ?: ValueFormatter.unavailable,
-        ),
         InfoRowUiModel(R.string.label_battery_technology, ValueFormatter.text(info.technology)),
         InfoRowUiModel(R.string.label_battery_present, ValueFormatter.yesNo(info.present)),
         InfoRowUiModel(
             R.string.label_battery_cycle_count,
             info.cycleCount?.let(ValueFormatter::number) ?: ValueFormatter.unavailable,
+        ),
+        InfoRowUiModel(R.string.label_battery_saver, ValueFormatter.onOff(info.powerSaveMode)),
+    )
+
+    private fun electricalRows(info: BatteryInfo) = listOf(
+        InfoRowUiModel(
+            R.string.label_battery_voltage,
+            info.voltageMillivolts?.let { UiText.res(R.string.value_voltage, it / 1_000.0) }
+                ?: ValueFormatter.unavailable,
         ),
         InfoRowUiModel(R.string.label_battery_current_now, milliamps(info.currentNowMicroamps)),
         InfoRowUiModel(R.string.label_battery_current_average, milliamps(info.currentAverageMicroamps)),
@@ -58,7 +71,6 @@ object BatteryRowMapper {
                 ?.let(ValueFormatter::hoursMinutes)
                 ?: ValueFormatter.unavailable,
         ),
-        InfoRowUiModel(R.string.label_battery_saver, ValueFormatter.onOff(info.powerSaveMode)),
     )
 
     /** Charge counter scaled to 100 %, in mAh. */

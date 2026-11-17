@@ -10,6 +10,7 @@ import vn.npstudio.deviceinfo.feature.device.DeviceFragment
 import vn.npstudio.deviceinfo.feature.display.DisplayFragment
 import vn.npstudio.deviceinfo.feature.memory.MemoryFragment
 import vn.npstudio.deviceinfo.feature.screentest.ScreenTestFragment
+import vn.npstudio.deviceinfo.feature.system.SystemFragment
 
 /** Item ids are [MainTab.ordinal], never positions, so fragments of tabs that stay are kept when the list changes. */
 class MainTabAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
@@ -33,6 +34,7 @@ class MainTabAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity
 
     override fun createFragment(position: Int): Fragment = when (tabs[position]) {
         MainTab.DEVICE -> DeviceFragment()
+        MainTab.SYSTEM -> SystemFragment()
         MainTab.CPU -> CpuFragment()
         MainTab.BATTERY -> BatteryFragment()
         MainTab.DISPLAY -> DisplayFragment()

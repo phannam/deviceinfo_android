@@ -19,6 +19,6 @@ class ScreenTestResultViewModel @Inject constructor(
 ) : ViewModel() {
 
     val uiState: StateFlow<InfoListUiState> = repository.result
-        .map { InfoListUiState(LoadingMode.IDLE, ScreenTestRowMapper.map(it)) }
+        .map { InfoListUiState(LoadingMode.IDLE, ScreenTestRowMapper.sections(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), InfoListUiState())
 }
